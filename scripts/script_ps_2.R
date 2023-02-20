@@ -76,6 +76,11 @@
   #Revisamos la distribución de nuestra variable a predecir
 
 
+#Definición de variables a trabajar---------------------------------------------
+  
+  
+  
+  
 #Modelo de Clasificación--------------------------------------------------------
   #Enfoque de clasificación - Intento de predecir directamente 0 (no pobre) y 1 (pobre)
 
