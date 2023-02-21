@@ -16,66 +16,54 @@
 
 #Cargar librerías
 
-  require(pacman)
-  p_load(tidyverse,caret, skimr, stargazer)
+  #install.packages("kableExtra")
+  library(pacman, kableExtra)
+  p_load(tidyverse,caret, skimr, stargazer, dplyr)
+
+
+#Generamos una semilla para trabajar en todo el procesamiento
+
+  set.seed(010101)
+
+
+#Leer los datos - 
+
+  setwd("C:/Users/User/Documents/Big_Data/BD_Taller 2") #Por tamaño de los archivos, seleecionar el directorio local
   
-
-#Generamos una semilla
-
-    set.seed(010101)
-
-    
-#Leer los datos
-
-  setwd("C:/Users/User/Documents/Big_Data/BD_Taller 2")
-
-  sample_sub        <- read.csv("sample_submission.csv")
   test_hogares      <- read.csv("test_hogares.csv")
   test_personas     <- read.csv("test_personas.csv")
   train_hogares     <- read.csv("train_hogares.csv")
   train_personas    <- read.csv("train_personas.csv")
 
-#Revisión de las BD
-  
-  stargazer(test_hogares, header=FALSE, type='text',title="Tabla Test Hogares")
-  stargazer(test_personas, header=FALSE, type='text',title="Tabla Test Personas")
-  stargazer(train_hogares, header=FALSE, type='text',title="Tabla Train Hogares")
-  stargazer(train_personas, header=FALSE, type='text',title="Tabla Train Personas")
+#Organización de las BD
 
-  #Ingreso = (Ingpcug) Ingreso percápita de la unidad de gasto con imputación de arriendo a propietarios y usufructuarios
+  #test_hogares      <- para la prueba final del modelo seleccionado
+  #test_personas     <- para la prueba final del modelo seleccionado
   
-  #Variable Pobre = train_hogares$Pobre
-  #Variable Ingresos = train_hogares$Ingpcug
+  #train_hogares     <- para la generación del modelo la dividimos en dos
+  #train_h       <- BD inicial de Train Hogares para -train- del modelo
+  #test_h        <- BD inicial de Train Hogares para -test - del modelo
   
-  str(train_hogares$Pobre)
-  table(train_hogares$Pobre)
-  prop.table(table(train_hogares$Pobre))
-  
-  
-#Limpieza BD----------------------------------------------------------------------
+  #train_personas 
 
-  #Evaluamos los NA de la base
+#Limpieza BD y selección de variables--------------------------------------------
+
+  #Depuramos las variables que trabajaremos y evaluamos NA
+
+  train_h <- train_hogares %>% select(all_of(colnames(test_hogares)))    #Dejamos las mismas variables de los archivos de Test
+  train_p <- train_personas %>% select(all_of(colnames(test_personas)))
   
-  #Generamos y transformamos variables
+  glimpse(train_h)
+  glimpse(train_p)
   
-  #Seleccionamos las variables relevantes
+  factores <- colnames(select(train_p, -id, -Orden, -Clase, -Dominio, -P6040, -Fex_c, -Fex_dpto, -P6426, -P6800))
   
-  #Arreglamos las variables dicótomas para que sean 1 y 0
+  for (v in factores) 
+  {train_p[, v] <- as.factor(train_p[, v, drop = T])}
   
-  #Definimos las variables categoricas
+  glimpse(train_p) 
   
-  #Dividimos la BD en Train y Test
-  
-      #y_train
-      #X_train
-      #y_test
-      #X_test
-  
-  #Procedemos a generar dummys
-  
-  #Revisamos la distribución de nuestra variable a predecir
+  sapply(train_h, function(x) sum(is.na(x)))
+  sapply(train_p, function(x) sum(is.na(x)))
 
 
-#Definición de variables a trabajar---------------------------------------------
-  
-  
