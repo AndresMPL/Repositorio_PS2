@@ -50,43 +50,51 @@
           #test_pp     <- 20% Train personas - para pruebas
           #eval_pp     <- 10% Train personas - para evaluacion  
   
-#Limpieza BD y selección de variables--------------------------------------------
-
-  #Igualamemos las variables con las BD de Test
-
-  train_h <- train_hogares %>% select(id, Clase, Dominio,P5000,P5010, P5090, P5100, P5130, P5140, Nper, Npersug, Li, 
-                                      Lp, Fex_c, Depto, Fex_dpto, Pobre) #Dejamos las mismas variables de los archivos de Test y "Pobre"
+#Selección de Variables de interés ----------------------------
   
-  train_p <- train_personas %>% select(all_of(colnames(test_personas))) #Agregar Ingresos
+  train_p <- train_personas %>% 
+    select(id, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Oc, Des, Ina, Ingtot)
+  
+  train_h <- train_hogares %>% 
+    select(id, Clase, P5000, P5010, P5090, Nper, Npersug, Lp, Pobre, Ingtotugarr, Ingpcug)
   
   glimpse(test_hogares)
   glimpse(test_personas)
   glimpse(train_h)
   glimpse(train_p)
   
+#Crear variables de interes ----------------------------------- 
   
-  #Mutamos factores 
+  train_p$female <- ifelse(train_p$P6020 == 2, 1, 0) %>% as.numeric()
+  train_p$Menores_edad <- if_else(train_p$P6040<=14, 1, 0 , missing = NULL, ptype = NULL)
+  train_p$adulto_mayor <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL, ptype = NULL)
+  train_p <- train_p%>%
+    mutate(Desempleado = replace_na(Des, 0),
+           Inactivo = replace_na(Ina, 0),
+           Ocupado = replace_na(Oc, 0))
   
-    #Personas
-    factoresp <- colnames(select(train_p, -id, -Orden, -Clase, -Dominio, -P6040, -Fex_c, -Fex_dpto, -P6426, -P6800, -Pet, -Oc, -Des, -Ina, -P7045, -Depto, -Oficio, -P6210s1))
-    
-    for (v in factoresp) 
-      {train_p[, v] <- as.factor(train_p[, v, drop = T])}
-    
-    glimpse(train_p) 
-    
-    #Hogares
-    factoresh <- colnames(select(train_h,P5090, Clase))
-    
-    for (v in factoresh) 
-      {train_h[, v] <- as.factor(train_h[, v, drop = T])}
-    
-    glimpse(train_h) 
+  train_personas_hog <- train_p %>%
+    group_by(id) %>%
+    summarize(edad_jefe_hogar = (P6040)[P6050==1], 
+              sexo_jefe_hogar = (female)[P6050==1],
+              nivel_edu_jefe_hogar= (P6210)[P6050==1],
+              num_Menores_edad = sum(Menores_edad, na.rm = TRUE),
+              num_adulto_mayor = sum(adulto_mayor, na.rm = TRUE),
+              jefe_hogar_des = (Desempleado)[P6050==1],
+              jefe_hogar_ina = (Inactivo)[P6050==1],
+              jefe_hogar_oc = (Ocupado)[P6050==1],
+              ing_tot_hogar = sum(Ingtot, na.rm = TRUE))
+  
+#Uniendo bases -------------------------------------
+  
+  train_h<-left_join(train_h,train_personas_hog)
+  colnames(train_h) 
+
   
   
-  #Eliminamos NA´s
-  
-    #Personas
+#Eliminamos NA´s
+
+  #Personas
     missing_percentage <-sapply(train_p, function(y) sum(length(which(is.na(y))))/length(train_p$id))
     data_x <- as.data.frame(missing_percentage)
     var <- cbind(Var_name = rownames(data_x), data_x)
@@ -133,10 +141,26 @@
     train_h <- train_h %>% select(all_of(vector_var2$Var_name))
     
     sapply(train_h, function(x) sum(is.na(x))) %>% as.data.frame()
+     
     
-    train_h <- train_h %>% filter(P5130 != "NA")   
+#Mutamos factores 
     
-    sapply(train_h, function(x) sum(is.na(x))) %>% as.data.frame() 
+#Personas
+    factoresp <- colnames(select(train_p, -id, -Orden, -Clase, -Dominio, -P6040, -Fex_c, -Fex_dpto, -P6426, -P6800, -Pet, -Oc, -Des, -Ina, -P7045, -Depto, -Oficio, -P6210s1))
+    
+    for (v in factoresp) 
+    {train_p[, v] <- as.factor(train_p[, v, drop = T])}
+    
+    glimpse(train_p) 
+    
+#Hogares
+    factoresh <- colnames(select(train_h,P5090, Clase))
+    
+    for (v in factoresh) 
+    {train_h[, v] <- as.factor(train_h[, v, drop = T])}
+    
+    glimpse(train_h)     
+    
     
   
   #Generamos dummys en Train_Personas
