@@ -101,6 +101,10 @@
   y_hat_test1  <- predict(modelo1, test_hhs)
   y_hat_eval1  <- predict(modelo1, eval_hhs)
   
+  probs_train1 <- predict(modelo1, train_hhs, type = "prob")[, "1", drop = T]
+  probs_test1  <- predict(modelo1, test_hhs, type = "prob")[, "1", drop = T]
+  probs_eval1  <- predict(modelo1, eval_hhs, type = "prob")[, "1", drop = T]
+  
   acc_train1  <- Accuracy(y_pred = y_hat_train1, y_true = train_hhs$Pobre)
   acc_test1   <- Accuracy(y_pred = y_hat_test1, y_true = test_hhs$Pobre)
   acc_eval1   <- Accuracy(y_pred = y_hat_eval1, y_true = eval_hhs$Pobre)
