@@ -163,7 +163,7 @@
     
     
   
-  #Generamos dummys en Train_Personas
+#Generamos dummys en Train_Personas
   
     dmyp <- dummyVars("~.", data = train_p)
     head(dmyp)
@@ -172,7 +172,7 @@
     glimpse(train_p)
 
     
-  #Generamos dummys en Train_Hogares
+#Generamos dummys en Train_Hogares
   
     dmyh <- dummyVars("~.", data = train_h)
     head(dmyh)
@@ -181,7 +181,7 @@
     glimpse(train_h)
   
     
-  #Generamos las variables de Train_Personas y las llevamos a Train_Hogares
+
   
   
   
