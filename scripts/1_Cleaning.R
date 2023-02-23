@@ -63,7 +63,6 @@
   glimpse(train_h)
   glimpse(train_p)
   
-  table()
   
 #Crear variables de interes ----------------------------------- 
   
@@ -94,7 +93,7 @@
 
   
   
-#Eliminamos NA´s
+#Variables con NA´s
 
   #Personas
     missing_percentage <-sapply(train_p, function(y) sum(length(which(is.na(y))))/length(train_p$id))
@@ -118,10 +117,6 @@
     
     sapply(train_p, function(x) sum(is.na(x))) %>% as.data.frame()
     
-    train_p <- train_p %>% filter(P6100 != "NA")   
-        
-    sapply(train_p, function(x) sum(is.na(x))) %>% as.data.frame() 
-
     #Hogares
     missing_percentage2 <-sapply(train_h, function(y) sum(length(which(is.na(y))))/length(train_h$id))
     data_x2 <- as.data.frame(missing_percentage2)
@@ -142,29 +137,27 @@
     
     train_h <- train_h %>% select(all_of(vector_var2$Var_name))
     
-    sapply(train_h, function(x) sum(is.na(x))) %>% as.data.frame()
-    
-#Variables definitivas
-    
-    train_p <- train_p %>% 
-      select(id, Orden, P6020, P6040, P6050, P6210, Oc, Des, Ina, Ingtot)
+    sapply(train_h, function(x) sum(is.na(x))) %>% as.data.frame() #no se excluyen variables
      
     
 #Mutamos factores 
     
 #Personas
-    factoresp <- colnames(select(train_p, P6050, P6210))
+    factoresp <- c("P6050", "P6210")
     
-    for (v in factoresp) 
-    {train_p[, v] <- as.factor(train_p[, v, drop = T])}
+    for (v in factoresp) {
+      train_p[, v] <- as.factor(train_p[, v, drop = T])
+      }
     
     glimpse(train_p) 
     
 #Hogares
-    factoresh <- colnames(select(train_h,P5090, Clase))
     
-    for (v in factoresh) 
-    {train_h[, v] <- as.factor(train_h[, v, drop = T])}
+    factoresh <- c("P5090", "Clase")
+    
+    for (v in factoresh) {
+      train_h[, v] <- as.factor(train_h[, v, drop = T])
+      }
     
     glimpse(train_h)     
     
@@ -172,22 +165,16 @@
   
 #Generamos dummys en Train_Personas
   
-    dtrain_p <- dummyVars("~.", data = train_p)
-    head(dmyp)
-    train_p <- data.frame(predict(dmyp, newdata = train_p))
-    
+    train_p <- model.matrix(~., train_p) %>%
+      as.data.frame()
     glimpse(train_p)
-
     
 #Generamos dummys en Train_Hogares
   
-    dmyh <- dummyVars("~.", data = train_h)
-    head(dmyh)
-    train_h <- data.frame(predict(dmyh, newdata = train_h))
-    
-    glimpse(train_h)
+    train_h <- model.matrix(~ ., train_h) %>%
+      as.data.frame()
   
-    
+    glimpse(train_h)
 
   
   
