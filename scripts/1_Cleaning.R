@@ -63,6 +63,8 @@
   glimpse(train_h)
   glimpse(train_p)
   
+  table()
+  
 #Crear variables de interes ----------------------------------- 
   
   train_p$female <- ifelse(train_p$P6020 == 2, 1, 0) %>% as.numeric()
