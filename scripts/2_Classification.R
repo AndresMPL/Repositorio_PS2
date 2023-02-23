@@ -20,13 +20,14 @@
   
   prop.table(table(train_h$Pobre)) #Grado de desbalance Moderado
   
-  ggplot(train_h, aes(y = Pobre)) +
-        geom_bar(fill = "#53868B") +
-        theme_bw() +
-        labs(title = "Distribución de hogares Clasificación de Pbreza",
-             y = "",
-             x = "Número de hogares")
+  Imagen_1 <- ggplot(train_h, aes(y = Pobre)) +
+              geom_bar(fill = "#53868B") +
+              theme_bw() +
+              labs(title = "Distribución de hogares Clasificación de Pobreza",
+                   y = "",
+                   x = "Número de hogares")
   
+  Imagen_1
 
 #Dividimos train/test/eval (70/20/10) - BD Hogares
 
@@ -35,15 +36,18 @@
   train_hh  <- train_h[index_1,]
   other     <- train_h[-index_1,]
 
-  set.seed(934)
+  set.seed(10110)
   index2  <- createDataPartition(other$Pobre, p = 1/3)[[1]]
   test_hh <- other[-index2,]
   eval_hh <- other[ index2,]
 
-  dim(train_h)   #Sumamos para verificar que las particiones hayan quedado bien
+  dim(train_h)   
   dim(train_hh)
   dim(test_hh)
   dim(eval_hh)
+  
+  dim(train_h)[1] - dim(train_hh)[1] - dim(test_hh)[1] - dim(eval_hh)[1] #Cero para verificar que las particiones hayan quedado bien
+  
   
   prop.table(table(train_h$Pobre))    #Verificamos que las particiones conserven las mismas proporciones
   prop.table(table(train_hh$Pobre))
