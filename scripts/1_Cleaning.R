@@ -53,7 +53,7 @@
 #Selección de Variables de interés ----------------------------
   
   train_p <- train_personas %>% 
-    select(id, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Oc, Des, Ina, Ingtot)
+    select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Oc, Des, Ina, Ingtot)
   
   train_h <- train_hogares %>% 
     select(id, Clase, P5000, P5010, P5090, Nper, Npersug, Lp, Pobre, Ingtotugarr, Ingpcug)
@@ -73,6 +73,9 @@
     mutate(Desempleado = replace_na(Des, 0),
            Inactivo = replace_na(Ina, 0),
            Ocupado = replace_na(Oc, 0))
+  
+  train_p$no_ingresos <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL)
+  
   
   train_personas_hog <- train_p %>%
     group_by(id) %>%
@@ -140,10 +143,14 @@
     sapply(train_h, function(x) sum(is.na(x))) %>% as.data.frame() #no se excluyen variables
      
     
-#Mutamos factores 
+    
+#Mutamos factores
+    
+    names(train_p)
+    names(train_h)
     
 #Personas
-    factoresp <- c("P6050", "P6210")
+    factoresp <- c("P6050", "P6210", "Clase")
     
     for (v in factoresp) {
       train_p[, v] <- as.factor(train_p[, v, drop = T])
@@ -153,7 +160,7 @@
     
 #Hogares
     
-    factoresh <- c("P5090", "Clase")
+    factoresh <- c("P5090", "Clase", "nivel_edu_jefe_hogar" )
     
     for (v in factoresh) {
       train_h[, v] <- as.factor(train_h[, v, drop = T])
@@ -165,13 +172,13 @@
   
 #Generamos dummys en Train_Personas
   
-    train_p <- model.matrix(~., train_p) %>%
+    train_p <- model.matrix(~. -id , train_p) %>%
       as.data.frame()
     glimpse(train_p)
     
 #Generamos dummys en Train_Hogares
   
-    train_h <- model.matrix(~ ., train_h) %>%
+    train_h <- model.matrix(~ . -id, train_h) %>%
       as.data.frame()
   
     glimpse(train_h)
