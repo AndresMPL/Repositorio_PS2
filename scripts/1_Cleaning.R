@@ -47,8 +47,8 @@
     #train_personas    <- BD Original
        #train_p        <- BD para ajustada para trabajar
           #train_pp    <- 70% Train personas - para entreamiento
-          #test_pp     <- 30% Train personas - para pruebas
-    
+          #test_pp     <- 20% Train personas - para pruebas
+          #eval_pp     <- 10% Train personas - para evaluacion  
   
 #Limpieza BD y selección de variables--------------------------------------------
 
@@ -57,7 +57,7 @@
   train_h <- train_hogares %>% select(id, Clase, Dominio,P5000,P5010, P5090, P5100, P5130, P5140, Nper, Npersug, Li, 
                                       Lp, Fex_c, Depto, Fex_dpto, Pobre) #Dejamos las mismas variables de los archivos de Test y "Pobre"
   
-  train_p <- train_personas %>% select(all_of(colnames(test_personas)))
+  train_p <- train_personas %>% select(all_of(colnames(test_personas))) #Agregar Ingresos
   
   glimpse(test_hogares)
   glimpse(test_personas)
