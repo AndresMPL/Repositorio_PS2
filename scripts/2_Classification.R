@@ -28,7 +28,7 @@
              x = "Número de hogares")
   
 
-#Dividimos train/test (70/30) - BD Hogares
+#Dividimos train/test/eval (70/20/10) - BD Hogares
 
   set.seed(10110)
   index_1 <- createDataPartition(train_h$Pobre, p = 0.7)[[1]]
