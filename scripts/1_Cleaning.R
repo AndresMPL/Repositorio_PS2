@@ -66,8 +66,8 @@
 #Crear variables de interes ----------------------------------- 
   
   train_p$female <- ifelse(train_p$P6020 == 2, 1, 0) %>% as.numeric()
-  train_p$Menores_edad <- if_else(train_p$P6040<=14, 1, 0 , missing = NULL, ptype = NULL)
-  train_p$adulto_mayor <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL, ptype = NULL)
+  train_p$Menores_edad <- if_else(train_p$P6040<=14, 1, 0 , missing = NULL)
+  train_p$adulto_mayor <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL)
   train_p <- train_p%>%
     mutate(Desempleado = replace_na(Des, 0),
            Inactivo = replace_na(Ina, 0),
