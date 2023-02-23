@@ -39,13 +39,13 @@
     #test_personas     <- para la prueba final del modelo seleccionado
     
     #train_hogares     <- BD Original
-       #train_h        <- BD para ajustada para trabajar
+       #train_h        <- BD ajustada para trabajar
           #train_hh    <- 70% Train hogares - para entreamiento | Las BD estabndarizadas tendrán (s) al final
           #test_hh     <- 20% Train hogares - para pruebas      |
           #eval_hh     <- 10% Train hogares - para evaluacion   | 
     
     #train_personas    <- BD Original
-       #train_p        <- BD para ajustada para trabajar
+       #train_p        <- BD ajustada para trabajar
           #train_pp    <- 70% Train personas - para entreamiento
           #test_pp     <- 20% Train personas - para pruebas
           #eval_pp     <- 10% Train personas - para evaluacion  
@@ -69,32 +69,31 @@
   train_p$female <- ifelse(train_p$P6020 == 2, 1, 0) %>% as.numeric()
   train_p$Menores_edad <- if_else(train_p$P6040<=14, 1, 0 , missing = NULL)
   train_p$adulto_mayor <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL)
-  train_p <- train_p%>%
-    mutate(Desempleado = replace_na(Des, 0),
-           Inactivo = replace_na(Ina, 0),
-           Ocupado = replace_na(Oc, 0))
+  train_p <- train_p %>%
+                    mutate(Desempleado = replace_na(Des, 0),
+                    Inactivo = replace_na(Ina, 0),
+                    Ocupado = replace_na(Oc, 0))
   
   train_p$no_ingresos <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL)
   
   
   train_personas_hog <- train_p %>%
-    group_by(id) %>%
-    summarize(edad_jefe_hogar = (P6040)[P6050==1], 
-              sexo_jefe_hogar = (female)[P6050==1],
-              nivel_edu_jefe_hogar= (P6210)[P6050==1],
-              num_Menores_edad = sum(Menores_edad, na.rm = TRUE),
-              num_adulto_mayor = sum(adulto_mayor, na.rm = TRUE),
-              jefe_hogar_des = (Desempleado)[P6050==1],
-              jefe_hogar_ina = (Inactivo)[P6050==1],
-              jefe_hogar_oc = (Ocupado)[P6050==1],
-              ing_tot_hogar = sum(Ingtot, na.rm = TRUE))
+                        group_by(id) %>%
+                        summarize(edad_jefe_hogar = (P6040)[P6050==1], 
+                        sexo_jefe_hogar = (female)[P6050==1],
+                        nivel_edu_jefe_hogar= (P6210)[P6050==1],
+                        num_Menores_edad = sum(Menores_edad, na.rm = TRUE),
+                        num_adulto_mayor = sum(adulto_mayor, na.rm = TRUE),
+                        jefe_hogar_des = (Desempleado)[P6050==1],
+                        jefe_hogar_ina = (Inactivo)[P6050==1],
+                        jefe_hogar_oc = (Ocupado)[P6050==1],
+                        ing_tot_hogar = sum(Ingtot, na.rm = TRUE))
   
 #Uniendo bases -------------------------------------
   
-  train_h<-left_join(train_h,train_personas_hog)
+  train_h <- left_join(train_h,train_personas_hog)
   colnames(train_h) 
 
-  
   
 #Variables con NA´s
 
@@ -114,6 +113,7 @@
                                     delete_var = nrow(var_delete))
     
     conteo_variables #Tabla de clasificación de variables
+   
     vector_var <- as.vector(var_keep[1]) #Llevamos las variables que trabajaremos a un vector
     
     train_p <- train_p %>% select(all_of(vector_var$Var_name))
@@ -136,6 +136,7 @@
                                     delete_var = nrow(var_delete2))
     
     conteo_variables2 #Tabla de clasificación de variables
+    
     vector_var2 <- as.vector(var_keep2[1]) #Llevamos las variables que trabajaremos a un vector
     
     train_h <- train_h %>% select(all_of(vector_var2$Var_name))
@@ -149,39 +150,40 @@
     names(train_p)
     names(train_h)
     
-#Personas
-    factoresp <- c("P6050", "P6210", "Clase")
-    
-    for (v in factoresp) {
-      train_p[, v] <- as.factor(train_p[, v, drop = T])
-      }
-    
-    glimpse(train_p) 
-    
-#Hogares
-    
-    factoresh <- c("P5090", "Clase", "nivel_edu_jefe_hogar" )
-    
-    for (v in factoresh) {
-      train_h[, v] <- as.factor(train_h[, v, drop = T])
-      }
-    
-    glimpse(train_h)     
-    
+  #Factores de Personas
+      
+      factoresp <- c("P6050", "P6210", "Clase")
+      
+      for (v in factoresp) {
+        train_p[, v] <- as.factor(train_p[, v, drop = T])
+        }
+      
+      glimpse(train_p) 
+      
+  #Factores de Hogares
+      
+      factoresh <- c("P5090", "Clase", "nivel_edu_jefe_hogar")
+      
+      for (v in factoresh) {
+        train_h[, v] <- as.factor(train_h[, v, drop = T])
+        }
+      
+      glimpse(train_h)     
     
   
 #Generamos dummys en Train_Personas
   
     train_p <- model.matrix(~. -id , train_p) %>%
       as.data.frame()
-    glimpse(train_p)
+      
+      glimpse(train_p)
     
 #Generamos dummys en Train_Hogares
   
     train_h <- model.matrix(~ . -id, train_h) %>%
       as.data.frame()
   
-    glimpse(train_h)
+      glimpse(train_h)
 
   
   
