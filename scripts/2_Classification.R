@@ -126,6 +126,7 @@
   metricas1 %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
+  
 #Logit con Lasso (1)------------------------------------------------------------
   
   modelo2 <- train(y = y,
