@@ -143,12 +143,17 @@
     train_h <- train_h %>% select(all_of(vector_var2$Var_name))
     
     sapply(train_h, function(x) sum(is.na(x))) %>% as.data.frame()
+    
+#Variables definitivas
+    
+    train_p <- train_p %>% 
+      select(id, Orden, P6020, P6040, P6050, P6210, Oc, Des, Ina, Ingtot)
      
     
 #Mutamos factores 
     
 #Personas
-    factoresp <- colnames(select(train_p, -id, -Orden, -Clase, -Dominio, -P6040, -Fex_c, -Fex_dpto, -P6426, -P6800, -Pet, -Oc, -Des, -Ina, -P7045, -Depto, -Oficio, -P6210s1))
+    factoresp <- colnames(select(train_p, P6050, P6210))
     
     for (v in factoresp) 
     {train_p[, v] <- as.factor(train_p[, v, drop = T])}
@@ -167,7 +172,7 @@
   
 #Generamos dummys en Train_Personas
   
-    dmyp <- dummyVars("~.", data = train_p)
+    dtrain_p <- dummyVars("~.", data = train_p)
     head(dmyp)
     train_p <- data.frame(predict(dmyp, newdata = train_p))
     
