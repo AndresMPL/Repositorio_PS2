@@ -18,7 +18,7 @@
 #Cargar librerías
 
   library(pacman)
-  p_load(tidyverse,caret, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily)
+  p_load(tidyverse,caret, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE)
 
 
 #Leer los datos - 
