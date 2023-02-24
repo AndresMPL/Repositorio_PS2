@@ -6,10 +6,10 @@ pesos[train_hhs$Pobre == 1] <- 3
 pesos[train_hhs$Pobre == 0] <- 1
 
 X15 <- select(train_hhs, -Pobre)
-Y15 <- as.factor(train_hhs$Pobre - 1)
+Y15 <- as.factor(train_hhs$Pobre - 1, -id, -Pobre)
 
-modelo_pesos <- train(x = X15,
-                      y = Y15,
+modelo_pesos <- train(y = as.factor(train_hhs$Pobre),
+                      x = select(train_hhs, -id, -Pobre),
                       method = "glmnet",
                       weights = pesos)
 
