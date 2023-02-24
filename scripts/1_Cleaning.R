@@ -16,11 +16,12 @@
 
 
 #Cargar librerías
-
+  
+  install.packages("fastDummies")
   library(pacman)
-  p_load(tidyverse,caret, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE)
+  p_load(tidyverse,caret, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies)
 
-
+  
 #Leer los datos - 
 
   setwd("C:/Users/User/Documents/Big_Data/BD_Taller 2") #Por tamaño de los archivos, seleecionar el directorio local
@@ -161,7 +162,7 @@
       glimpse(train_p) 
       
   #Factores de Hogares
-      
+
       factoresh <- c("P5090", "Clase", "nivel_edu_jefe_hogar")
       
       for (v in factoresh) {
@@ -173,18 +174,17 @@
   
 #Generamos dummys en Train_Personas
   
-    train_p <- model.matrix(~. -id , train_p) %>%
-      as.data.frame()
+      train_p <- dummy_cols(train_p, 
+                            select_columns = c("P6050", "P6210"), 
+                            remove_selected_columns = TRUE)
       
       glimpse(train_p)
     
 #Generamos dummys en Train_Hogares
-  
-    train_h <- model.matrix(~ . -id, train_h) %>%
-      as.data.frame()
-  
+      
+      train_h <- dummy_cols(train_h, 
+                            select_columns = c("P5090", "nivel_edu_jefe_hogar"), 
+                            remove_selected_columns = TRUE)
+     
       glimpse(train_h)
-
-  
-  
-  
+      
