@@ -192,14 +192,15 @@
                    preProcess = NULL,
                    metric = 'Accuracy',
                    tuneGrid = expand.grid(alpha = 1,lambda=grilla))
-   
-  y_hat_train2 <- predict(modelo2, a1)
-  y_hat_test2  <- predict(modelo2, a2)
-  y_hat_eval2  <- predict(modelo2, a3)
+  modelo2
   
-  acc_train2  <- Accuracy(y_pred = y_hat_train2, y_true = train_hhs$Pobre_Pobre)
-  acc_test2   <- Accuracy(y_pred = y_hat_test2, y_true = test_hhs$Pobre_Pobre)
-  acc_eval2   <- Accuracy(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre_Pobre)
+  y_hat_train2 <- predict(modelo2, train_hhs)
+  y_hat_test2  <- predict(modelo2, test_hhs)
+  y_hat_eval2  <- predict(modelo2, eval_hhs)
+  
+  acc_train2  <- Accuracy(y_pred = y_hat_train2, y_true = train_hhs$Pobre_1)
+  acc_test2   <- Accuracy(y_pred = y_hat_test2, y_true = test_hhs$Pobre_1)
+  acc_eval2   <- Accuracy(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre_1)
   
   
   metricas_train2 <- data.frame(Modelo = "Logit - Lasso", 
@@ -234,7 +235,7 @@
                    family = "binomial",
                    preProcess = NULL,
                    metric = 'Accuracy',
-                   tuneGrid = expand.grid(alpha = 0,lambda=grilla),)
+                   tuneGrid = expand.grid(alpha = 0,lambda=grilla))
   
   modelo3
   
