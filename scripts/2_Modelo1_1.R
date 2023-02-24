@@ -14,11 +14,13 @@
       
       train_hhs11$Pobre <- as.numeric(train_hhs11$Pobre) - 1
 
-      modelo11 <- train(y = as.factor(train_hhs11$Pobre),
-                        x = select(train_hhs11, -id, -Pobre),
-                        method = "glm",
-                        preProcess = NULL)
-      
+      modelo11 <- train(Pobre~., 
+                        data = train_hhs11,
+                        method = "glmnet",
+                        family = "binomial",
+                        preProcess = NULL,
+                        metric = 'Accuracy')
+
       probs_train11  <- predict(modelo11, newdata = train_hhs, type = "prob")
       probs_test11   <- predict(modelo11, newdata = test_hhs, type = "prob")
       probs_eval11   <- predict(modelo11, newdata = eval_hhs, type = "prob")
