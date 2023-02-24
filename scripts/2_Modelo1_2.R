@@ -21,13 +21,12 @@ nrow(rose_train)
 
 rose_train <- data.frame(sapply(rose_train, as.numeric))
 
-Y12 <- as.factor(rose_train$Pobre - 1)
-X12 <- select(rose_train, -Pobre)
-
-   modelo12 <- train(x = X12,
-                     y = Y12,
+   modelo12 <- train(Pobre~., 
+                     data = rose_train,
+                     method = "glmnet",
+                     family = "binomial",
                      preProcess = NULL,
-                     method = "glmnet")
+                     metric = 'Accuracy')
 
 train_hhs121 <- data.frame(sapply(train_hhs12, as.numeric))
 test_hhs121  <- data.frame(sapply(test_hhs12, as.numeric))
