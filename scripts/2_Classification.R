@@ -9,7 +9,7 @@
 
 #Pasos previos ----------------------------------------------------------------
 
-  diccionario = c("No Pobre", "Pobre")
+  diccionario = c("No_Pobre", "Pobre")
   
   train_h <- train_h %>%    mutate(Pobre = factor(train_h$Pobre, 
                             levels = c(0, 1),
@@ -21,7 +21,7 @@
   prop.table(table(train_h$Pobre)) #Grado de desbalance Moderado
   
   Imagen_1 <- ggplot(train_h, aes(y = Pobre)) +
-              geom_bar(fill = "#53868B") +
+              geom_bar(fill = "#B5B5B5") +
               theme_bw() +
               labs(title = "Distribución de hogares Clasificación de Pobreza",
                    y = "",
@@ -60,12 +60,15 @@
   train_hhs <- train_hh #Guardamos las tres BD Originales aparte
   test_hhs  <- test_hh  
   eval_hhs  <- eval_hh
-    
-  variables_numericas <- c("P5000", "P5010", "P5130", "Nper", 
-                           "Npersug", "Li", "Lp", "Fex_c", "Fex_dpto")
+
+  names <- data.frame(vars = colnames(train_hhs)) %>% 
+                      filter(vars != "id") %>% 
+                      filter(vars != "Clase") %>% 
+                      filter(vars != "Pobre") %>%
+                      filter(vars != "P5090") %>%
+                      filter(vars != "nivel_edu_jefe_hogar")
   
-  as.vector(colnames(train_hhs))
-  as.vector(train_hhs[1])
+  variables_numericas <- as.vector(names$vars)
   
   escalador <- preProcess(train_hh[, variables_numericas],
                           method = c("center", "scale"))
@@ -76,26 +79,31 @@
 
 #Control------------------------------------------------------------------------
   
+  train_hhs$Pobre <- factor(train_hhs$Pobre)
   Y <- train_hhs$Pobre
-  X <- model.matrix(~, train_hhs)
+  glimpse(Y)
+  
+  predictoras <- select(train_hhs, -Pobre, -id)
+  glimpse(predictoras) #Verificamos que hayan quedado bien filtradas las variables
+  
+  X <- model.matrix(~., data = predictoras)
   
   lgrid <- 10^seq(-5, 0.01, length = 100)
     
   fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
   
-  control <- trainControl(method = "cv",
-                          number = 10,
-                          summaryFunction = fiveStats,
-                          classProbs = TRUE,
-                          verbose=FALSE,
-                          savePredictions = T)
+  ctrl <- trainControl(method = "cv",
+                       number = 5,
+                       summaryFunction = fiveStats,
+                       classProbs = TRUE,
+                       verbose=FALSE,
+                       savePredictions = T)
   
   
 #1 - Logit sin regularizar ---------------------------------------------------------
-  
-  modelo1 <- train(y = Y,
-                   x = X,
-                   data = train_hhs, 
+
+  modelo1 <- train(y=Y,
+                   x=X,
                    method = "glm",
                    trControl = ctrl,
                    family = "binomial", 
