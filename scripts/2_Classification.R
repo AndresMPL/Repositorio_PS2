@@ -10,32 +10,26 @@
 #Pasos previos ----------------------------------------------------------------
 
   train_hd <- dummy_cols(train_h, 
-                         select_columns = c("P5090", "Clase", "Pobre"), #"nivel_edu_jefe_hogar"
+                         select_columns = c("nivel_edu_jefe_hogar", "Vivienda"), 
                          remove_selected_columns = TRUE)
-  
-  prop.table(table(train_hd$Pobre_1)) #1-Pobre, 0-No Pobre
-  prop.table(table(train_hd$Clase_1))
-  
-  train_hd <- train_hd %>% select(-id, -Clase_0, -Pobre_0)
-  train_hd$Pobre_1 <- as.factor(train_hd$Pobre_1)
-  
+                
+  prop.table(table(train_hd$Pobre)) #1-Pobre, 0-No Pobre
+  prop.table(table(train_hd$Clase))
+                
+  train_hd <- train_hd %>% select(-id)
+  #train_hd$Pobre <- as.factor(train_hd$Pobre)
+                
   glimpse(train_hd)
-
-  
-  diccionario = c("Pobre", "No_Pobre")
-  
-  train_hd <- train_hd %>%  mutate(Pobre_1 = factor(train_h$Pobre_1, 
-                            levels = c(1, 0),
-                            labels = diccionario)) #Pobre=1, No Pobre=0
-  
+                
   train_h <- train_hd
+  
   glimpse(train_h)
   
 #Evaluación desbalance
   
-  prop.table(table(train_h$Pobre_1)) #Grado de desbalance Moderado
+  prop.table(table(train_h$Pobre)) #Grado de desbalance Moderado
   
-  Imagen_1 <- ggplot(train_h, aes(x = Pobre_1)) +
+  Imagen_1 <- ggplot(train_h, aes(x = Pobre)) +
               geom_bar(fill = "#B5B5B5") +
               theme_bw() +
               scale_y_continuous(labels = label_number()) +
@@ -48,12 +42,12 @@
 #Dividimos train/test/eval (70/20/10) - BD Hogares
 
   set.seed(10110)
-  index_1 <- createDataPartition(train_h$Pobre_1, p = 0.7)[[1]]
+  index_1 <- createDataPartition(train_h$Pobre, p = 0.7)[[1]]
   train_hh  <- train_hd[index_1,]
   other     <- train_hd[-index_1,]
 
   set.seed(10110)
-  index2  <- createDataPartition(other$Pobre_1, p = 1/3)[[1]]
+  index2  <- createDataPartition(other$Pobre, p = 1/3)[[1]]
   test_hh <- other[-index2,]
   eval_hh <- other[ index2,]
 
@@ -64,10 +58,10 @@
   dim(train_h)[1] - dim(train_hh)[1] - dim(test_hh)[1] - dim(eval_hh)[1] #Cero para verificar que las particiones hayan quedado bien
   
   
-  prop.table(table(train_h$Pobre_1))    #Verificamos que las particiones conserven las mismas proporciones
-  prop.table(table(train_hh$Pobre_1))
-  prop.table(table(test_hh$Pobre_1))
-  prop.table(table(eval_hh$Pobre_1))  
+  prop.table(table(train_h$Pobre))    #Verificamos que las particiones conserven las mismas proporciones
+  prop.table(table(train_hh$Pobre))
+  prop.table(table(test_hh$Pobre))
+  prop.table(table(eval_hh$Pobre))  
 
   
 #Estandarizamos
@@ -80,7 +74,7 @@
   glimpse(train_hhs)
   
   names <- data.frame(vars = colnames(train_hhs)) %>% 
-                      filter(vars != "Pobre_1") 
+                      filter(vars != "Pobre") 
   
   variables_numericas <- as.vector(names$vars)
   
@@ -91,15 +85,15 @@
   test_hhs[, variables_numericas] <- predict(escalador, test_hh[, variables_numericas])
   eval_hhs[, variables_numericas] <- predict(escalador, eval_hh[, variables_numericas])  
 
-  train_hhs <- train_hhs %>%  mutate(Pobre_1 = factor(train_hhs$Pobre_1, 
+  train_hhs <- train_hhs %>%  mutate(Pobre = factor(train_hhs$Pobre, 
                                                     levels = c(1, 0),
                                                     labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
   
-  test_hhs <- test_hhs %>%  mutate(Pobre_1 = factor(test_hhs$Pobre_1, 
+  test_hhs <- test_hhs %>%  mutate(Pobre = factor(test_hhs$Pobre, 
                                                       levels = c(1, 0),
                                                       labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
   
-  eval_hhs <- eval_hhs %>%  mutate(Pobre_1 = factor(eval_hhs$Pobre_1, 
+  eval_hhs <- eval_hhs %>%  mutate(Pobre = factor(eval_hhs$Pobre, 
                                                       levels = c(1, 0),
                                                       labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
   
@@ -107,7 +101,7 @@
   
 #Control------------------------------------------------------------------------
   
-  train_hhs$Pobre_1 <- factor(train_hhs$Pobre_1)
+  train_hhs$Pobre <- factor(train_hhs$Pobre)
 
   grilla <- 10^seq(10, -1, length = 100)
     
@@ -123,8 +117,7 @@
   
 #1 - Logit sin regularizar ---------------------------------------------------------
 
-  modelo1 <-   train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
-                     P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
+  modelo1 <-   train(Pobre~., 
                      data = train_hhs,
                      method = "glmnet",
                      family = "binomial",
@@ -183,7 +176,7 @@
 
   set.seed(1010)
   
-  modelo2 <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
+  modelo2 <- train(Pobre~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
                      P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
                    data = train_hhs,
                    method = "glmnet",
@@ -198,9 +191,9 @@
   y_hat_test2  <- predict(modelo2, test_hhs)
   y_hat_eval2  <- predict(modelo2, eval_hhs)
   
-  acc_train2  <- Accuracy(y_pred = y_hat_train2, y_true = train_hhs$Pobre_1)
-  acc_test2   <- Accuracy(y_pred = y_hat_test2, y_true = test_hhs$Pobre_1)
-  acc_eval2   <- Accuracy(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre_1)
+  acc_train2  <- Accuracy(y_pred = y_hat_train2, y_true = train_hhs$Pobre)
+  acc_test2   <- Accuracy(y_pred = y_hat_test2, y_true = test_hhs$Pobre)
+  acc_eval2   <- Accuracy(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre)
   
   
   metricas_train2 <- data.frame(Modelo = "Logit - Lasso", 
@@ -224,10 +217,23 @@
   
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
+  ###2.1 Logit - Upsampling ----
+  
+  
+  ###2.2 Logit - Oversampling ----
+  
+  
+  ###2.3 Logit - Downsampling ----
+  
+  
+  ###2.4 Logit - Threshold óptimo ----
+  
+  
+  ###2.5 Logit - Cambiar función de costo ----
   
 #3 - Logit con Ridge (0)------------------------------------------------------------
   
-  modelo3 <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
+  modelo3 <- train(Pobre~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
                      P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
                    data = train_hhs,
                    method = "glmnet",
@@ -243,9 +249,9 @@
   y_hat_test3  <- predict(modelo3, test_hhs)
   y_hat_eval3  <- predict(modelo3, eval_hhs)
   
-  acc_train3  <- Accuracy(y_pred = y_hat_train3, y_true = train_hhs$Pobre_1)
-  acc_test3   <- Accuracy(y_pred = y_hat_test3, y_true = test_hhs$Pobre_1)
-  acc_eval3   <- Accuracy(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre_1)
+  acc_train3  <- Accuracy(y_pred = y_hat_train3, y_true = train_hhs$Pobre)
+  acc_test3   <- Accuracy(y_pred = y_hat_test3, y_true = test_hhs$Pobre)
+  acc_eval3   <- Accuracy(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre)
   
   
   metricas_train3 <- data.frame(Modelo = "Logit - Ridge", 
@@ -270,9 +276,25 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
+  ###3.1 Logit - Upsampling ----
+  
+  
+  ###3.2 Logit - Oversampling ----
+  
+  
+  ###3.3 Logit - Downsampling ----
+  
+  
+  ###3.4 Logit - Threshold óptimo ----
+  
+  
+  ###3.5 Logit - Cambiar función de costo ----
+  
+  
+  
 #4 - Logit con EN-------------------------------------------------------------------
   
-  modelo4 <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
+  modelo4 <- train(Pobre~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
                      P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
                    data = train_hhs,
                    method = "glmnet",
@@ -288,9 +310,9 @@
   y_hat_test4  <- predict(modelo4, test_hhs)
   y_hat_eval4  <- predict(modelo4, eval_hhs)
   
-  acc_train4  <- Accuracy(y_pred = y_hat_train4, y_true = train_hhs$Pobre_1)
-  acc_test4   <- Accuracy(y_pred = y_hat_test4, y_true = test_hhs$Pobre_1)
-  acc_eval4   <- Accuracy(y_pred = y_hat_eval4, y_true = eval_hhs$Pobre_1)
+  acc_train4  <- Accuracy(y_pred = y_hat_train4, y_true = train_hhs$Pobre)
+  acc_test4   <- Accuracy(y_pred = y_hat_test4, y_true = test_hhs$Pobre)
+  acc_eval4   <- Accuracy(y_pred = y_hat_eval4, y_true = eval_hhs$Pobre)
   
   
   metricas_train4 <- data.frame(Modelo = "Logit - EN", 
@@ -313,6 +335,21 @@
   metricas <- bind_rows(metricas, metricas4)
   
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  
+  
+  ###4.1 Logit - Upsampling ----
+  
+  
+  ###4.2 Logit - Oversampling ----
+  
+  
+  ###4.3 Logit - Downsampling ----
+  
+  
+  ###4.4 Logit - Threshold óptimo ----
+  
+  
+  ###4.5 Logit - Cambiar función de costo ----
   
   
   ## Up sampling-------------------------------------------------------------------
