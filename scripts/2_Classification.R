@@ -72,13 +72,14 @@
   test_hhs  <- test_hh  
   eval_hhs  <- eval_hh
 
-  colnames(train_hhs)
-  glimpse(train_hhs)
+  names(train_hhs)
   
-  names <- data.frame(vars = colnames(train_hhs)) %>% 
-                      filter(vars != "Pobre_1") 
+  #names <- data.frame(vars = colnames(train_hhs)) %>% 
+                      #filter(vars != "Pobre_1") 
   
-  variables_numericas <- as.vector(names$vars)
+  variables_numericas <- c("num_cuartos", "num_cuartos_dormir", "Npersug",
+                           "edad_jefe_hogar", "num_Menores_edad", "num_adulto_mayor", 
+                           "Numper_por_dor", "Ocupados_por_perhog")
   
   escalador <- preProcess(train_hh[, variables_numericas],
                           method = c("center", "scale"))
@@ -87,17 +88,17 @@
   test_hhs[, variables_numericas] <- predict(escalador, test_hh[, variables_numericas])
   eval_hhs[, variables_numericas] <- predict(escalador, eval_hh[, variables_numericas])  
 
-  train_hhs <- train_hhs %>%  mutate(Pobre_1 = factor(train_hhs$Pobre_1, 
-                                                    levels = c(1, 0),
-                                                    labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
+  #train_hhs <- train_hhs %>%  mutate(Pobre_1 = factor(train_hhs$Pobre_1, 
+                                                    #levels = c(1, 0),
+                                                    #labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
   
-  test_hhs <- test_hhs %>%  mutate(Pobre_1 = factor(test_hhs$Pobre_1, 
-                                                      levels = c(1, 0),
-                                                      labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
+  #test_hhs <- test_hhs %>%  mutate(Pobre_1 = factor(test_hhs$Pobre_1, 
+                                                      #levels = c(1, 0),
+                                                      #labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
   
-  eval_hhs <- eval_hhs %>%  mutate(Pobre_1 = factor(eval_hhs$Pobre_1, 
-                                                      levels = c(1, 0),
-                                                      labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
+  #eval_hhs <- eval_hhs %>%  mutate(Pobre_1 = factor(eval_hhs$Pobre_1, 
+                                                      #levels = c(1, 0),
+                                                      #labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
   
 
   
