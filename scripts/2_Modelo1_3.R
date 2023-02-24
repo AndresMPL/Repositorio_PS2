@@ -15,15 +15,11 @@ nrow(train_hhs13)
 
 train_hhs13 <- data.frame(sapply(train_hhs13, as.numeric))
 
-Y13 <- train_hhs13$Pobre
-X13 <- model.matrix(~, train_hhs13)
-
-modelo13 <- train(y = Y13,
-                  x = X13,
-                  data = train_hhs13, 
-                  method = "glm",
-                  trControl = ctrl,
-                  family = "binomial", 
+modelo13 <- train(Pobre~., 
+                  data = train_hhs13,
+                  method = "glmnet",
+                  family = "binomial",
+                  preProcess = NULL,
                   metric = 'Accuracy')
 
 y_hat_train13  <- predict(modelo13, train_hhs)
