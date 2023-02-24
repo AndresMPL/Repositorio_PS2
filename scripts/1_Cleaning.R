@@ -76,6 +76,8 @@
                     Ocupado = replace_na(Oc, 0))
   
   train_p$no_ingresos <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL)
+  train_p$Clase <- if_else(train_p$Clase== 2, 1, 0 , missing = NULL)
+  train_h$Clase <- if_else(train_h$Clase== 2, 1, 0 , missing = NULL)
   
   
   train_personas_hog <- train_p %>%
@@ -89,6 +91,9 @@
                         jefe_hogar_ina = (Inactivo)[P6050==1],
                         jefe_hogar_oc = (Ocupado)[P6050==1],
                         ing_tot_hogar = sum(Ingtot, na.rm = TRUE))
+  
+  
+  
   
 #Uniendo bases
   
