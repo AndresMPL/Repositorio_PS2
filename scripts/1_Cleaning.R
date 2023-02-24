@@ -231,6 +231,6 @@
       train_hd <- train_hd %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug, -Vivienda_Propia_paga, -nivel_edu_jefe_hogar_Ninguno)
       
       glimpse(train_hd)
-      
+      train_h <- train_hd
 
       
