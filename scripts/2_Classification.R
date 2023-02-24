@@ -60,7 +60,7 @@
   test_hhs  <- test_hh  
   eval_hhs  <- eval_hh
 
-  names(train_hhs)
+  glimpse(train_hhs)
 
 #names <- data.frame(vars = colnames(train_hhs)) %>% 
 #filter(vars != "Pobre_1") 
