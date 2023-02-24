@@ -80,14 +80,7 @@
 #Control------------------------------------------------------------------------
   
   train_hhs$Pobre <- factor(train_hhs$Pobre)
-  Y <- train_hhs$Pobre
-  glimpse(Y)
-  
-  predictoras <- select(train_hhs, -Pobre, -id)
-  glimpse(predictoras) #Verificamos que hayan quedado bien filtradas las variables
-  
-  X <- model.matrix(~.-1, data = predictoras)
-  
+
   lgrid <- 10^seq(-5, 0.01, length = 10)
     
   fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
