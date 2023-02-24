@@ -91,6 +91,20 @@
   test_hhs[, variables_numericas] <- predict(escalador, test_hh[, variables_numericas])
   eval_hhs[, variables_numericas] <- predict(escalador, eval_hh[, variables_numericas])  
 
+  train_hhs <- train_hhs %>%  mutate(Pobre_1 = factor(train_hhs$Pobre_1, 
+                                                    levels = c(1, 0),
+                                                    labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
+  
+  test_hhs <- test_hhs %>%  mutate(Pobre_1 = factor(test_hhs$Pobre_1, 
+                                                      levels = c(1, 0),
+                                                      labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
+  
+  eval_hhs <- eval_hhs %>%  mutate(Pobre_1 = factor(eval_hhs$Pobre_1, 
+                                                      levels = c(1, 0),
+                                                      labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
+  
+
+  
 #Control------------------------------------------------------------------------
   
   train_hhs$Pobre_1 <- factor(train_hhs$Pobre_1)
@@ -99,7 +113,7 @@
     
   fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
   
-  ctrl <- trainControl(method = "cv",
+  control <- trainControl(method = "cv",
                        number = 5,
                        summaryFunction = fiveStats,
                        classProbs = TRUE,
@@ -116,6 +130,7 @@
                      family = "binomial",
                      preProcess = NULL,
                      metric = 'Accuracy')
+  modelo1
   
   y_hat_train1 <- predict(modelo1, train_hhs)
   y_hat_test1  <- predict(modelo1, test_hhs)
@@ -149,6 +164,19 @@
   metricas1 <- bind_rows(metricas_train1, metricas_test1, metricas_eval1)
   metricas1 %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
+  ###1.1 Logit - Upsampling ----
+  
+  
+  ###1.2 Logit - Oversampling ----
+  
+  
+  ###1.3 Logit - Downsampling ----
+  
+  
+  ###1.4 Logit - Threshold óptimo ----
+  
+  
+  ###1.5 Logit - Cambiar función de costo ----
   
   
 #2 - Logit con Lasso (1)------------------------------------------------------------
@@ -163,7 +191,7 @@
                    family = "binomial",
                    preProcess = NULL,
                    metric = 'Accuracy',
-                   tuneGrid = expand.grid(alpha = 1,lambda=grilla),)
+                   tuneGrid = expand.grid(alpha = 1,lambda=grilla))
    
   y_hat_train2 <- predict(modelo2, a1)
   y_hat_test2  <- predict(modelo2, a2)
