@@ -103,7 +103,7 @@
 
   modelo1 <-   train(Pobre ~ . , 
                      data = train_hhs,
-                     method = "glm",
+                     method = "glmnet",
                      trControl = control,
                      family = "binomial",
                      preProcess = NULL,
