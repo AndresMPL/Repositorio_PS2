@@ -161,9 +161,8 @@
 
   set.seed(1010)
   
-  modelo2 <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
-                     P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
-                   data = train_hhs,
+  modelo2 <- train(Pobre ~ . , 
+                   data = train_hhs, 
                    method = "glmnet",
                    trControl = control,
                    family = "binomial",
@@ -205,8 +204,7 @@
 
 #3 - Logit con Ridge (0)------------------------------------------------------------
 
-  modelo3 <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
-                     P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
+  modelo3 <- train(Pobre ~ . , 
                    data = train_hhs,
                    method = "glmnet",
                    trControl = control,
@@ -250,8 +248,7 @@
 
 #4 - Logit con EN-------------------------------------------------------------------
 
-  modelo4 <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
-                     P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
+  modelo4 <- train(Pobre ~ . , 
                    data = train_hhs,
                    method = "glmnet",
                    trControl = control,
