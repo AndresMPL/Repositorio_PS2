@@ -9,56 +9,65 @@
 
 #Pasos previos ----------------------------------------------------------------
 
-  diccionario = c("No_Pobre", "Pobre")
+  train_hd <- dummy_cols(train_h, 
+                         select_columns = c("P5090", "Clase", "Pobre"), #"nivel_edu_jefe_hogar"
+                         remove_selected_columns = TRUE)
   
-  train_h <- train_h %>%    mutate(Pobre = factor(train_h$Pobre, 
-                            levels = c(0, 1),
+  prop.table(table(train_hd$Pobre_1)) #1-Pobre, 0-No Pobre
+  prop.table(table(train_hd$Clase_1))
+  
+  train_hd <- train_hd %>% select(-id, -Clase_0, -Pobre_0)
+  train_hd$Pobre_1 <- as.factor(train_hd$Pobre_1)
+  
+  glimpse(train_hd)
+
+  
+  diccionario = c("Pobre", "No_Pobre")
+  
+  train_hd <- train_hd %>%  mutate(Pobre_1 = factor(train_h$Pobre_1, 
+                            levels = c(1, 0),
                             labels = diccionario)) #Pobre=1, No Pobre=0
   
+  train_h <- train_hd
+  glimpse(train_h)
   
 #Evaluación desbalance
   
-  prop.table(table(train_h$Pobre)) #Grado de desbalance Moderado
+  prop.table(table(train_h$Pobre_1)) #Grado de desbalance Moderado
   
-  Imagen_1 <- ggplot(train_h, aes(y = Pobre)) +
+  Imagen_1 <- ggplot(train_h, aes(x = Pobre_1)) +
               geom_bar(fill = "#B5B5B5") +
               theme_bw() +
-              labs(title = "Distribución de hogares Clasificación de Pobreza",
-                   y = "",
-                   x = "Número de hogares")
+              scale_y_continuous(labels = label_number()) +
+              labs(title = "Distribución de la Clasificación de Pobreza por hogares",
+                   y = "Número de hogares",
+                   x = "Clasificación")
   
   Imagen_1
-  
-  train_hd <- dummy_cols(train_h, 
-                        select_columns = c("Pobre"), 
-                        remove_selected_columns = TRUE)
-  
-  train_hd <- train_hd%>% select(-Pobre_No_Pobre)
   
 #Dividimos train/test/eval (70/20/10) - BD Hogares
 
   set.seed(10110)
-  index_1 <- createDataPartition(train_hd$Pobre_Pobre, p = 0.7)[[1]]
+  index_1 <- createDataPartition(train_h$Pobre_1, p = 0.7)[[1]]
   train_hh  <- train_hd[index_1,]
   other     <- train_hd[-index_1,]
 
   set.seed(10110)
-  index2  <- createDataPartition(other$Pobre_Pobre, p = 1/3)[[1]]
+  index2  <- createDataPartition(other$Pobre_1, p = 1/3)[[1]]
   test_hh <- other[-index2,]
   eval_hh <- other[ index2,]
 
-  dim(train_hd)   
-  dim(train_hh)
+  dim(train_hh)   
   dim(test_hh)
   dim(eval_hh)
   
   dim(train_h)[1] - dim(train_hh)[1] - dim(test_hh)[1] - dim(eval_hh)[1] #Cero para verificar que las particiones hayan quedado bien
   
   
-  prop.table(table(train_hd$Pobre_Pobre))    #Verificamos que las particiones conserven las mismas proporciones
-  prop.table(table(train_hh$Pobre_Pobre))
-  prop.table(table(test_hh$Pobre_Pobre))
-  prop.table(table(eval_hh$Pobre_Pobre))  
+  prop.table(table(train_h$Pobre_1))    #Verificamos que las particiones conserven las mismas proporciones
+  prop.table(table(train_hh$Pobre_1))
+  prop.table(table(test_hh$Pobre_1))
+  prop.table(table(eval_hh$Pobre_1))  
 
   
 #Estandarizamos
@@ -67,12 +76,11 @@
   test_hhs  <- test_hh  
   eval_hhs  <- eval_hh
 
+  colnames(train_hhs)
+  glimpse(train_hhs)
+  
   names <- data.frame(vars = colnames(train_hhs)) %>% 
-                      filter(vars != "id") %>% 
-                      filter(vars != "Clase") %>% 
-                      filter(vars != "Pobre") %>%
-                      filter(vars != "P5090") %>%
-                      filter(vars != "nivel_edu_jefe_hogar")
+                      filter(vars != "Pobre_1") 
   
   variables_numericas <- as.vector(names$vars)
   
@@ -85,7 +93,7 @@
 
 #Control------------------------------------------------------------------------
   
-  train_hhs$Pobre_Pobre <- factor(train_hhs$Pobre_Pobre)
+  train_hhs$Pobre_1 <- factor(train_hhs$Pobre_1)
 
   grilla <- 10^seq(10, -1, length = 100)
     
@@ -97,16 +105,17 @@
                        classProbs = TRUE,
                        verbose=FALSE,
                        savePredictions = T)
-  
+
   
 #1 - Logit sin regularizar ---------------------------------------------------------
 
-  modelo1 <- train(y = as.factor(train_hhs$Pobre_Pobre),
-                   x = select(train_hhs, -id, -Pobre_Pobre),
-                   method = "glm",
-                   family = "binomial",
-                   preProcess = NULL,
-                   metric = 'Accuracy')
+  modelo1 <-   train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
+                     P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
+                     data = train_hhs,
+                     method = "glmnet",
+                     family = "binomial",
+                     preProcess = NULL,
+                     metric = 'Accuracy')
   
   y_hat_train1 <- predict(modelo1, train_hhs)
   y_hat_test1  <- predict(modelo1, test_hhs)
@@ -144,22 +153,18 @@
   
 #2 - Logit con Lasso (1)------------------------------------------------------------
 
-  modelo2 <- glmnet(y = as.factor(train_hhs$Pobre_Pobre),
-                   x = select(train_hhs, -id, -Pobre_Pobre),
-                   family = "binomial", 
-                   weights = NULL,
-                   alpha = 1,
-                   nlambda = 100)
- 
-   a1 <-select(train_hhs, -id, -Pobre_Pobre)
-   a1 <- as.matrix(a1)
-   
-   a2 <-select(test_hhs, -id, -Pobre_Pobre)
-   a2 <- as.matrix(a2)   
-   
-   a3 <-select(eval_hhs, -id, -Pobre_Pobre)
-   a3 <- as.matrix(a3)   
+  set.seed(1010)
   
+  modelo2 <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
+                     P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
+                   data = train_hhs,
+                   method = "glmnet",
+                   trControl = control,
+                   family = "binomial",
+                   preProcess = NULL,
+                   metric = 'Accuracy',
+                   tuneGrid = expand.grid(alpha = 1,lambda=grilla),)
+   
   y_hat_train2 <- predict(modelo2, a1)
   y_hat_test2  <- predict(modelo2, a2)
   y_hat_eval2  <- predict(modelo2, a3)
@@ -193,12 +198,15 @@
   
 #3 - Logit con Ridge (0)------------------------------------------------------------
   
-  modelo3 <- glmnet(y = as.factor(train_hhs$Pobre_Pobre),
-                    x = select(train_hhs, -id, -Pobre_Pobre),
-                    family = "binomial", 
-                    weights = NULL,
-                    alpha = 0,
-                    nlambda = 100)
+  modelo3 <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
+                     P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
+                   data = train_hhs,
+                   method = "glmnet",
+                   trControl = control,
+                   family = "binomial",
+                   preProcess = NULL,
+                   metric = 'Accuracy',
+                   tuneGrid = expand.grid(alpha = 0,lambda=grilla),)
   
   modelo3
   
@@ -235,12 +243,15 @@
   
 #4 - Logit con EN-------------------------------------------------------------------
   
-  modelo4 <- glmnet(y = as.factor(train_hhs$Pobre_Pobre),
-                    x = select(train_hhs, -id, -Pobre_Pobre),
-                    family = "binomial", 
-                    weights = NULL,
-                    alpha = 0.5,
-                    nlambda = 100)
+  modelo4 <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
+                     P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
+                   data = train_hhs,
+                   method = "glmnet",
+                   trControl = control,
+                   family = "binomial",
+                   preProcess = NULL,
+                   metric = 'Accuracy',
+                   tuneGrid = expand.grid(alpha = seq(0,1,by = 0.1),lambda=grilla))
 
   modelo4
   
