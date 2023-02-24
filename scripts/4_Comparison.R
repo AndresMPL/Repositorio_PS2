@@ -16,7 +16,9 @@
 
 #Generación del Modelo de Entrega-----------------------------------------------
 
-
+  best_model <- 
+  
+  poverty <- predict(best_model, test_hogares)
 
 
 #Ejemplo Archivo "sample_submission.csv"
