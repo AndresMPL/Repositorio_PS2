@@ -196,6 +196,9 @@
       
       glimpse(train_h)
 
+      #Copia de la BD ajustada - Train Hogares
+      backup <- train_h
+      backup -> train_h
 
 #Generamos dummys en Train_Personas
   
