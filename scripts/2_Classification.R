@@ -86,9 +86,9 @@
   predictoras <- select(train_hhs, -Pobre, -id)
   glimpse(predictoras) #Verificamos que hayan quedado bien filtradas las variables
   
-  X <- model.matrix(~., data = predictoras)
+  X <- model.matrix(~.-1, data = predictoras)
   
-  lgrid <- 10^seq(-5, 0.01, length = 100)
+  lgrid <- 10^seq(-5, 0.01, length = 10)
     
   fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
   
@@ -102,8 +102,8 @@
   
 #1 - Logit sin regularizar ---------------------------------------------------------
 
-  modelo1 <- train(y=Y,
-                   x=X,
+  modelo1 <- train(y = as.factor(train_hhs$Pobre),
+                   x = select(train_hhs, -id, -Pobre),
                    method = "glm",
                    trControl = ctrl,
                    family = "binomial", 
@@ -111,14 +111,13 @@
   
   modelo1
   
-  
   y_hat_train1 <- predict(modelo1, train_hhs)
   y_hat_test1  <- predict(modelo1, test_hhs)
   y_hat_eval1  <- predict(modelo1, eval_hhs)
   
-  probs_train1 <- predict(modelo1, train_hhs, type = "prob")[, "1", drop = T]
-  probs_test1  <- predict(modelo1, test_hhs, type = "prob")[, "1", drop = T]
-  probs_eval1  <- predict(modelo1, eval_hhs, type = "prob")[, "1", drop = T]
+  probs_train1 <- predict(modelo1, train_hhs, type = "prob")
+  probs_test1  <- predict(modelo1, test_hhs, type = "prob")
+  probs_eval1  <- predict(modelo1, eval_hhs, type = "prob")
   
   acc_train1  <- Accuracy(y_pred = y_hat_train1, y_true = train_hhs$Pobre)
   acc_test1   <- Accuracy(y_pred = y_hat_test1, y_true = test_hhs$Pobre)
@@ -148,14 +147,14 @@
   
 #2 - Logit con Lasso (1)------------------------------------------------------------
   
-  modelo2 <- train(y = y,
-                   x = X,
+  modelo2 <- train(y = as.factor(train_hhs$Pobre),
+                   x = select(train_hhs, -id, -Pobre),
                    data = train_hhs, 
                    method = "glm",
                    trControl = ctrl,
                    family = "binomial", 
                    metric = 'Accuracy',
-                   tuneGrid = expand.grid(alpha = 1,lambda=lgrid),
+                   tuneGrid = expand.grid(alpha = 1,lambda = lgrid),
                    preProcess = c("center","scale"))
   
   modelo2
