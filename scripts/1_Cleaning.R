@@ -207,7 +207,7 @@
     
 #Generamos dummys en Train_Hogares
       
-      train_hd <- dummy_cols(train_h, 
+      train_h <- dummy_cols(train_h, 
                             select_columns = c("Pobre", "Clase", "Vivienda", "sexo_jefe_hogar", "nivel_edu_jefe_hogar", "jefe_hogar_des", "jefe_hogar_oc", "jefe_hogar_ina", "Hacinamiento"), 
                             remove_selected_columns = TRUE)
      
