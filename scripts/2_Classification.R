@@ -110,9 +110,11 @@
                      metric = 'ROC')
   modelo1
   
-  y_hat_train1 <- predict(modelo1, train_hhs)
-  y_hat_test1  <- predict(modelo1, test_hhs)
-  y_hat_eval1  <- predict(modelo1, eval_hhs)
+  y_hat_train1 <- predict(modelo1, newdata = train_hhs)
+  y_hat_test1  <- predict(modelo1, newdata = test_hhs)
+  y_hat_eval1  <- predict(modelo1, newdata = eval_hhs)
+  
+  confusionMatrix(y_hat_eval1, eval_hhs$Pobre)
   
   probs_train1 <- predict(modelo1, train_hhs, type = "prob")
   probs_test1  <- predict(modelo1, test_hhs, type = "prob")
