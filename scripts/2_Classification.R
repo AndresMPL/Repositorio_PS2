@@ -104,7 +104,7 @@
   
 #Control------------------------------------------------------------------------
   
-  train_hhs$Pobre_1 <- factor(train_hhs$Pobre_1)
+  #train_hhs$Pobre_1 <- factor(train_hhs$Pobre_1)
 
   grilla <- 10^seq(10, -1, length = 100)
     
@@ -120,8 +120,7 @@
   
 #1 - Logit sin regularizar ---------------------------------------------------------
 
-  modelo1 <-   train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P5090_1+
-                     P5090_2+P5090_3+P5090_4+P5090_5+P5090_6+Clase_1, 
+    modelo1 <-   train(Pobre~ , 
                      data = train_hhs,
                      method = "glmnet",
                      family = "binomial",
