@@ -13,15 +13,15 @@
   prop.table(table(train_h$Clase_Rural))
   
   train_h <- train_h %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug, -num_oc_hogar, -Pobre_No_Pobre, -Clase_Urbano, -Vivienda_Propia_paga, -sexo_jefe_hogar_Hombre, -nivel_edu_jefe_hogar_Ninguno, -jefe_hogar_des_No, -jefe_hogar_oc_No, -jefe_hogar_ina_No, -Hacinamiento_No, -jefe_hogar_oc_Si)
-  glimpse(train_h)
   
-  diccionario = c("Pobre", "No_Pobre")
+  glimpse(train_h)
   
   train_h <- train_h %>%  mutate(Pobre = factor(Pobre_Pobre, 
                                                 levels = c(1, 0),
-                                                labels = diccionario)) #Pobre=1, No Pobre=0
+                                                labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
   
   train_h <- train_h %>% select(-Pobre_Pobre)
+  
   glimpse(train_h)
 
 #Evaluación desbalance
