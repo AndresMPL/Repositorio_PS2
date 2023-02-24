@@ -13,8 +13,6 @@
   prop.table(table(train_h$Clase_Rural))
   
   train_h <- train_h %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug, -num_oc_hogar, -Pobre_No_Pobre, -Clase_Urbano, -Vivienda_Propia_paga, -sexo_jefe_hogar_Hombre, -nivel_edu_jefe_hogar_Ninguno, -jefe_hogar_des_No, -jefe_hogar_oc_No, -jefe_hogar_ina_No, -Hacinamiento_No, -jefe_hogar_oc_Si)
-  train_h$Pobre_1 <- as.factor(train_h$Pobre_1)
-  
   glimpse(train_h)
 
   
@@ -106,7 +104,7 @@
   
   #train_hhs$Pobre_1 <- factor(train_hhs$Pobre_1)
 
-  grilla <- 10^seq(10, -1, length = 100)
+  #grilla <- 10^seq(10, -1, length = 100)
     
   fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
   
@@ -120,12 +118,13 @@
   
 #1 - Logit sin regularizar ---------------------------------------------------------
 
-    modelo1 <-   train(Pobre~ , 
+    modelo1 <-   train(Pobre ~ . , 
                      data = train_hhs,
-                     method = "glmnet",
+                     method = "glm",
+                     trControl = control,
                      family = "binomial",
                      preProcess = NULL,
-                     metric = 'Accuracy')
+                     metric = 'ROC')
   modelo1
   
   y_hat_train1 <- predict(modelo1, train_hhs)
