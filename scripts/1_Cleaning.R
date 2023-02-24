@@ -53,7 +53,7 @@
 #Selección de Variables de interés
   
   train_p <- train_personas %>% 
-    select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Oc, Des, Ina, Ingtot)
+    select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Pet, Oc, Des, Ina, Ingtot)
   
   train_h <- train_hogares %>% 
     select(Pobre, id, Clase, P5000, P5010, P5090, Nper, Npersug, Lp, Ingtotugarr, Ingpcug)
@@ -66,13 +66,14 @@
   
 #Crear variables de interes  
   
-  train_p$female <- ifelse(train_p$P6020 == 2, 1, 0) %>% as.numeric()
+  train_p$Genero <- ifelse(train_p$P6020 == 2, 1, 0) %>% as.numeric()
   train_p$Menores_edad <- if_else(train_p$P6040<=14, 1, 0 , missing = NULL)
   train_p$adulto_mayor <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL)
   train_p <- train_p %>%
                     mutate(Desempleado = replace_na(Des, 0),
                     Inactivo = replace_na(Ina, 0),
-                    Ocupado = replace_na(Oc, 0))
+                    Ocupado = replace_na(Oc, 0),
+                    Pet = replace_na(Pet,0))
   
   train_p$no_ingresos <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL)
   train_p$Clase <- if_else(train_p$Clase== 2, 1, 0 , missing = NULL)
@@ -82,7 +83,7 @@
   train_personas_hog <- train_p %>%
                         group_by(id) %>%
                         summarize(edad_jefe_hogar = (P6040)[P6050==1], 
-                        sexo_jefe_hogar = (female)[P6050==1],
+                        sexo_jefe_hogar = (Genero)[P6050==1],
                         nivel_edu_jefe_hogar= (P6210)[P6050==1],
                         num_Menores_edad = sum(Menores_edad, na.rm = TRUE),
                         num_adulto_mayor = sum(adulto_mayor, na.rm = TRUE),
@@ -157,12 +158,25 @@
     
   #Factores de Personas
       
-      factoresp <- c("P6050", "P6210")
-      
-      for (v in factoresp) {
-        train_p[, v] <- as.factor(train_p[, v, drop = T])
-        }
+    train_p <- train_p %>% mutate(Clase=factor(Clase,levels=c(0,1),labels=c("Urbano","Rural")),
+                                  Genero=factor(Genero,levels=c(0,1),labels=c("Hombre","Mujer ")),
+                                  Parentesco_con_jefe=factor(P6050,levels=c(1,2,3,4,5,6,7,8,9),labels=c("jefe", "pareja", "Hijo/hija", "nieto", "otro", "emplead_servicio", "pensionista", "trabajador", "otro_no_pariente")),
+                                  nivel_edu=factor(P6210,levels=c(1,2,3,4,5,6,9),labels=c("Ninguno", "Preescolar", "Basica_primaria", "Basica_secundaria", "Media", "Superior", "No_Saber")),
+                                  Desempleado=factor(Desempleado,levels=c(0,1),labels=c("No","Si")),
+                                  Inactivo=factor(Inactivo,levels=c(0,1),labels=c("No","Si")),
+                                  Ocupado=factor(Ocupado,levels=c(0,1),labels=c("No","Si")),
+                                  Pet=factor(Pet,levels=c(0,1),labels=c("No","Si")),
+                                  no_ingresos=factor(no_ingresos,levels=c(0,1),labels=c("No","Si")))
+    
+    train_p <- train_p %>% select(-P6020, -P6050, -P6210) # se creo una nueva variable con factores y se elimino la anterior
+    train_p <- train_p %>% rename(edad = P6040) #se renombran variables
+    
+    
+    head(train_p)
+    
 
+    
+    
   #Factores de Hogares
 
       train_h <- train_h %>% mutate(Pobre=factor(Pobre,levels=c(0,1),labels=c("No_Pobre","Pobre")),
