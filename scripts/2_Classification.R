@@ -9,33 +9,29 @@
 
 #Pasos previos ----------------------------------------------------------------
 
-  train_hd <- dummy_cols(train_h, 
-                         select_columns = c("P5090", "Clase", "Pobre"), #"nivel_edu_jefe_hogar"
-                         remove_selected_columns = TRUE)
+  prop.table(table(train_h$Pobre_Pobre)) #1-Pobre, 0-No Pobre
+  prop.table(table(train_h$Clase_Rural))
   
-  prop.table(table(train_hd$Pobre_1)) #1-Pobre, 0-No Pobre
-  prop.table(table(train_hd$Clase_1))
+  train_h <- train_h %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug, -num_oc_hogar, -Pobre_No_Pobre, -Clase_Urbano, -Vivienda_Propia_paga, -sexo_jefe_hogar_Hombre, -nivel_edu_jefe_hogar_Ninguno, -jefe_hogar_des_No, -jefe_hogar_oc_No, -jefe_hogar_ina_No, -Hacinamiento_No, -jefe_hogar_oc_Si)
+  train_h$Pobre_1 <- as.factor(train_h$Pobre_1)
   
-  train_hd <- train_hd %>% select(-id, -Clase_0, -Pobre_0)
-  train_hd$Pobre_1 <- as.factor(train_hd$Pobre_1)
-  
-  glimpse(train_hd)
+  glimpse(train_h)
 
   
   diccionario = c("Pobre", "No_Pobre")
   
-  train_hd <- train_hd %>%  mutate(Pobre_1 = factor(train_h$Pobre_1, 
+  train_h <- train_h %>%  mutate(Pobre = factor(train_h$Pobre_Pobre, 
                             levels = c(1, 0),
                             labels = diccionario)) #Pobre=1, No Pobre=0
   
-  train_h <- train_hd
+  train_h <- train_h %>% select(-Pobre_Pobre)
   glimpse(train_h)
   
 #Evaluación desbalance
   
-  prop.table(table(train_h$Pobre_1)) #Grado de desbalance Moderado
+  prop.table(table(train_h$Pobre)) #Grado de desbalance Moderado
   
-  Imagen_1 <- ggplot(train_h, aes(x = Pobre_1)) +
+  Imagen_1 <- ggplot(train_h, aes(x = Pobre)) +
               geom_bar(fill = "#B5B5B5") +
               theme_bw() +
               scale_y_continuous(labels = label_number()) +
@@ -48,12 +44,12 @@
 #Dividimos train/test/eval (70/20/10) - BD Hogares
 
   set.seed(10110)
-  index_1 <- createDataPartition(train_h$Pobre_1, p = 0.7)[[1]]
+  index_1 <- createDataPartition(y=train_h$Pobre, p = 0.7, list = FALSE)
   train_hh  <- train_hd[index_1,]
   other     <- train_hd[-index_1,]
 
   set.seed(10110)
-  index2  <- createDataPartition(other$Pobre_1, p = 1/3)[[1]]
+  index2  <- createDataPartition(other$Pobre, p = 1/3, list = FALSE)
   test_hh <- other[-index2,]
   eval_hh <- other[ index2,]
 
@@ -64,10 +60,10 @@
   dim(train_h)[1] - dim(train_hh)[1] - dim(test_hh)[1] - dim(eval_hh)[1] #Cero para verificar que las particiones hayan quedado bien
   
   
-  prop.table(table(train_h$Pobre_1))    #Verificamos que las particiones conserven las mismas proporciones
-  prop.table(table(train_hh$Pobre_1))
-  prop.table(table(test_hh$Pobre_1))
-  prop.table(table(eval_hh$Pobre_1))  
+  prop.table(table(train_h$Pobre))    #Verificamos que las particiones conserven las mismas proporciones
+  prop.table(table(train_hh$Pobre))
+  prop.table(table(test_hh$Pobre))
+  prop.table(table(eval_hh$Pobre))  
 
   
 #Estandarizamos
