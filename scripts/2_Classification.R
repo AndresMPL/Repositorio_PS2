@@ -18,7 +18,7 @@
   
   diccionario = c("Pobre", "No_Pobre")
   
-  train_h <- train_h %>%  mutate(Pobre = factor(train_h$Pobre_Pobre, 
+  train_h <- train_h %>%  mutate(Pobre = factor(Pobre_Pobre, 
                             levels = c(1, 0),
                             labels = diccionario)) #Pobre=1, No Pobre=0
   
@@ -43,8 +43,8 @@
 
   set.seed(10110)
   index_1 <- createDataPartition(y=train_h$Pobre, p = 0.7, list = FALSE)
-  train_hh  <- train_hd[index_1,]
-  other     <- train_hd[-index_1,]
+  train_hh  <- train_h[index_1,]
+  other     <- train_h[-index_1,]
 
   set.seed(10110)
   index2  <- createDataPartition(other$Pobre, p = 1/3, list = FALSE)
