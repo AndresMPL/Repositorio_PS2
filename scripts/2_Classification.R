@@ -57,12 +57,15 @@
   
 #Estandarizamos
   
-  train_hhs <- train_hh #Guardamos las dos BD Originales aparte
+  train_hhs <- train_hh #Guardamos las tres BD Originales aparte
   test_hhs  <- test_hh  
   eval_hhs  <- eval_hh
     
   variables_numericas <- c("P5000", "P5010", "P5130", "Nper", 
                            "Npersug", "Li", "Lp", "Fex_c", "Fex_dpto")
+  
+  as.vector(colnames(train_hhs))
+  as.vector(train_hhs[1])
   
   escalador <- preProcess(train_hh[, variables_numericas],
                           method = c("center", "scale"))
