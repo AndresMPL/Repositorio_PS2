@@ -174,8 +174,8 @@
                                     jefe_hogar_ina=factor(jefe_hogar_ina,levels=c(0,1),labels=c("No","Si")),
                                     jefe_hogar_oc=factor(jefe_hogar_oc,levels=c(0,1),labels=c("No","Si")))
       
-      train_h <- train_h %>% select(-P5090)
-      train_h <- train_h %>% rename(num_cuartos = P5000, num_cuartos_dormir = P5010)
+      train_h <- train_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
+      train_h <- train_h %>% rename(num_cuartos = P5000, num_cuartos_dormir = P5010) #se renombran variables
       
       
       head(train_h)
