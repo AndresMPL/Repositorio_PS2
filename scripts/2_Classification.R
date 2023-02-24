@@ -29,19 +29,22 @@
   
   Imagen_1
 
+  train_hd <- dummy_cols(train_h, select_columns = c("P5090", "Clase", "Pobre"), remove_selected_columns = TRUE)
+  train_hd <- select(train_hd, -Clase_2, -Pobre_No_Pobre)
+  
 #Dividimos train/test/eval (70/20/10) - BD Hogares
 
   set.seed(10110)
-  index_1 <- createDataPartition(train_h$Pobre, p = 0.7)[[1]]
-  train_hh  <- train_h[index_1,]
-  other     <- train_h[-index_1,]
+  index_1 <- createDataPartition(train_hd$Pobre_Pobre, p = 0.7)[[1]]
+  train_hh  <- train_hd[index_1,]
+  other     <- train_hd[-index_1,]
 
   set.seed(10110)
-  index2  <- createDataPartition(other$Pobre, p = 1/3)[[1]]
+  index2  <- createDataPartition(other$Pobre_Pobre, p = 1/3)[[1]]
   test_hh <- other[-index2,]
   eval_hh <- other[ index2,]
 
-  dim(train_h)   
+  dim(train_hd)   
   dim(train_hh)
   dim(test_hh)
   dim(eval_hh)
@@ -49,10 +52,10 @@
   dim(train_h)[1] - dim(train_hh)[1] - dim(test_hh)[1] - dim(eval_hh)[1] #Cero para verificar que las particiones hayan quedado bien
   
   
-  prop.table(table(train_h$Pobre))    #Verificamos que las particiones conserven las mismas proporciones
-  prop.table(table(train_hh$Pobre))
-  prop.table(table(test_hh$Pobre))
-  prop.table(table(eval_hh$Pobre))  
+  prop.table(table(train_hd$Pobre_Pobre))    #Verificamos que las particiones conserven las mismas proporciones
+  prop.table(table(train_hh$Pobre_Pobre))
+  prop.table(table(test_hh$Pobre_Pobre))
+  prop.table(table(eval_hh$Pobre_Pobre))  
 
   
 #Estandarizamos
@@ -79,9 +82,9 @@
 
 #Control------------------------------------------------------------------------
   
-  train_hhs$Pobre <- factor(train_hhs$Pobre)
+  train_hhs$Pobre_Pobre <- factor(train_hhs$Pobre_Pobre)
 
-  lgrid <- 10^seq(-5, 0.01, length = 10)
+  grilla <- 10^seq(10, -1, length = 100)
     
   fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
   
@@ -95,8 +98,8 @@
   
 #1 - Logit sin regularizar ---------------------------------------------------------
 
-  modelo1 <- train(y = as.factor(train_hhs$Pobre),
-                   x = select(train_hhs, -id, -Pobre),
+  modelo1 <- train(y = as.factor(train_hhs$Pobre_Pobre),
+                   x = select(train_hhs, -id, -Pobre_Pobre),
                    method = "glm",
                    family = "binomial",
                    preProcess = NULL,
@@ -138,23 +141,29 @@
   
 #2 - Logit con Lasso (1)------------------------------------------------------------
 
-  modelo2 <- train(y = as.factor(train_hhs$Pobre),
-                   x = select(train_hhs, -id, -Pobre),
-                   data = train_hhs, 
-                   method = "glm",
-                   trControl = ctrl,
+  modelo2 <- glmnet(y = as.factor(train_hhs$Pobre_Pobre),
+                   x = select(train_hhs, -id, -Pobre_Pobre),
                    family = "binomial", 
-                   metric = "Accuracy",
-                   tuneGrid = expand.grid(alpha = 0,lambda=lgrid),
-                   preProcess = c("center","scale"))
+                   weights = NULL,
+                   alpha = 1,
+                   nlambda = 100)
  
-  y_hat_train2 <- predict(modelo2, train_hhs)
-  y_hat_test2  <- predict(modelo2, test_hhs)
-  y_hat_eval2  <- predict(modelo2, eval_hhs)
+   a1 <-select(train_hhs, -id, -Pobre_Pobre)
+   a1 <- as.matrix(a1)
+   
+   a2 <-select(test_hhs, -id, -Pobre_Pobre)
+   a2 <- as.matrix(a2)   
+   
+   a3 <-select(eval_hhs, -id, -Pobre_Pobre)
+   a3 <- as.matrix(a3)   
   
-  acc_train2  <- Accuracy(y_pred = y_hat_train2, y_true = train_hhs$Pobre)
-  acc_test2   <- Accuracy(y_pred = y_hat_test2, y_true = test_hhs$Pobre)
-  acc_eval2   <- Accuracy(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre)
+  y_hat_train2 <- predict(modelo2, a1)
+  y_hat_test2  <- predict(modelo2, a2)
+  y_hat_eval2  <- predict(modelo2, a3)
+  
+  acc_train2  <- Accuracy(y_pred = y_hat_train2, y_true = train_hhs$Pobre_Pobre)
+  acc_test2   <- Accuracy(y_pred = y_hat_test2, y_true = test_hhs$Pobre_Pobre)
+  acc_eval2   <- Accuracy(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre_Pobre)
   
   
   metricas_train2 <- data.frame(Modelo = "Logit - Lasso", 
@@ -181,25 +190,22 @@
   
 #3 - Logit con Ridge (0)------------------------------------------------------------
   
-  modelo3 <- train(y = as.factor(train_hhs$Pobre),
-                   x = select(train_hhs, -id, -Pobre),
-                   data = train_hhs, 
-                   method = "glm",
-                   trControl = ctrl,
-                   family = "binomial", 
-                   metric = 'Accuracy',
-                   tuneGrid = expand.grid(alpha = 0,lambda=lgrid),
-                   preProcess = c("center","scale"))
+  modelo3 <- glmnet(y = as.factor(train_hhs$Pobre_Pobre),
+                    x = select(train_hhs, -id, -Pobre_Pobre),
+                    family = "binomial", 
+                    weights = NULL,
+                    alpha = 0,
+                    nlambda = 100)
   
   modelo3
   
-  y_hat_train3 <- predict(modelo3, train_hhs)
-  y_hat_test3  <- predict(modelo3, test_hhs)
-  y_hat_eval3  <- predict(modelo3, eval_hhs)
+  y_hat_train3 <- predict(modelo3, a1)
+  y_hat_test3  <- predict(modelo3, a2)
+  y_hat_eval3  <- predict(modelo3, a3)
   
-  acc_train3  <- Accuracy(y_pred = y_hat_train3, y_true = train_hhs$Pobre)
-  acc_test3   <- Accuracy(y_pred = y_hat_test3, y_true = test_hhs$Pobre)
-  acc_eval3   <- Accuracy(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre)
+  acc_train3  <- Accuracy(y_pred = y_hat_train3, y_true = train_hhs$Pobre_Pobre)
+  acc_test3   <- Accuracy(y_pred = y_hat_test3, y_true = test_hhs$Pobre_Pobre)
+  acc_eval3   <- Accuracy(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre_Pobre)
   
   
   metricas_train3 <- data.frame(Modelo = "Logit - Ridge", 
@@ -226,15 +232,12 @@
   
 #4 - Logit con EN-------------------------------------------------------------------
   
-  modelo4 <- train(y = as.factor(train_hhs$Pobre),
-                   x = select(train_hhs, -id, -Pobre),
-                   data = train_hhs, 
-                   method = "glm",
-                   trControl = ctrl,
-                   family = "binomial", 
-                   metric = 'Accuracy',
-                   tuneGrid = expand.grid(alpha = seq(from = 0,to = 1,by = 0.1),lambda=lgrid),
-                   preProcess = c("center","scale"))
+  modelo4 <- glmnet(y = as.factor(train_hhs$Pobre_Pobre),
+                    x = select(train_hhs, -id, -Pobre_Pobre),
+                    family = "binomial", 
+                    weights = NULL,
+                    alpha = 0.5,
+                    nlambda = 100)
 
   modelo4
   
