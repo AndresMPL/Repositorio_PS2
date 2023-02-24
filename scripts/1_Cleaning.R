@@ -228,7 +228,7 @@
                             select_columns = c("nivel_edu_jefe_hogar", "Vivienda"), 
                             remove_selected_columns = TRUE)
       
-      train_hd <- train_hd %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug)
+      train_hd <- train_hd %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug, -Vivienda_Propia_paga, -nivel_edu_jefe_hogar_Ninguno)
       
       glimpse(train_hd)
       
