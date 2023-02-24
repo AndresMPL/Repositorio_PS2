@@ -151,7 +151,7 @@
     
   #Factores de Personas
       
-      factoresp <- c("P6050", "P6210", "Clase")
+      factoresp <- c("P6050", "P6210")
       
       for (v in factoresp) {
         train_p[, v] <- as.factor(train_p[, v, drop = T])
@@ -159,7 +159,7 @@
 
   #Factores de Hogares
 
-      factoresh <- c("P5090", "Clase")
+      factoresh <- c("P5090", "nivel_edu_jefe_hogar")
       
       for (v in factoresh) {
         train_h[, v] <- as.factor(train_h[, v, drop = T])
