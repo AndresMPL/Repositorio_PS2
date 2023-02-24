@@ -16,13 +16,6 @@
   
   glimpse(train_h)
   
-  train_h <- train_h %>%  mutate(Pobre = factor(Pobre_Pobre, 
-                                                levels = c(1, 0),
-                                                labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
-  
-  train_h <- train_h %>% select(-Pobre_Pobre)
-  
-  glimpse(train_h)
 
 #Evaluación desbalance
 
