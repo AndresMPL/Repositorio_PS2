@@ -10,7 +10,7 @@
 #
 #------------------------------------------------------------------------------#
 
-#Pasos previos------------------------------------------------------------------
+#Pasos previos
 
   rm(list=ls())
 
@@ -51,7 +51,7 @@
           #test_pp     <- 20% Train personas - para pruebas
           #eval_pp     <- 10% Train personas - para evaluacion  
   
-#Selección de Variables de interés ----------------------------
+#Selección de Variables de interés
   
   train_p <- train_personas %>% 
     select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Oc, Des, Ina, Ingtot)
@@ -65,7 +65,7 @@
   glimpse(train_p)
   
   
-#Crear variables de interes ----------------------------------- 
+#Crear variables de interes  
   
   train_p$female <- ifelse(train_p$P6020 == 2, 1, 0) %>% as.numeric()
   train_p$Menores_edad <- if_else(train_p$P6040<=14, 1, 0 , missing = NULL)
@@ -90,7 +90,7 @@
                         jefe_hogar_oc = (Ocupado)[P6050==1],
                         ing_tot_hogar = sum(Ingtot, na.rm = TRUE))
   
-#Uniendo bases -------------------------------------
+#Uniendo bases
   
   train_h <- left_join(train_h,train_personas_hog)
   colnames(train_h) 
@@ -143,8 +143,6 @@
     train_h <- train_h %>% select(all_of(vector_var2$Var_name))
     
     sapply(train_h, function(x) sum(is.na(x))) %>% as.data.frame() #no se excluyen variables
-     
-    
     
 #Mutamos factores
     
@@ -158,9 +156,7 @@
       for (v in factoresp) {
         train_p[, v] <- as.factor(train_p[, v, drop = T])
         }
-      
-      glimpse(train_p) 
-      
+
   #Factores de Hogares
 
       factoresh <- c("P5090", "Clase", "nivel_edu_jefe_hogar")
@@ -168,10 +164,7 @@
       for (v in factoresh) {
         train_h[, v] <- as.factor(train_h[, v, drop = T])
         }
-      
-      glimpse(train_h)     
-    
-  
+
 #Generamos dummys en Train_Personas
   
       train_p <- dummy_cols(train_p, 
