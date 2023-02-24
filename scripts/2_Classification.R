@@ -28,9 +28,12 @@
                    x = "Número de hogares")
   
   Imagen_1
-
-  train_hd <- dummy_cols(train_h, select_columns = c("P5090", "Clase", "Pobre"), remove_selected_columns = TRUE)
-  train_hd <- select(train_hd, -Clase_2, -Pobre_No_Pobre)
+  
+  train_hd <- dummy_cols(train_h, 
+                        select_columns = c("Pobre"), 
+                        remove_selected_columns = TRUE)
+  
+  train_hd <- train_hd%>% select(-Pobre_No_Pobre)
   
 #Dividimos train/test/eval (70/20/10) - BD Hogares
 
