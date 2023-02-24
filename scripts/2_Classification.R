@@ -292,14 +292,14 @@
 
 ## Up sampling-------------------------------------------------------------------
 
-upSampledTrain_h <- upSample(y = as.factor(train_hhs$Pobre),
-                             x = select(train_hhs, -id, -Pobre),
-                             yname = "Pobre")
-dim(train_hhs)
+#upSampledTrain_h <- upSample(y = as.factor(train_hhs$Pobre),
+                             #x = select(train_hhs, -id, -Pobre),
+                             #yname = "Pobre")
+#dim(train_hhs)
 
-dim(upSampledTrain_h)
+#dim(upSampledTrain_h)
 
-table(upSampledTrain_h$Pobre)
+#table(upSampledTrain_h$Pobre)
 
 
 #lambda_grid_h <- 10^seq(-4, 0.01, length = 300) #en la practica se suele usar una grilla de 200 o 300
