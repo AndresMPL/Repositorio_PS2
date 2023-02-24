@@ -19,7 +19,7 @@
   
   install.packages("fastDummies")
   library(pacman)
-  p_load(tidyverse,caret, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies)
+  p_load(tidyverse,caret, glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies)
 
   
 #Leer los datos - 
