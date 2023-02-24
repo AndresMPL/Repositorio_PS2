@@ -195,7 +195,7 @@
       train_h <- train_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
       
       glimpse(train_h)
-      
+
 
 #Generamos dummys en Train_Personas
   
@@ -212,4 +212,26 @@
                             remove_selected_columns = TRUE)
      
       glimpse(train_h)
+      
+      #-------------------------------------------------------------------------
+      
+      colnames(train_h)
+      
+      db <- dummyVars(~.,train_h) #Ver cuáles tienen solo dos factores
+        #nivel_edu_jefe_hogar
+        #Vivienda
+      
+      train_hd <- dummy_cols(train_h, 
+                            select_columns = c("nivel_edu_jefe_hogar", "Vivienda"), 
+                            remove_selected_columns = TRUE)
+      
+      train_hd <- train_hd %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug)
+      
+      glimpse(train_hd)
+      
+      train_hd <- train_hd %>%  mutate(Pobre = factor(Pobre, 
+                                                    levels = c(1, 0),
+                                                    labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
+      
+      glimpse(train_hd)
       
