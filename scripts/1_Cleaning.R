@@ -229,9 +229,5 @@
       
       glimpse(train_hd)
       
-      train_hd <- train_hd %>%  mutate(Pobre = factor(Pobre, 
-                                                    levels = c(1, 0),
-                                                    labels = c("Pobre", "No_Pobre"))) #Pobre=1, No Pobre=0
-      
-      glimpse(train_hd)
+
       
