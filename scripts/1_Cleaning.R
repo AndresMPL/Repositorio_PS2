@@ -206,7 +206,7 @@
 #Generamos dummys en Train_Personas
   
       train_p <- dummy_cols(train_p, 
-                            select_columns = c("P6050", "P6210"), 
+                            select_columns = c("Clase", "Pet", "Genero", "Desempleado", "Inactivo", "Ocupado", "Parentesco_con_jefe", "nivel_edu", "no_ingresos"), 
                             remove_selected_columns = TRUE)
       
       glimpse(train_p)
