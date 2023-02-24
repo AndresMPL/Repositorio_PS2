@@ -88,8 +88,7 @@
                         num_adulto_mayor = sum(adulto_mayor, na.rm = TRUE),
                         jefe_hogar_des = (Desempleado)[P6050==1],
                         jefe_hogar_ina = (Inactivo)[P6050==1],
-                        jefe_hogar_oc = (Ocupado)[P6050==1],
-                        ing_tot_hogar = sum(Ingtot, na.rm = TRUE))
+                        jefe_hogar_oc = (Ocupado)[P6050==1])
   
   
   
@@ -163,11 +162,20 @@
 
   #Factores de Hogares
 
-      factoresh <- c("P5090", "nivel_edu_jefe_hogar")
+      train_h <- train_h %>% mutate(Pobre=factor(Pobre,levels=c(0,1),labels=c("No_Pobre","Pobre")),
+                                    Clase=factor(Clase,levels=c(0,1),labels=c("Urbano","Rural")),
+                                    Vivienda=factor(P5090,levels=c(1,2,3,4,5,6),labels=c("Propia_paga","Propia_No_Paga", "Arriendo","Usufructo", "Ocupante_No_Dueño", "Otra")),
+                                    sexo_jefe_hogar=factor(sexo_jefe_hogar,levels=c(0,1),labels=c("Hombre","Mujer")),
+                                    nivel_edu_jefe_hogar=factor(nivel_edu_jefe_hogar,levels=c(1,2,3,4,5,6,9),labels=c("Ninguno", "Preescolar", "Basica_primaria", "Basica_secundaria", "Media", "Superior", "No_Saber")),
+                                    jefe_hogar_des=factor(jefe_hogar_des,levels=c(0,1),labels=c("No","Si")),
+                                    jefe_hogar_ina=factor(jefe_hogar_ina,levels=c(0,1),labels=c("No","Si")),
+                                    jefe_hogar_oc=factor(jefe_hogar_oc,levels=c(0,1),labels=c("No","Si")))
       
-      for (v in factoresh) {
-        train_h[, v] <- as.factor(train_h[, v, drop = T])
-        }
+      train_h <- train_h %>% select(-P5090)
+      train_h <- train_h %>% rename(num_cuartos = P5000, num_cuartos_dormir = P5010)
+      
+      head(train_h)
+      
 
 #Generamos dummys en Train_Personas
   
