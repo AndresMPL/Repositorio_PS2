@@ -57,7 +57,7 @@
     select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Oc, Des, Ina, Ingtot)
   
   train_h <- train_hogares %>% 
-    select(id, Clase, P5000, P5010, P5090, Nper, Npersug, Lp, Pobre, Ingtotugarr, Ingpcug)
+    select(Pobre, id, Clase, P5000, P5010, P5090, Nper, Npersug, Lp, Ingtotugarr, Ingpcug)
   
   glimpse(test_hogares)
   glimpse(test_personas)
