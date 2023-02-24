@@ -63,7 +63,7 @@
   glimpse(train_hhs)
 
 #names <- data.frame(vars = colnames(train_hhs)) %>% 
-#filter(vars != "Pobre_1") 
+#filter(vars != "Pobre") 
 
   variables_numericas <- c("num_cuartos", "num_cuartos_dormir", "Npersug",
                            "edad_jefe_hogar", "num_Menores_edad", "num_adulto_mayor", 
@@ -169,9 +169,11 @@
   y_hat_test2  <- predict(modelo2, test_hhs)
   y_hat_eval2  <- predict(modelo2, eval_hhs)
   
-  acc_train2  <- Accuracy(y_pred = y_hat_train2, y_true = train_hhs$Pobre_1)
-  acc_test2   <- Accuracy(y_pred = y_hat_test2, y_true = test_hhs$Pobre_1)
-  acc_eval2   <- Accuracy(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre_1)
+  confusionMatrix(y_hat_eval2, eval_hhs$Pobre)
+  
+  acc_train2  <- Accuracy(y_pred = y_hat_train2, y_true = train_hhs$Pobre)
+  acc_test2   <- Accuracy(y_pred = y_hat_test2, y_true = test_hhs$Pobre)
+  acc_eval2   <- Accuracy(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre)
   
   
   metricas_train2 <- data.frame(Modelo = "Logit - Lasso", 
@@ -213,9 +215,9 @@
   y_hat_test3  <- predict(modelo3, test_hhs)
   y_hat_eval3  <- predict(modelo3, eval_hhs)
   
-  acc_train3  <- Accuracy(y_pred = y_hat_train3, y_true = train_hhs$Pobre_1)
-  acc_test3   <- Accuracy(y_pred = y_hat_test3, y_true = test_hhs$Pobre_1)
-  acc_eval3   <- Accuracy(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre_1)
+  acc_train3  <- Accuracy(y_pred = y_hat_train3, y_true = train_hhs$Pobre)
+  acc_test3   <- Accuracy(y_pred = y_hat_test3, y_true = test_hhs$Pobre)
+  acc_eval3   <- Accuracy(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre)
   
   
   metricas_train3 <- data.frame(Modelo = "Logit - Ridge", 
@@ -257,9 +259,9 @@
   y_hat_test4  <- predict(modelo4, test_hhs)
   y_hat_eval4  <- predict(modelo4, eval_hhs)
   
-  acc_train4  <- Accuracy(y_pred = y_hat_train4, y_true = train_hhs$Pobre_1)
-  acc_test4   <- Accuracy(y_pred = y_hat_test4, y_true = test_hhs$Pobre_1)
-  acc_eval4   <- Accuracy(y_pred = y_hat_eval4, y_true = eval_hhs$Pobre_1)
+  acc_train4  <- Accuracy(y_pred = y_hat_train4, y_true = train_hhs$Pobre)
+  acc_test4   <- Accuracy(y_pred = y_hat_test4, y_true = test_hhs$Pobre)
+  acc_eval4   <- Accuracy(y_pred = y_hat_eval4, y_true = eval_hhs$Pobre)
   
   
   metricas_train4 <- data.frame(Modelo = "Logit - EN", 
