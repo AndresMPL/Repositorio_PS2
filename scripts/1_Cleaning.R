@@ -177,11 +177,7 @@
     
     train_p <- train_p %>% select(-P6020, -P6050, -P6210) # se creo una nueva variable con factores y se elimino la anterior
     
-    
-    
     head(train_p)
-    
-
     
     
   #Factores de Hogares
@@ -198,9 +194,7 @@
       
       train_h <- train_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
       
-      
-      
-      head(train_h)
+      glimpse(train_h)
       
 
 #Generamos dummys en Train_Personas
@@ -213,7 +207,7 @@
     
 #Generamos dummys en Train_Hogares
       
-      train_h <- dummy_cols(train_h, 
+      train_hd <- dummy_cols(train_h, 
                             select_columns = c("Pobre", "Clase", "Vivienda", "sexo_jefe_hogar", "nivel_edu_jefe_hogar", "jefe_hogar_des", "jefe_hogar_oc", "jefe_hogar_ina", "Hacinamiento"), 
                             remove_selected_columns = TRUE)
      
