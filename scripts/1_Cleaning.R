@@ -97,7 +97,10 @@
   
   train_h <- left_join(train_h,train_personas_hog)
   colnames(train_h) 
-
+  
+  train_h$jefe_hogar_ina2 <- if_else(train_h$edad_jefe_hogar==11, as.integer(1), train_h$jefe_hogar_ina) ##observacion de 11 años que no clasifica como inactivo, desempleado, ocupado se asigna como inactiva
+  train_h <- train_h %>% select(-jefe_hogar_ina)# se retira la variable antigua
+  train_h <- train_h %>% rename(jefe_hogar_ina = jefe_hogar_ina2)#se renombra la nueva
   
 #Variables con NA´s
 
@@ -173,6 +176,7 @@
       
       train_h <- train_h %>% select(-P5090)
       train_h <- train_h %>% rename(num_cuartos = P5000, num_cuartos_dormir = P5010)
+      
       
       head(train_h)
       
