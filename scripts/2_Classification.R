@@ -118,7 +118,7 @@
   
 #1 - Logit sin regularizar ---------------------------------------------------------
 
-    modelo1 <-   train(Pobre ~ . , 
+  modelo1 <-   train(Pobre ~ . , 
                      data = train_hhs,
                      method = "glm",
                      trControl = control,
