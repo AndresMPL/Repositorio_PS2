@@ -215,6 +215,8 @@
   y_hat_test3  <- predict(modelo3, test_hhs)
   y_hat_eval3  <- predict(modelo3, eval_hhs)
   
+  confusionMatrix(y_hat_eval3, eval_hhs$Pobre)
+  
   acc_train3  <- Accuracy(y_pred = y_hat_train3, y_true = train_hhs$Pobre)
   acc_test3   <- Accuracy(y_pred = y_hat_test3, y_true = test_hhs$Pobre)
   acc_eval3   <- Accuracy(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre)
@@ -258,6 +260,8 @@
   y_hat_train4 <- predict(modelo4, train_hhs)
   y_hat_test4  <- predict(modelo4, test_hhs)
   y_hat_eval4  <- predict(modelo4, eval_hhs)
+  
+  confusionMatrix(y_hat_eval4, eval_hhs$Pobre)
   
   acc_train4  <- Accuracy(y_pred = y_hat_train4, y_true = train_hhs$Pobre)
   acc_test4   <- Accuracy(y_pred = y_hat_test4, y_true = test_hhs$Pobre)
