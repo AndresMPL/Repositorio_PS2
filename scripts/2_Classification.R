@@ -105,11 +105,9 @@
   modelo1 <- train(y = as.factor(train_hhs$Pobre),
                    x = select(train_hhs, -id, -Pobre),
                    method = "glm",
-                   trControl = ctrl,
-                   family = "binomial", 
+                   family = "binomial",
+                   preProcess = NULL,
                    metric = 'Accuracy')
-  
-  modelo1
   
   y_hat_train1 <- predict(modelo1, train_hhs)
   y_hat_test1  <- predict(modelo1, test_hhs)
@@ -146,19 +144,17 @@
   
   
 #2 - Logit con Lasso (1)------------------------------------------------------------
-  
+
   modelo2 <- train(y = as.factor(train_hhs$Pobre),
                    x = select(train_hhs, -id, -Pobre),
                    data = train_hhs, 
                    method = "glm",
                    trControl = ctrl,
                    family = "binomial", 
-                   metric = 'Accuracy',
-                   tuneGrid = expand.grid(alpha = 1,lambda = lgrid),
+                   metric = "Accuracy",
+                   tuneGrid = expand.grid(alpha = 0,lambda=lgrid),
                    preProcess = c("center","scale"))
-  
-  modelo2
-  
+ 
   y_hat_train2 <- predict(modelo2, train_hhs)
   y_hat_test2  <- predict(modelo2, test_hhs)
   y_hat_eval2  <- predict(modelo2, eval_hhs)
@@ -192,8 +188,8 @@
   
 #3 - Logit con Ridge (0)------------------------------------------------------------
   
-  modelo3 <- train(y = Y,
-                   x = X,
+  modelo3 <- train(y = as.factor(train_hhs$Pobre),
+                   x = select(train_hhs, -id, -Pobre),
                    data = train_hhs, 
                    method = "glm",
                    trControl = ctrl,
@@ -237,8 +233,8 @@
   
 #4 - Logit con EN-------------------------------------------------------------------
   
-  modelo4 <- train(y = Y,
-                   x = X,
+  modelo4 <- train(y = as.factor(train_hhs$Pobre),
+                   x = select(train_hhs, -id, -Pobre),
                    data = train_hhs, 
                    method = "glm",
                    trControl = ctrl,
