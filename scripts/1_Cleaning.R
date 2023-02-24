@@ -177,11 +177,7 @@
     
     train_p <- train_p %>% select(-P6020, -P6050, -P6210) # se creo una nueva variable con factores y se elimino la anterior
     
-    
-    
     head(train_p)
-    
-
     
     
   #Factores de Hogares
@@ -198,9 +194,7 @@
       
       train_h <- train_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
       
-      
-      
-      head(train_h)
+      glimpse(train_h)
       
 
 #Generamos dummys en Train_Personas
