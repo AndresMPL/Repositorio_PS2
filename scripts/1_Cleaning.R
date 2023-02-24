@@ -89,20 +89,27 @@
                         num_adulto_mayor = sum(adulto_mayor, na.rm = TRUE),
                         jefe_hogar_des = (Desempleado)[P6050==1],
                         jefe_hogar_ina = (Inactivo)[P6050==1],
-                        jefe_hogar_oc = (Ocupado)[P6050==1])
+                        jefe_hogar_oc = (Ocupado)[P6050==1],
+                        num_oc_hogar = sum(Ocupado))
   
-  
-  
+  train_h <- train_h %>% rename(num_cuartos = P5000, num_cuartos_dormir = P5010) #se renombran variables
+  train_p <- train_p %>% rename(edad = P6040) #se renombran variables
   
 #Uniendo bases
   
   train_h <- left_join(train_h,train_personas_hog)
   colnames(train_h) 
   
+  #Creacion de variables 
+  
   train_h$jefe_hogar_ina2 <- if_else(train_h$edad_jefe_hogar==11, as.integer(1), train_h$jefe_hogar_ina) ##observacion de 11 años que no clasifica como inactivo, desempleado, ocupado se asigna como inactiva
   train_h <- train_h %>% select(-jefe_hogar_ina)# se retira la variable antigua
   train_h <- train_h %>% rename(jefe_hogar_ina = jefe_hogar_ina2)#se renombra la nueva
-  
+
+  train_h <- train_h %>% mutate(Numper_por_dor= Nper/num_cuartos_dormir,
+                                Hacinamiento = if_else(Numper_por_dor>3, 1 , 0),
+                                Ocupados_por_perhog = if_else(num_oc_hogar>0, Npersug/num_oc_hogar, as.double(Npersug)))
+
 #Variables con NA´s
 
   #Personas
@@ -169,7 +176,7 @@
                                   no_ingresos=factor(no_ingresos,levels=c(0,1),labels=c("No","Si")))
     
     train_p <- train_p %>% select(-P6020, -P6050, -P6210) # se creo una nueva variable con factores y se elimino la anterior
-    train_p <- train_p %>% rename(edad = P6040) #se renombran variables
+    
     
     
     head(train_p)
@@ -186,10 +193,11 @@
                                     nivel_edu_jefe_hogar=factor(nivel_edu_jefe_hogar,levels=c(1,2,3,4,5,6,9),labels=c("Ninguno", "Preescolar", "Basica_primaria", "Basica_secundaria", "Media", "Superior", "No_Saber")),
                                     jefe_hogar_des=factor(jefe_hogar_des,levels=c(0,1),labels=c("No","Si")),
                                     jefe_hogar_ina=factor(jefe_hogar_ina,levels=c(0,1),labels=c("No","Si")),
-                                    jefe_hogar_oc=factor(jefe_hogar_oc,levels=c(0,1),labels=c("No","Si")))
+                                    jefe_hogar_oc=factor(jefe_hogar_oc,levels=c(0,1),labels=c("No","Si")),
+                                    Hacinamiento = factor(Hacinamiento, levels = c(0,1), labels = c("No","Si")))
       
       train_h <- train_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
-      train_h <- train_h %>% rename(num_cuartos = P5000, num_cuartos_dormir = P5010) #se renombran variables
+      
       
       
       head(train_h)
@@ -206,7 +214,7 @@
 #Generamos dummys en Train_Hogares
       
       train_h <- dummy_cols(train_h, 
-                            select_columns = c("Pobre", "Clase", "Vivienda", "sexo_jefe_hogar", "nivel_edu_jefe_hogar", "jefe_hogar_des", "jefe_hogar_oc", "jefe_hogar_ina"), 
+                            select_columns = c("Pobre", "Clase", "Vivienda", "sexo_jefe_hogar", "nivel_edu_jefe_hogar", "jefe_hogar_des", "jefe_hogar_oc", "jefe_hogar_ina", "Hacinamiento"), 
                             remove_selected_columns = TRUE)
      
       glimpse(train_h)
