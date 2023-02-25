@@ -205,6 +205,17 @@
   
 ###1.2 Logit - Downsampling ----
 
+  set.seed(10110)
+  train_hhs12 <- downSample(x = train_hhs, 
+                            y = train_hhs$Pobre, yname = "Pobre")
+  
+  prop.table(table(train_hhs$Pobre)) #BD inicial
+  nrow(train_hhs) 
+  
+  prop.table(table(train_hhs12$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(train_hhs12) 
+  
+  
   modelo12 <- train(Pobre~., 
                     data = train_hhs12,
                     method = "glmnet",
