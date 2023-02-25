@@ -139,8 +139,6 @@
   metricas1 %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
 ###1.1 Logit - Upsampling ----
-
-  train_hhs$Pobre <- factor(train_hhs$Pobre)
   
   set.seed(10110)
   train_hhs11 <- upSample(x = train_hhs, 
@@ -214,7 +212,6 @@
   
   prop.table(table(train_hhs12$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
   nrow(train_hhs12) 
-  
   
   modelo12 <- train(Pobre~., 
                     data = train_hhs12,
@@ -300,8 +297,6 @@
 
   
   ###2.1 Logit Lasso - Upsampling ----
-  
-  train_hhs$Pobre <- factor(train_hhs$Pobre)
   
   set.seed(10110)
   train_hhs21 <- upSample(x = train_hhs, 
@@ -466,8 +461,6 @@
   
   ###3.1 Logit - Ridge - Upsampling ----
   
-  train_hhs$Pobre <- factor(train_hhs$Pobre)
-  
   set.seed(10110)
   train_hhs31 <- upSample(x = train_hhs, 
                           y = train_hhs$Pobre, yname = "Pobre")
@@ -631,8 +624,6 @@
 
   
   ###4.1 Logit - EN - Upsampling ----
- 
-  train_hhs$Pobre <- factor(train_hhs$Pobre)
   
   set.seed(10110)
   train_hhs41 <- upSample(x = train_hhs, 
