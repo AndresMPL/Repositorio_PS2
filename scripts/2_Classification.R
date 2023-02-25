@@ -120,17 +120,17 @@
   
   
   metricas_train1 <- data.frame(Modelo = "Logit", 
-                                "Muestreo" = NA, 
+                                "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Accuracy" = acc_train1)
   
   metricas_test1 <- data.frame(Modelo = "Logit", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Accuracy" = acc_test1)
   
   metricas_eval1 <- data.frame(Modelo = "Logit", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Accuracy" = acc_eval1)
   
@@ -181,17 +181,17 @@
   acc_test11   <- Accuracy(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre))
   acc_eval11   <- Accuracy(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre))
   
-  metricas_train11 <- data.frame(Modelo = "Logit - Up", 
+  metricas_train11 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train11)
   
-  metricas_test11 <- data.frame(Modelo = "Logit - Up", 
+  metricas_test11 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test11)
   
-  metricas_eval11 <- data.frame(Modelo = "Logit - Up", 
+  metricas_eval11 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval11)
@@ -229,17 +229,17 @@
   acc_test12   <- Accuracy(y_pred = y_hat_test12, y_true = test_hhs$Pobre)
   acc_eval12   <- Accuracy(y_pred = y_hat_eval12, y_true = eval_hhs$Pobre)
   
-  metricas_train12 <- data.frame(Modelo = "Logit - Down", 
+  metricas_train12 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train12)
   
-  metricas_test12 <- data.frame(Modelo = "Logit - Down", 
+  metricas_test12 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test12)
   
-  metricas_eval12 <- data.frame(Modelo = "Logit - Down", 
+  metricas_eval12 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval12)
@@ -250,7 +250,7 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
 
-#2 - Logit con Lasso (1)------------------------------------------------------------
+#2 - Logit - Lasso (1)------------------------------------------------------------
 
   set.seed(1010)
   modelo2 <- train(Pobre ~ . , 
@@ -275,17 +275,17 @@
   
   
   metricas_train2 <- data.frame(Modelo = "Logit - Lasso", 
-                                "Muestreo" = NA, 
+                                "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Accuracy" = acc_train2)
   
   metricas_test2 <- data.frame(Modelo = "Logit - Lasso", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Accuracy" = acc_test2)
   
   metricas_eval2 <- data.frame(Modelo = "Logit - Lasso", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Accuracy" = acc_eval2)
   
@@ -296,7 +296,7 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
   
-  ###2.1 Logit Lasso - Upsampling ----
+  ###2.1 Logit - Lasso - Upsampling ----
   
   set.seed(10110)
   train_hhs21 <- upSample(x = select(train_hhs, -Pobre), 
@@ -338,22 +338,21 @@
   y_hat_test21   <- as.numeric(probs_test21 > 0.5)
   y_hat_eval21   <- as.numeric(probs_eval21 > 0.5)
   
-
   acc_train21  <- Accuracy(y_pred = y_hat_train21, y_true = as.numeric(train_hhs$Pobre))
   acc_test21   <- Accuracy(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre))
   acc_eval21   <- Accuracy(y_pred = y_hat_eval21, y_true = as.numeric(eval_hhs$Pobre))
   
-  metricas_train21 <- data.frame(Modelo = "Logit - Up", 
+  metricas_train21 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train21)
   
-  metricas_test21 <- data.frame(Modelo = "Logit - Up", 
+  metricas_test21 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test21)
   
-  metricas_eval21 <- data.frame(Modelo = "Logit - Up", 
+  metricas_eval21 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval21)
@@ -364,7 +363,6 @@
   
   
   ###2.2 Logit - Lasso - Downsampling ----
-  
   
   set.seed(10110)
   train_hhs22 <- downSample(x = select(train_hhs, -Pobre), 
@@ -394,17 +392,17 @@
   acc_test22   <- Accuracy(y_pred = y_hat_test22, y_true = test_hhs$Pobre)
   acc_eval22   <- Accuracy(y_pred = y_hat_eval22, y_true = eval_hhs$Pobre)
   
-  metricas_train22 <- data.frame(Modelo = "Logit - Down", 
+  metricas_train22 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train22)
   
-  metricas_test22 <- data.frame(Modelo = "Logit - Down", 
+  metricas_test22 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test22)
   
-  metricas_eval22 <- data.frame(Modelo = "Logit - Down", 
+  metricas_eval22 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval22)
@@ -415,7 +413,7 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
 
-#3 - Logit con Ridge (0)------------------------------------------------------------
+#3 - Logit - Ridge (0)------------------------------------------------------------
 
   set.seed(10110)
   modelo3 <- train(Pobre ~ . , 
@@ -441,17 +439,17 @@
   
   
   metricas_train3 <- data.frame(Modelo = "Logit - Ridge", 
-                                "Muestreo" = NA, 
+                                "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Accuracy" = acc_train3)
   
   metricas_test3 <- data.frame(Modelo = "Logit - Ridge", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Accuracy" = acc_test3)
   
   metricas_eval3 <- data.frame(Modelo = "Logit - Ridge", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Accuracy" = acc_eval3)
   
@@ -506,17 +504,17 @@
   acc_test31   <- Accuracy(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre))
   acc_eval31   <- Accuracy(y_pred = y_hat_eval31, y_true = as.numeric(eval_hhs$Pobre))
   
-  metricas_train31 <- data.frame(Modelo = "Logit - Up", 
+  metricas_train31 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train31)
   
-  metricas_test31 <- data.frame(Modelo = "Logit - Up", 
+  metricas_test31 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test31)
   
-  metricas_eval31 <- data.frame(Modelo = "Logit - Up", 
+  metricas_eval31 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval31)
@@ -527,7 +525,6 @@
   
   
   ###3.2 Logit - Ridge - Downsampling ----
-  
   
   set.seed(10110)
   train_hhs32 <- downSample(x = select(train_hhs, -Pobre), 
@@ -557,17 +554,17 @@
   acc_test32   <- Accuracy(y_pred = y_hat_test32, y_true = test_hhs$Pobre)
   acc_eval32   <- Accuracy(y_pred = y_hat_eval32, y_true = eval_hhs$Pobre)
   
-  metricas_train32 <- data.frame(Modelo = "Logit - Down", 
+  metricas_train32 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train32)
   
-  metricas_test32 <- data.frame(Modelo = "Logit - Down", 
+  metricas_test32 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test32)
   
-  metricas_eval32 <- data.frame(Modelo = "Logit - Down", 
+  metricas_eval32 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval32)
@@ -576,10 +573,9 @@
   metricas <- bind_rows(metricas, metricas32)
   
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
-  
 
 
-  #4 - Logit con EN-------------------------------------------------------------------
+  #4 - Logit - EN-------------------------------------------------------------------
 
   set.seed(10110)
   modelo4 <- train(Pobre ~ . , 
@@ -605,20 +601,19 @@
   
   
   metricas_train4 <- data.frame(Modelo = "Logit - EN", 
-                                "Muestreo" = NA, 
+                                "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Accuracy" = acc_train4)
   
   metricas_test4 <- data.frame(Modelo = "Logit - EN", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Accuracy" = acc_test4)
   
   metricas_eval4 <- data.frame(Modelo = "Logit - EN", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Accuracy" = acc_eval4)
-  
   
   metricas4 <- bind_rows(metricas_train4, metricas_test4, metricas_eval4)
   metricas <- bind_rows(metricas, metricas4)
@@ -670,17 +665,17 @@
   acc_test41   <- Accuracy(y_pred = y_hat_test41, y_true = as.numeric(test_hhs$Pobre))
   acc_eval41   <- Accuracy(y_pred = y_hat_eval41, y_true = as.numeric(eval_hhs$Pobre))
   
-  metricas_train41 <- data.frame(Modelo = "Logit - Up", 
+  metricas_train41 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train41)
   
-  metricas_test41 <- data.frame(Modelo = "Logit - Up", 
+  metricas_test41 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test41)
   
-  metricas_eval41 <- data.frame(Modelo = "Logit - Up", 
+  metricas_eval41 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval41)
@@ -692,7 +687,6 @@
   
   
   ###4.2 Logit - EN - Downsampling ----
-  
   
   set.seed(10110)
   train_hhs42 <- downSample(x = select(train_hhs, -Pobre), 
@@ -723,17 +717,17 @@
   acc_test42   <- Accuracy(y_pred = y_hat_test42, y_true = test_hhs$Pobre)
   acc_eval42   <- Accuracy(y_pred = y_hat_eval42, y_true = eval_hhs$Pobre)
   
-  metricas_train42 <- data.frame(Modelo = "Logit - Down", 
+  metricas_train42 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train42)
   
-  metricas_test42 <- data.frame(Modelo = "Logit - Down", 
+  metricas_test42 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test42)
   
-  metricas_eval42 <- data.frame(Modelo = "Logit - Down", 
+  metricas_eval42 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval42)
@@ -743,7 +737,7 @@
   
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
-  #5 - LDA-------------------------------------------------------------------
+  #5 - LDA ---------------------------------------------------------------------
   
   set.seed(10110)
   modelo5 <- train(Pobre ~ . , 
@@ -768,20 +762,19 @@
   
   
   metricas_train5 <- data.frame(Modelo = "LDA", 
-                                "Muestreo" = NA, 
+                                "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Accuracy" = acc_train5)
   
   metricas_test5 <- data.frame(Modelo = "LDA", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Accuracy" = acc_test5)
   
   metricas_eval5 <- data.frame(Modelo = "LDA", 
-                               "Muestreo" = NA, 
+                               "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Accuracy" = acc_eval5)
-  
   
   metricas5 <- bind_rows(metricas_train5, metricas_test5, metricas_eval5)
   metricas <- bind_rows(metricas, metricas5)
@@ -832,17 +825,17 @@
   acc_test51   <- Accuracy(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre))
   acc_eval51   <- Accuracy(y_pred = y_hat_eval51, y_true = as.numeric(eval_hhs$Pobre))
   
-  metricas_train51 <- data.frame(Modelo = "LDA - Up", 
+  metricas_train51 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train51)
   
-  metricas_test51 <- data.frame(Modelo = "LDA - Up", 
+  metricas_test51 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test51)
   
-  metricas_eval51 <- data.frame(Modelo = "LDA - Up", 
+  metricas_eval51 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval51)
@@ -884,17 +877,17 @@
   acc_test52   <- Accuracy(y_pred = y_hat_test52, y_true = test_hhs$Pobre)
   acc_eval52   <- Accuracy(y_pred = y_hat_eval52, y_true = eval_hhs$Pobre)
   
-  metricas_train52 <- data.frame(Modelo = "LDA - Down", 
+  metricas_train52 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Accuracy" = acc_train52)
   
-  metricas_test52 <- data.frame(Modelo = "LDA - Down", 
+  metricas_test52 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Accuracy" = acc_test52)
   
-  metricas_eval52 <- data.frame(Modelo = "LDA - Down", 
+  metricas_eval52 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Accuracy" = acc_eval52)
