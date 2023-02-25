@@ -607,17 +607,17 @@
   metricas_train4 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = NA, 
                                 "Evaluación" = "Entrenamiento",
-                                "Accuracy" = acc_train3)
+                                "Accuracy" = acc_train4)
   
   metricas_test4 <- data.frame(Modelo = "Logit - EN", 
                                "Muestreo" = NA, 
                                "Evaluación" = "Test",
-                               "Accuracy" = acc_test3)
+                               "Accuracy" = acc_test4)
   
   metricas_eval4 <- data.frame(Modelo = "Logit - EN", 
                                "Muestreo" = NA, 
                                "Evaluación" = "Evaluación",
-                               "Accuracy" = acc_eval3)
+                               "Accuracy" = acc_eval4)
   
   
   metricas4 <- bind_rows(metricas_train4, metricas_test4, metricas_eval4)
