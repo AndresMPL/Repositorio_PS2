@@ -534,19 +534,19 @@
   rec_test_rose23  <- Recall(y_pred = y_hat_test_rose23, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose23  <- Recall(y_pred = y_hat_eval_rose23, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  metricas_train23 <- data.frame(Modelo = "Logit", 
+  metricas_train23 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose23,
                                  "Accuracy" = acc_train_rose23)
   
-  metricas_test23 <- data.frame(Modelo = "Logit", 
+  metricas_test23 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose23,
                                 "Accuracy" = acc_test_rose23)
   
-  metricas_eval23 <- data.frame(Modelo = "Logit", 
+  metricas_eval23 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose23,
@@ -770,19 +770,19 @@
   rec_test_rose33  <- Recall(y_pred = y_hat_test_rose33, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose33  <- Recall(y_pred = y_hat_eval_rose33, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  metricas_train33 <- data.frame(Modelo = "Logit", 
+  metricas_train33 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose33,
                                  "Accuracy" = acc_train_rose33)
   
-  metricas_test33 <- data.frame(Modelo = "Logit", 
+  metricas_test33 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose33,
                                 "Accuracy" = acc_test_rose33)
   
-  metricas_eval33 <- data.frame(Modelo = "Logit", 
+  metricas_eval33 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose33,
@@ -1005,19 +1005,19 @@
   rec_test_rose43  <- Recall(y_pred = y_hat_test_rose43, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose43  <- Recall(y_pred = y_hat_eval_rose43, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  metricas_train43 <- data.frame(Modelo = "Logit", 
+  metricas_train43 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose43,
                                  "Accuracy" = acc_train_rose43)
   
-  metricas_test43 <- data.frame(Modelo = "Logit", 
+  metricas_test43 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose43,
                                 "Accuracy" = acc_test_rose43)
   
-  metricas_eval43 <- data.frame(Modelo = "Logit", 
+  metricas_eval43 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose43,
@@ -1238,19 +1238,19 @@
   rec_test_rose53  <- Recall(y_pred = y_hat_test_rose53, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose53  <- Recall(y_pred = y_hat_eval_rose53, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  metricas_train53 <- data.frame(Modelo = "Logit", 
+  metricas_train53 <- data.frame(Modelo = "Logit - LDA", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose53,
                                  "Accuracy" = acc_train_rose53)
   
-  metricas_test53 <- data.frame(Modelo = "Logit", 
+  metricas_test53 <- data.frame(Modelo = "Logit - LDA", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose53,
                                 "Accuracy" = acc_test_rose53)
   
-  metricas_eval53 <- data.frame(Modelo = "Logit", 
+  metricas_eval53 <- data.frame(Modelo = "Logit - LDA", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose53,
