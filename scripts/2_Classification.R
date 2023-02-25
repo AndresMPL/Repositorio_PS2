@@ -688,29 +688,51 @@
   ###4.2 Logit - EN - Downsampling ----
   
   
+  set.seed(10110)
+  train_hhs42 <- downSample(x = train_hhs, 
+                            y = train_hhs$Pobre, yname = "Pobre")
+  
+  prop.table(table(train_hhs$Pobre)) #BD inicial
+  nrow(train_hhs) 
+  
+  prop.table(table(train_hhs42$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(train_hhs42) 
+  
+  #train_hhs42 <- data.frame(sapply(train_hhs42, as.numeric))
+  
+  modelo42 <- train(Pobre~., 
+                    data = train_hhs42,
+                    method = "glmnet",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train42  <- predict(modelo42, train_hhs)
+  y_hat_test42   <- predict(modelo42, test_hhs)
+  y_hat_eval42   <- predict(modelo42, eval_hhs)
+  
+  acc_train42  <- Accuracy(y_pred = y_hat_train42, y_true = train_hhs$Pobre)
+  acc_test42   <- Accuracy(y_pred = y_hat_test42, y_true = test_hhs$Pobre)
+  acc_eval42   <- Accuracy(y_pred = y_hat_eval42, y_true = eval_hhs$Pobre)
+  
+  metricas_train42 <- data.frame(Modelo = "Logit - Down", 
+                                 "Muestreo" = "Downsampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Accuracy" = acc_train42)
+  
+  metricas_test42 <- data.frame(Modelo = "Logit - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Test",
+                                "Accuracy" = acc_test42)
+  
+  metricas_eval42 <- data.frame(Modelo = "Logit - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Evaluación",
+                                "Accuracy" = acc_eval42)
+  
+  metricas42 <- bind_rows(metricas_train42, metricas_test42, metricas_eval42)
+  metricas <- bind_rows(metricas, metricas42)
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
-  
-  
-## Up sampling-------------------------------------------------------------------
-
-#upSampledTrain_h <- upSample(y = as.factor(train_hhs$Pobre),
-                             #x = select(train_hhs, -id, -Pobre),
-                             #yname = "Pobre")
-#dim(train_hhs)
-
-#dim(upSampledTrain_h)
-
-#table(upSampledTrain_h$Pobre)
-
-
-#lambda_grid_h <- 10^seq(-4, 0.01, length = 300) #en la practica se suele usar una grilla de 200 o 300
-
-
-# modelo2 <- train(y = as.factor(upSampledTrain_h$Pobre),x = select(upSampledTrain_h),method = "glmnet",
-# trControl = ctrl,
-# family = "binomial", 
-# metric = 'Accuracy',
-# tuneGrid = expand.grid(alpha = 0,lambda=lambda_grid_h))
-
-#modelo2
