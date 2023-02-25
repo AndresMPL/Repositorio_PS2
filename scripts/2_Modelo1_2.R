@@ -25,8 +25,7 @@ rose_train <- data.frame(sapply(rose_train, as.numeric))
                      data = rose_train,
                      method = "glmnet",
                      family = "binomial",
-                     preProcess = NULL,
-                     metric = 'Accuracy')
+                     preProcess = NULL)
 
 train_hhs121 <- data.frame(sapply(train_hhs12, as.numeric))
 test_hhs121  <- data.frame(sapply(test_hhs12, as.numeric))
