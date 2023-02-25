@@ -252,9 +252,21 @@
         stat_function(fun = dnorm, xlim = c(min(train_h$edad_jefe_hogar),max(train_h$edad_jefe_hogar)), colour="#1C86EE", linewidth=1,
                       args = list(mean = mean(train_h$edad_jefe_hogar), 
                                   sd = sd(train_h$edad_jefe_hogar))) + 
-        labs(title = 'Figura 1: Distribución de edad',
+        labs(title = 'Figura 2: Distribución de edad',
              x = 'Edad jefe hogar',
              y = 'Frecuencia') + 
         theme_bw()
       
       dist_edad
+      
+      Imagen_1 <- ggplot(train_h, aes(x = Pobre_Pobre)) +
+        geom_bar(fill = "darkblue") +
+        theme_bw() +
+        scale_y_continuous(labels = label_number()) +
+        labs(title = "Figura 1: Distribución de la Clasificación de Pobreza por hogares",
+             y = "Número de hogares",
+             x = "Clasificación")
+      
+      Imagen_1
+      
+      
