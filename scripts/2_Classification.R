@@ -658,7 +658,7 @@
   #probs_test41[probs_test41 < 0] <- 0
   #probs_test41[probs_test41 > 1] <- 1
   
-  probs_eval11   <- predict(modelo41, newdata = eval_hhs, type = "prob")[, 1, drop = T]
+  probs_eval41   <- predict(modelo41, newdata = eval_hhs, type = "prob")[, 1, drop = T]
   #probs_eval41[probs_eval41 < 0] <- 0
   #probs_eval41[probs_eval41 > 1] <- 1
   
