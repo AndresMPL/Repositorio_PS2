@@ -228,7 +228,7 @@
   
   modelo12 <- train(Pobre~., 
                     data = train_hhs12,
-                    method = "glmnet",
+                    method = "glm",
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
@@ -280,7 +280,7 @@
   prop.table(table(train_hhs$Pobre))
   nrow(train_hhs)
 
-  modelo13 <- train(Pobre ~ . , 
+  modelo13 <- train(Pobre~., 
                     data = rose_train13,
                     method = "glm",
                     trControl = control,
@@ -328,7 +328,7 @@
   set.seed(1010)
   modelo2 <- train(Pobre ~ . , 
                    data = train_hhs, 
-                   method = "glmnet",
+                   method = "glm",
                    trControl = control,
                    family = "binomial",
                    preProcess = NULL,
@@ -466,7 +466,8 @@
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
-                    metric = 'Accuracy')
+                    metric = 'Accuracy',
+                    tuneGrid = expand.grid(alpha = 1,lambda=grilla))
   
   y_hat_train22  <- predict(modelo22, train_hhs)
   y_hat_test22   <- predict(modelo22, test_hhs)
@@ -520,7 +521,8 @@
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
-                    metric = 'Accuracy')
+                    metric = 'Accuracy',
+                    tuneGrid = expand.grid(alpha = 1,lambda=grilla))
   
   y_hat_train_rose23 <- predict(modelo23, newdata = train_hhs)
   y_hat_test_rose23  <- predict(modelo23, newdata = test_hhs)
@@ -702,7 +704,8 @@
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
-                    metric = 'Accuracy')
+                    metric = 'Accuracy',
+                    tuneGrid = expand.grid(alpha = 0,lambda=grilla))
   
   y_hat_train32  <- predict(modelo32, train_hhs)
   y_hat_test32   <- predict(modelo32, test_hhs)
@@ -756,7 +759,8 @@
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
-                    metric = 'Accuracy')
+                    metric = 'Accuracy',
+                    tuneGrid = expand.grid(alpha = 0,lambda=grilla))
   
   y_hat_train_rose33 <- predict(modelo33, newdata = train_hhs)
   y_hat_test_rose33  <- predict(modelo33, newdata = test_hhs)
@@ -991,7 +995,8 @@
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
-                    metric = 'Accuracy')
+                    metric = 'Accuracy',
+                    tuneGrid = expand.grid(alpha = seq(0,1,by = 0.1),lambda=grilla))
   
   y_hat_train_rose43 <- predict(modelo43, newdata = train_hhs)
   y_hat_test_rose43  <- predict(modelo43, newdata = test_hhs)
@@ -1166,7 +1171,7 @@
   
   modelo52 <- train(Pobre~., 
                     data = train_hhs52,
-                    method = "glmnet",
+                    method = "lda",
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
@@ -1220,7 +1225,7 @@
   
   modelo53 <- train(Pobre ~ . , 
                     data = rose_train53,
-                    method = "glm",
+                    method = "lda",
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
