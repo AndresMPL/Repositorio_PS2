@@ -101,7 +101,7 @@
                      trControl = control,
                      family = "binomial",
                      preProcess = NULL,
-                     metric = 'ROC')
+                     metric = 'Accuracy')
   modelo1
   
   y_hat_train1 <- predict(modelo1, newdata = train_hhs)
@@ -268,8 +268,61 @@
   metricas <- bind_rows(metricas, metricas12)
   
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
-  
 
+
+###1.3 Logit - ROSE - Oversamplig ----
+
+  rose_train13 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs13) + 69239, p = 0.5)$data
+  nrow(rose_train13)
+  table(rose_train$Pobre)
+  prop.table(table(rose_train13$Pobre))
+  
+  prop.table(table(train_hhs$Pobre))
+  nrow(train_hhs)
+
+  modelo13 <- train(Pobre ~ . , 
+                    data = rose_train13,
+                    method = "glm",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train_rose13 <- predict(modelo13, newdata = train_hhs)
+  y_hat_test_rose13  <- predict(modelo13, newdata = test_hhs)
+  y_hat_eval_rose13  <- predict(modelo13, newdata = eval_hhs)
+  
+  acc_train_rose13 <- Accuracy(y_pred = y_hat_train_rose13, y_true = train_hhs$Pobre)
+  acc_test_rose13  <- Accuracy(y_pred = y_hat_test_rose13, y_true = test_hhs$Pobre)
+  acc_eval_rose13  <- Accuracy(y_pred = y_hat_eval_rose13, y_true = eval_hhs$Pobre)
+  
+  rec_train_rose13 <- Recall(y_pred = y_hat_train_rose13, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test_rose13  <- Recall(y_pred = y_hat_test_rose13, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval_rose13  <- Recall(y_pred = y_hat_eval_rose13, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
+  metricas_train13 <- data.frame(Modelo = "Logit", 
+                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Sensitivity" = rec_train_rose13,
+                                 "Accuracy" = acc_train_rose13)
+  
+  metricas_test13 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Test",
+                                "Sensitivity" = rec_test_rose13,
+                                "Accuracy" = acc_test_rose13)
+  
+  metricas_eval13 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Evaluación",
+                                "Sensitivity" = rec_eval_rose13,
+                                "Accuracy" = acc_eval_rose13)
+  
+  metricas13 <- bind_rows(metricas_train13, metricas_test13, metricas_eval13)
+  metricas <- bind_rows(metricas, metricas13)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+
+  
 #2 - Logit - Lasso (1)------------------------------------------------------------
 
   set.seed(1010)
@@ -449,6 +502,60 @@
   metricas <- bind_rows(metricas, metricas22)
   
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+
+  
+###2.3 Logit - Lasso - ROSE - Oversamplig ----
+
+  rose_train23 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs23) + 69239, p = 0.5)$data
+  nrow(rose_train23)
+  table(rose_train23$Pobre)
+  prop.table(table(rose_train23$Pobre))
+  
+  prop.table(table(train_hhs$Pobre))
+  nrow(train_hhs)
+  
+  modelo23 <- train(Pobre ~ . , 
+                    data = rose_train23,
+                    method = "glm",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train_rose23 <- predict(modelo23, newdata = train_hhs)
+  y_hat_test_rose23  <- predict(modelo23, newdata = test_hhs)
+  y_hat_eval_rose23  <- predict(modelo23, newdata = eval_hhs)
+  
+  acc_train_rose23 <- Accuracy(y_pred = y_hat_train_rose23, y_true = train_hhs$Pobre)
+  acc_test_rose23  <- Accuracy(y_pred = y_hat_test_rose23, y_true = test_hhs$Pobre)
+  acc_eval_rose23  <- Accuracy(y_pred = y_hat_eval_rose23, y_true = eval_hhs$Pobre)
+  
+  rec_train_rose23 <- Recall(y_pred = y_hat_train_rose23, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test_rose23  <- Recall(y_pred = y_hat_test_rose23, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval_rose23  <- Recall(y_pred = y_hat_eval_rose23, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
+  metricas_train23 <- data.frame(Modelo = "Logit", 
+                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Sensitivity" = rec_train_rose23,
+                                 "Accuracy" = acc_train_rose23)
+  
+  metricas_test23 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Test",
+                                "Sensitivity" = rec_test_rose23,
+                                "Accuracy" = acc_test_rose23)
+  
+  metricas_eval23 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Evaluación",
+                                "Sensitivity" = rec_eval_rose23,
+                                "Accuracy" = acc_eval_rose23)
+  
+  metricas23 <- bind_rows(metricas_train23, metricas_test23, metricas_eval23)
+  metricas <- bind_rows(metricas, metricas23)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+  
   
 
 #3 - Logit - Ridge (0)------------------------------------------------------------
@@ -633,7 +740,59 @@
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 
-  #4 - Logit - EN-------------------------------------------------------------------
+###3.3 Logit - Ridge - ROSE - Oversamplig ----
+
+  rose_train33 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs33) + 69339, p = 0.5)$data
+  nrow(rose_train33)
+  table(rose_train33$Pobre)
+  prop.table(table(rose_train33$Pobre))
+  
+  prop.table(table(train_hhs$Pobre))
+  nrow(train_hhs)
+  
+  modelo33 <- train(Pobre ~ . , 
+                    data = rose_train33,
+                    method = "glm",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train_rose33 <- predict(modelo33, newdata = train_hhs)
+  y_hat_test_rose33  <- predict(modelo33, newdata = test_hhs)
+  y_hat_eval_rose33  <- predict(modelo33, newdata = eval_hhs)
+  
+  acc_train_rose33 <- Accuracy(y_pred = y_hat_train_rose33, y_true = train_hhs$Pobre)
+  acc_test_rose33  <- Accuracy(y_pred = y_hat_test_rose33, y_true = test_hhs$Pobre)
+  acc_eval_rose33  <- Accuracy(y_pred = y_hat_eval_rose33, y_true = eval_hhs$Pobre)
+  
+  rec_train_rose33 <- Recall(y_pred = y_hat_train_rose33, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test_rose33  <- Recall(y_pred = y_hat_test_rose33, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval_rose33  <- Recall(y_pred = y_hat_eval_rose33, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
+  metricas_train33 <- data.frame(Modelo = "Logit", 
+                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Sensitivity" = rec_train_rose33,
+                                 "Accuracy" = acc_train_rose33)
+  
+  metricas_test33 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Test",
+                                "Sensitivity" = rec_test_rose33,
+                                "Accuracy" = acc_test_rose33)
+  
+  metricas_eval33 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Evaluación",
+                                "Sensitivity" = rec_eval_rose33,
+                                "Accuracy" = acc_eval_rose33)
+  
+  metricas33 <- bind_rows(metricas_train33, metricas_test33, metricas_eval33)
+  metricas <- bind_rows(metricas, metricas33)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)  
+  
+#4 - Logit - EN-------------------------------------------------------------------
 
   set.seed(10110)
   modelo4 <- train(Pobre ~ . , 
@@ -814,8 +973,61 @@
   metricas <- bind_rows(metricas, metricas42)
   
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+
+###4.3 Logit - EN - ROSE - Oversamplig ----
+
+  rose_train43 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs43) + 69439, p = 0.5)$data
+  nrow(rose_train43)
+  table(rose_train43$Pobre)
+  prop.table(table(rose_train43$Pobre))
   
-  #5 - LDA ---------------------------------------------------------------------
+  prop.table(table(train_hhs$Pobre))
+  nrow(train_hhs)
+  
+  modelo43 <- train(Pobre ~ . , 
+                    data = rose_train43,
+                    method = "glm",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train_rose43 <- predict(modelo43, newdata = train_hhs)
+  y_hat_test_rose43  <- predict(modelo43, newdata = test_hhs)
+  y_hat_eval_rose43  <- predict(modelo43, newdata = eval_hhs)
+  
+  acc_train_rose43 <- Accuracy(y_pred = y_hat_train_rose43, y_true = train_hhs$Pobre)
+  acc_test_rose43  <- Accuracy(y_pred = y_hat_test_rose43, y_true = test_hhs$Pobre)
+  acc_eval_rose43  <- Accuracy(y_pred = y_hat_eval_rose43, y_true = eval_hhs$Pobre)
+  
+  rec_train_rose43 <- Recall(y_pred = y_hat_train_rose43, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test_rose43  <- Recall(y_pred = y_hat_test_rose43, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval_rose43  <- Recall(y_pred = y_hat_eval_rose43, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
+  metricas_train43 <- data.frame(Modelo = "Logit", 
+                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Sensitivity" = rec_train_rose43,
+                                 "Accuracy" = acc_train_rose43)
+  
+  metricas_test43 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Test",
+                                "Sensitivity" = rec_test_rose43,
+                                "Accuracy" = acc_test_rose43)
+  
+  metricas_eval43 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Evaluación",
+                                "Sensitivity" = rec_eval_rose43,
+                                "Accuracy" = acc_eval_rose43)
+  
+  metricas43 <- bind_rows(metricas_train43, metricas_test43, metricas_eval43)
+  metricas <- bind_rows(metricas, metricas43)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+
+    
+#5 - LDA ---------------------------------------------------------------------
   
   set.seed(10110)
   modelo5 <- train(Pobre ~ . , 
@@ -992,5 +1204,58 @@
   metricas52 <- bind_rows(metricas_train52, metricas_test52, metricas_eval52)
   metricas <- bind_rows(metricas, metricas52)
   
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+
+  
+###5.3 Logit - LDA - ROSE - Oversamplig ----
+  
+  rose_train53 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs53) + 69539, p = 0.5)$data
+  nrow(rose_train53)
+  table(rose_train53$Pobre)
+  prop.table(table(rose_train53$Pobre))
+  
+  prop.table(table(train_hhs$Pobre))
+  nrow(train_hhs)
+  
+  modelo53 <- train(Pobre ~ . , 
+                    data = rose_train53,
+                    method = "glm",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train_rose53 <- predict(modelo53, newdata = train_hhs)
+  y_hat_test_rose53  <- predict(modelo53, newdata = test_hhs)
+  y_hat_eval_rose53  <- predict(modelo53, newdata = eval_hhs)
+  
+  acc_train_rose53 <- Accuracy(y_pred = y_hat_train_rose53, y_true = train_hhs$Pobre)
+  acc_test_rose53  <- Accuracy(y_pred = y_hat_test_rose53, y_true = test_hhs$Pobre)
+  acc_eval_rose53  <- Accuracy(y_pred = y_hat_eval_rose53, y_true = eval_hhs$Pobre)
+  
+  rec_train_rose53 <- Recall(y_pred = y_hat_train_rose53, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test_rose53  <- Recall(y_pred = y_hat_test_rose53, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval_rose53  <- Recall(y_pred = y_hat_eval_rose53, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
+  metricas_train53 <- data.frame(Modelo = "Logit", 
+                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Sensitivity" = rec_train_rose53,
+                                 "Accuracy" = acc_train_rose53)
+  
+  metricas_test53 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Test",
+                                "Sensitivity" = rec_test_rose53,
+                                "Accuracy" = acc_test_rose53)
+  
+  metricas_eval53 <- data.frame(Modelo = "Logit", 
+                                "Muestreo" = "ROSE - Oversampling", 
+                                "Evaluación" = "Evaluación",
+                                "Sensitivity" = rec_eval_rose53,
+                                "Accuracy" = acc_eval_rose53)
+  
+  metricas53 <- bind_rows(metricas_train53, metricas_test53, metricas_eval53)
+  metricas <- bind_rows(metricas, metricas53)
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
