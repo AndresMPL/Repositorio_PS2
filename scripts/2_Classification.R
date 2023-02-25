@@ -354,7 +354,55 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
-  ###2.3 Logit - Lasso - Downsampling ----
+  ###2.2 Logit - Lasso - Downsampling ----
+  
+  
+  set.seed(10110)
+  train_hhs22 <- downSample(x = train_hhs, 
+                            y = train_hhs$Pobre, yname = "Pobre")
+  
+  prop.table(table(train_hhs$Pobre)) #BD inicial
+  nrow(train_hhs) 
+  
+  prop.table(table(train_hhs22$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(train_hhs22) 
+  
+  #train_hhs22 <- data.frame(sapply(train_hhs22, as.numeric))
+  
+  modelo22 <- train(Pobre~., 
+                    data = train_hhs22,
+                    method = "glmnet",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train22  <- predict(modelo22, train_hhs)
+  y_hat_test22   <- predict(modelo22, test_hhs)
+  y_hat_eval22   <- predict(modelo22, eval_hhs)
+  
+  acc_train22  <- Accuracy(y_pred = y_hat_train22, y_true = train_hhs$Pobre)
+  acc_test22   <- Accuracy(y_pred = y_hat_test22, y_true = test_hhs$Pobre)
+  acc_eval22   <- Accuracy(y_pred = y_hat_eval22, y_true = eval_hhs$Pobre)
+  
+  metricas_train22 <- data.frame(Modelo = "Logit - Down", 
+                                 "Muestreo" = "Downsampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Accuracy" = acc_train22)
+  
+  metricas_test22 <- data.frame(Modelo = "Logit - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Test",
+                                "Accuracy" = acc_test22)
+  
+  metricas_eval22 <- data.frame(Modelo = "Logit - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Evaluación",
+                                "Accuracy" = acc_eval22)
+  
+  metricas22 <- bind_rows(metricas_train22, metricas_test22, metricas_eval22)
+  metricas <- bind_rows(metricas, metricas22)
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
 
@@ -475,6 +523,53 @@
   
   ###3.2 Logit - Ridge - Downsampling ----
   
+  
+  set.seed(10110)
+  train_hhs32 <- downSample(x = train_hhs, 
+                            y = train_hhs$Pobre, yname = "Pobre")
+  
+  prop.table(table(train_hhs$Pobre)) #BD inicial
+  nrow(train_hhs) 
+  
+  prop.table(table(train_hhs32$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(train_hhs32) 
+  
+  #train_hhs32 <- data.frame(sapply(train_hhs32, as.numeric))
+  
+  modelo32 <- train(Pobre~., 
+                    data = train_hhs32,
+                    method = "glmnet",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train32  <- predict(modelo32, train_hhs)
+  y_hat_test32   <- predict(modelo32, test_hhs)
+  y_hat_eval32   <- predict(modelo32, eval_hhs)
+  
+  acc_train32  <- Accuracy(y_pred = y_hat_train32, y_true = train_hhs$Pobre)
+  acc_test32   <- Accuracy(y_pred = y_hat_test32, y_true = test_hhs$Pobre)
+  acc_eval32   <- Accuracy(y_pred = y_hat_eval32, y_true = eval_hhs$Pobre)
+  
+  metricas_train32 <- data.frame(Modelo = "Logit - Down", 
+                                 "Muestreo" = "Downsampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Accuracy" = acc_train32)
+  
+  metricas_test32 <- data.frame(Modelo = "Logit - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Test",
+                                "Accuracy" = acc_test32)
+  
+  metricas_eval32 <- data.frame(Modelo = "Logit - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Evaluación",
+                                "Accuracy" = acc_eval32)
+  
+  metricas32 <- bind_rows(metricas_train32, metricas_test32, metricas_eval32)
+  metricas <- bind_rows(metricas, metricas32)
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
 
 #4 - Logit con EN-------------------------------------------------------------------
