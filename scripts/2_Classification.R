@@ -141,16 +141,10 @@
 ###1.1 Logit - Upsampling ----
 
 
-###1.2 Logit - Oversampling ----
-
 
 ###1.3 Logit - Downsampling ----
 
 
-###1.4 Logit - Threshold óptimo ----
-
-
-###1.5 Logit - Cambiar función de costo ----
 
 
 #2 - Logit con Lasso (1)------------------------------------------------------------
@@ -198,6 +192,14 @@
   
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
+  
+  ###1.1 Logit - Upsampling ----
+  
+  
+  
+  ###1.3 Logit - Downsampling ----
+  
+  
 
 #3 - Logit con Ridge (0)------------------------------------------------------------
 
@@ -245,6 +247,14 @@
   
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
+  
+  ###1.1 Logit - Upsampling ----
+  
+  
+  
+  ###1.3 Logit - Downsampling ----
+  
+  
 
 #4 - Logit con EN-------------------------------------------------------------------
 
@@ -293,6 +303,14 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
 
+  
+  ###1.1 Logit - Upsampling ----
+  
+  
+  
+  ###1.3 Logit - Downsampling ----
+  
+  
 ## Up sampling-------------------------------------------------------------------
 
 #upSampledTrain_h <- upSample(y = as.factor(train_hhs$Pobre),
