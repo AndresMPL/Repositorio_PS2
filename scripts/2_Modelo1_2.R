@@ -27,9 +27,13 @@ rose_train <- data.frame(sapply(rose_train, as.numeric))
                      family = "binomial",
                      preProcess = NULL)
 
-train_hhs121 <- data.frame(sapply(train_hhs12, as.numeric))
-test_hhs121  <- data.frame(sapply(test_hhs12, as.numeric))
-eval_hhs121  <- data.frame(sapply(eval_hhs12, as.numeric))
+   backup_train_hhs <- train_hhs 
+   backup_test_hhs <- test_hhs
+   backup_eval_hhs <- eval_hhs
+   
+   train_hhs <- data.frame(sapply(train_hhs, as.numeric))
+   test_hhs  <- data.frame(sapply(test_hhs, as.numeric))
+   eval_hhs  <- data.frame(sapply(eval_hhs, as.numeric))
 
 y_hat_train_rose <- predict(modelo12, newdata = train_hhs)
 y_hat_test_rose  <- predict(modelo12, newdata = test_hhs)
