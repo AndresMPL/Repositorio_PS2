@@ -255,7 +255,7 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
   
-  ###2.1 Logit - Upsampling ----
+  ###2.1 Logit Lasso - Upsampling ----
   
   train_hhs$Pobre <- factor(train_hhs$Pobre)
   
@@ -321,7 +321,7 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
-  ###2.3 Logit - Downsampling ----
+  ###2.3 Logit - Lasso - Downsampling ----
   
   
 
@@ -372,7 +372,7 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
   
-  ###3.1 Logit - Upsampling ----
+  ###3.1 Logit - Ridge - Upsampling ----
   
   train_hhs$Pobre <- factor(train_hhs$Pobre)
   
@@ -440,7 +440,7 @@
   
   
   
-  ###3.2 Logit - Downsampling ----
+  ###3.2 Logit - Ridge - Downsampling ----
   
   
 
@@ -492,7 +492,7 @@
 
 
   
-  ###4.1 Logit - Upsampling ----
+  ###4.1 Logit - EN - Upsampling ----
   
   
   
@@ -562,7 +562,7 @@
   
   
   
-  ###4.2 Logit - Downsampling ----
+  ###4.2 Logit - EN - Downsampling ----
   
   
   
