@@ -118,9 +118,9 @@
   acc_test1   <- Accuracy(y_pred = y_hat_test1, y_true = test_hhs$Pobre)
   acc_eval1   <- Accuracy(y_pred = y_hat_eval1, y_true = eval_hhs$Pobre)
   
-  rec_train1 <- Recall(y_pred = y_hat_train1, y_true = train_hhs$Pobre, positive = 1)
-  rec_test1  <- Recall(y_pred = y_hat_test1, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval1  <- Recall(y_pred = y_hat_eval1, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train1 <- Recall(y_pred = y_hat_train1, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test1  <- Recall(y_pred = y_hat_test1, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval1  <- Recall(y_pred = y_hat_eval1, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train1 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "---", 
@@ -187,9 +187,9 @@
   acc_test11   <- Accuracy(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre))
   acc_eval11   <- Accuracy(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train11 <- Recall(y_pred = y_hat_train11, y_true = train_hhs$Pobre, positive = 1)
-  rec_test11  <- Recall(y_pred = y_hat_test11, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval11  <- Recall(y_pred = y_hat_eval11, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train11 <- Recall(y_pred = y_hat_train11, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test11  <- Recall(y_pred = y_hat_test11, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval11  <- Recall(y_pred = y_hat_eval11, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train11 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "Upsampling", 
@@ -242,9 +242,9 @@
   acc_test12   <- Accuracy(y_pred = y_hat_test12, y_true = test_hhs$Pobre)
   acc_eval12   <- Accuracy(y_pred = y_hat_eval12, y_true = eval_hhs$Pobre)
   
-  rec_train12 <- Recall(y_pred = y_hat_train12, y_true = train_hhs$Pobre, positive = 1)
-  rec_test12  <- Recall(y_pred = y_hat_test12, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval12  <- Recall(y_pred = y_hat_eval12, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train12 <- Recall(y_pred = y_hat_train12, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test12  <- Recall(y_pred = y_hat_test12, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval12  <- Recall(y_pred = y_hat_eval12, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train12 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "Downsampling", 
@@ -293,9 +293,9 @@
   acc_test2   <- Accuracy(y_pred = y_hat_test2, y_true = test_hhs$Pobre)
   acc_eval2   <- Accuracy(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre)
   
-  rec_train2 <- Recall(y_pred = y_hat_train2, y_true = train_hhs$Pobre, positive = 1)
-  rec_test2  <- Recall(y_pred = y_hat_test2, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval2  <- Recall(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train2 <- Recall(y_pred = y_hat_train2, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test2  <- Recall(y_pred = y_hat_test2, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval2  <- Recall(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train2 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "---", 
@@ -366,9 +366,9 @@
   acc_test21   <- Accuracy(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre))
   acc_eval21   <- Accuracy(y_pred = y_hat_eval21, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train21 <- Recall(y_pred = y_hat_train21, y_true = train_hhs$Pobre, positive = 1)
-  rec_test21  <- Recall(y_pred = y_hat_test21, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval21  <- Recall(y_pred = y_hat_eval21, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train21 <- Recall(y_pred = y_hat_train21, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test21  <- Recall(y_pred = y_hat_test21, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval21  <- Recall(y_pred = y_hat_eval21, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train21 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "Upsampling", 
@@ -423,9 +423,9 @@
   acc_test22   <- Accuracy(y_pred = y_hat_test22, y_true = test_hhs$Pobre)
   acc_eval22   <- Accuracy(y_pred = y_hat_eval22, y_true = eval_hhs$Pobre)
   
-  rec_train22 <- Recall(y_pred = y_hat_train22, y_true = train_hhs$Pobre, positive = 1)
-  rec_test22  <- Recall(y_pred = y_hat_test22, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval22  <- Recall(y_pred = y_hat_eval22, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train22 <- Recall(y_pred = y_hat_train22, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test22  <- Recall(y_pred = y_hat_test22, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval22  <- Recall(y_pred = y_hat_eval22, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train22 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "Downsampling", 
@@ -475,9 +475,9 @@
   acc_test3   <- Accuracy(y_pred = y_hat_test3, y_true = test_hhs$Pobre)
   acc_eval3   <- Accuracy(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre)
   
-  rec_train3 <- Recall(y_pred = y_hat_train3, y_true = train_hhs$Pobre, positive = 1)
-  rec_test3  <- Recall(y_pred = y_hat_test3, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval3  <- Recall(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train3 <- Recall(y_pred = y_hat_train3, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test3  <- Recall(y_pred = y_hat_test3, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval3  <- Recall(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train3 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "---", 
@@ -548,9 +548,9 @@
   acc_test31   <- Accuracy(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre))
   acc_eval31   <- Accuracy(y_pred = y_hat_eval31, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train31 <- Recall(y_pred = y_hat_train31, y_true = train_hhs$Pobre, positive = 1)
-  rec_test31  <- Recall(y_pred = y_hat_test31, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval31  <- Recall(y_pred = y_hat_eval31, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train31 <- Recall(y_pred = y_hat_train31, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test31  <- Recall(y_pred = y_hat_test31, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval31  <- Recall(y_pred = y_hat_eval31, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train31 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "Upsampling", 
@@ -605,9 +605,9 @@
   acc_test32   <- Accuracy(y_pred = y_hat_test32, y_true = test_hhs$Pobre)
   acc_eval32   <- Accuracy(y_pred = y_hat_eval32, y_true = eval_hhs$Pobre)
   
-  rec_train32 <- Recall(y_pred = y_hat_train32, y_true = train_hhs$Pobre, positive = 1)
-  rec_test32  <- Recall(y_pred = y_hat_test32, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval32  <- Recall(y_pred = y_hat_eval32, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train32 <- Recall(y_pred = y_hat_train32, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test32  <- Recall(y_pred = y_hat_test32, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval32  <- Recall(y_pred = y_hat_eval32, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train32 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "Downsampling", 
@@ -657,9 +657,9 @@
   acc_test4   <- Accuracy(y_pred = y_hat_test4, y_true = test_hhs$Pobre)
   acc_eval4   <- Accuracy(y_pred = y_hat_eval4, y_true = eval_hhs$Pobre)
   
-  rec_train4 <- Recall(y_pred = y_hat_train4, y_true = train_hhs$Pobre, positive = 1)
-  rec_test4  <- Recall(y_pred = y_hat_test4, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval4  <- Recall(y_pred = y_hat_eval4, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train4 <- Recall(y_pred = y_hat_train4, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test4  <- Recall(y_pred = y_hat_test4, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval4  <- Recall(y_pred = y_hat_eval4, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train4 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "---", 
@@ -729,9 +729,9 @@
   acc_test41   <- Accuracy(y_pred = y_hat_test41, y_true = as.numeric(test_hhs$Pobre))
   acc_eval41   <- Accuracy(y_pred = y_hat_eval41, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train41 <- Recall(y_pred = y_hat_train41, y_true = train_hhs$Pobre, positive = 1)
-  rec_test41  <- Recall(y_pred = y_hat_test41, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval41  <- Recall(y_pred = y_hat_eval41, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train41 <- Recall(y_pred = y_hat_train41, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test41  <- Recall(y_pred = y_hat_test41, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval41  <- Recall(y_pred = y_hat_eval41, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train41 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "Upsampling", 
@@ -788,9 +788,9 @@
   acc_test42   <- Accuracy(y_pred = y_hat_test42, y_true = test_hhs$Pobre)
   acc_eval42   <- Accuracy(y_pred = y_hat_eval42, y_true = eval_hhs$Pobre)
   
-  rec_train42 <- Recall(y_pred = y_hat_train42, y_true = train_hhs$Pobre, positive = 1)
-  rec_test42  <- Recall(y_pred = y_hat_test42, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval42  <- Recall(y_pred = y_hat_eval42, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train42 <- Recall(y_pred = y_hat_train42, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test42  <- Recall(y_pred = y_hat_test42, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval42  <- Recall(y_pred = y_hat_eval42, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train42 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "Downsampling", 
@@ -838,9 +838,9 @@
   acc_test5   <- Accuracy(y_pred = y_hat_test5, y_true = test_hhs$Pobre)
   acc_eval5   <- Accuracy(y_pred = y_hat_eval5, y_true = eval_hhs$Pobre)
   
-  rec_train5 <- Recall(y_pred = y_hat_train5, y_true = train_hhs$Pobre, positive = 1)
-  rec_test5  <- Recall(y_pred = y_hat_test5, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval5  <- Recall(y_pred = y_hat_eval5, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train5 <- Recall(y_pred = y_hat_train5, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test5  <- Recall(y_pred = y_hat_test5, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval5  <- Recall(y_pred = y_hat_eval5, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train5 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "---", 
@@ -909,9 +909,9 @@
   acc_test51   <- Accuracy(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre))
   acc_eval51   <- Accuracy(y_pred = y_hat_eval51, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train51 <- Recall(y_pred = y_hat_train51, y_true = train_hhs$Pobre, positive = 1)
-  rec_test51  <- Recall(y_pred = y_hat_test51, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval51  <- Recall(y_pred = y_hat_eval51, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train51 <- Recall(y_pred = y_hat_train51, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test51  <- Recall(y_pred = y_hat_test51, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval51  <- Recall(y_pred = y_hat_eval51, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train51 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "Upsampling", 
@@ -967,9 +967,9 @@
   acc_test52   <- Accuracy(y_pred = y_hat_test52, y_true = test_hhs$Pobre)
   acc_eval52   <- Accuracy(y_pred = y_hat_eval52, y_true = eval_hhs$Pobre)
   
-  rec_train52 <- Recall(y_pred = y_hat_train52, y_true = train_hhs$Pobre, positive = 1)
-  rec_test52  <- Recall(y_pred = y_hat_test52, y_true = test_hhs$Pobre, positive = 1)
-  rec_eval52  <- Recall(y_pred = y_hat_eval52, y_true = eval_hhs$Pobre, positive = 1)
+  rec_train52 <- Recall(y_pred = y_hat_train52, y_true = train_hhs$Pobre, positive = "Pobre")
+  rec_test52  <- Recall(y_pred = y_hat_test52, y_true = test_hhs$Pobre, positive = "Pobre")
+  rec_eval52  <- Recall(y_pred = y_hat_eval52, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train52 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "Downsampling", 
