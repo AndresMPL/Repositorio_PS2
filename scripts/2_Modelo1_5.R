@@ -5,10 +5,7 @@ pesos <- as.numeric(train_hhs$Pobre)
 pesos[train_hhs$Pobre == 1] <- 3
 pesos[train_hhs$Pobre == 0] <- 1
 
-X15 <- select(train_hhs, -Pobre)
-Y15 <- as.factor(train_hhs$Pobre - 1, -id, -Pobre)
-
-modelo_pesos <- train(Pobre~., 
+modelo_pesos15 <- train(Pobre~., 
                       data = train_hhs,
                       method = "glmnet",
                       family = "binomial",
@@ -16,9 +13,9 @@ modelo_pesos <- train(Pobre~.,
                       metric = 'Accuracy',
                       weight = pesos)
 
-y_hat_train15  <- predict(modelo_pesos, train_hhs)
-y_hat_test15   <- predict(modelo_pesos, test_hhs)
-y_hat_eval155  <- predict(modelo_pesos, eval_hhs)
+y_hat_train15  <- predict(modelo_pesos15, train_hhs)
+y_hat_test15   <- predict(modelo_pesos15, test_hhs)
+y_hat_eval155  <- predict(modelo_pesos15, eval_hhs)
 
 acc_train15 <- Accuracy(y_pred = y_hat_train15, y_true = train_hhs$Pobre)
 acc_test15 <- Accuracy(y_pred = y_hat_test15, y_true = train_hhs$Pobre)
