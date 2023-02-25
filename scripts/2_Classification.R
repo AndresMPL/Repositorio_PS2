@@ -593,9 +593,9 @@
   rec_test_rose23  <- Recall(y_pred = y_hat_test_rose23, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose23  <- Recall(y_pred = y_hat_eval_rose23, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  f1_train23 <- F1_Score(y_pred = y_hat_train23, y_true = train_hhs$Pobre, positive = "Pobre")
-  f1_test23  <- F1_Score(y_pred = y_hat_test23, y_true = test_hhs$Pobre, positive = "Pobre")
-  f1_eval23  <- F1_Score(y_pred = y_hat_eval23, y_true = eval_hhs$Pobre, positive = "Pobre")
+  f1_train23 <- F1_Score(y_pred = y_hat_train_rose23, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test23  <- F1_Score(y_pred = y_hat_test_rose23, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval23  <- F1_Score(y_pred = y_hat_eval_rose23, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train23 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "ROSE - Oversampling", 
