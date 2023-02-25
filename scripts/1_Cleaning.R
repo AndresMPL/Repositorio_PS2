@@ -221,7 +221,7 @@
       
       colnames(train_h)
       
-      db <- dummyVars(~.,train_h) #Ver cuáles tienen solo dos factores
+      db <- dummyVars(~.,train_h) #Ver cuáles tienen solo dos factores para no dummyficar
         #nivel_edu_jefe_hogar
         #Vivienda
       
