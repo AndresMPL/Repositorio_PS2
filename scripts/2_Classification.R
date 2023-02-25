@@ -862,9 +862,9 @@
   rec_test_rose33  <- Recall(y_pred = y_hat_test_rose33, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose33  <- Recall(y_pred = y_hat_eval_rose33, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  f1_train33 <- F1_Score(y_pred = y_hat_train33, y_true = train_hhs$Pobre, positive = "Pobre")
-  f1_test33  <- F1_Score(y_pred = y_hat_test33, y_true = test_hhs$Pobre, positive = "Pobre")
-  f1_eval33  <- F1_Score(y_pred = y_hat_eval33, y_true = eval_hhs$Pobre, positive = "Pobre")
+  f1_train33 <- F1_Score(y_pred = y_hat_train_rose33, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test33  <- F1_Score(y_pred = y_hat_test_rose33, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval33  <- F1_Score(y_pred = y_hat_eval_rose33, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train33 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "ROSE - Oversampling", 
@@ -1130,9 +1130,9 @@
   rec_test_rose43  <- Recall(y_pred = y_hat_test_rose43, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose43  <- Recall(y_pred = y_hat_eval_rose43, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  f1_train43 <- F1_Score(y_pred = y_hat_train43, y_true = train_hhs$Pobre, positive = "Pobre")
-  f1_test43  <- F1_Score(y_pred = y_hat_test43, y_true = test_hhs$Pobre, positive = "Pobre")
-  f1_eval43  <- F1_Score(y_pred = y_hat_eval43, y_true = eval_hhs$Pobre, positive = "Pobre")
+  f1_train43 <- F1_Score(y_pred = y_hat_train_rose43, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test43  <- F1_Score(y_pred = y_hat_test_rose43, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval43  <- F1_Score(y_pred = y_hat_eval_rose43, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train43 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "ROSE - Oversampling", 
@@ -1395,9 +1395,9 @@
   rec_test_rose53  <- Recall(y_pred = y_hat_test_rose53, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose53  <- Recall(y_pred = y_hat_eval_rose53, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  f1_train53 <- F1_Score(y_pred = y_hat_train53, y_true = train_hhs$Pobre, positive = "Pobre")
-  f1_test53  <- F1_Score(y_pred = y_hat_test53, y_true = test_hhs$Pobre, positive = "Pobre")
-  f1_eval53  <- F1_Score(y_pred = y_hat_eval53, y_true = eval_hhs$Pobre, positive = "Pobre")
+  f1_train53 <- F1_Score(y_pred = y_hat_train_rose53, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test53  <- F1_Score(y_pred = y_hat_test_rose53, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval53  <- F1_Score(y_pred = y_hat_eval_rose53, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train53 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "ROSE - Oversampling", 
