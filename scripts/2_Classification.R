@@ -187,9 +187,9 @@
   acc_test11   <- Accuracy(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre))
   acc_eval11   <- Accuracy(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train11 <- Recall(y_pred = y_hat_train11, y_true = train_hhs$Pobre, positive = "Pobre")
-  rec_test11  <- Recall(y_pred = y_hat_test11, y_true = test_hhs$Pobre, positive = "Pobre")
-  rec_eval11  <- Recall(y_pred = y_hat_eval11, y_true = eval_hhs$Pobre, positive = "Pobre")
+  rec_train11 <- Recall(y_pred = y_hat_train11, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  rec_test11  <- Recall(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  rec_eval11  <- Recall(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train11 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "Upsampling", 
