@@ -122,23 +122,30 @@
   rec_test1  <- Recall(y_pred = y_hat_test1, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval1  <- Recall(y_pred = y_hat_eval1, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train1 <- F1_Score(y_pred = y_hat_train1, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test1  <- F1_Score(y_pred = y_hat_test1, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval1  <- F1_Score(y_pred = y_hat_eval1, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train1 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Sensitivity" = rec_train1,
-                                "Accuracy" = acc_train1)
+                                "Accuracy" = acc_train1,
+                                "F1" = f1_train1)
   
   metricas_test1 <- data.frame(Modelo = "Logit", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Sensitivity" = rec_test1,
-                               "Accuracy" = acc_test1)
+                               "Accuracy" = acc_test1,
+                               "F1" = f1_eval1)
   
   metricas_eval1 <- data.frame(Modelo = "Logit", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Sensitivity" = rec_eval1,
-                               "Accuracy" = acc_eval1)
+                               "Accuracy" = acc_eval1,
+                               "F1" = f1_eval1)
   
   
   metricas1 <- bind_rows(metricas_train1, metricas_test1, metricas_eval1)
@@ -193,23 +200,30 @@
   rec_test11  <- Recall(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval11  <- Recall(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
+  f1_train11 <- F1_Score(y_pred = y_hat_train11, y_true = train_hhs$Pobre, positive = 1)
+  f1_test11  <- F1_Score(y_pred = y_hat_test11, y_true = test_hhs$Pobre, positive = 1)
+  f1_eval11  <- F1_Score(y_pred = y_hat_eval11, y_true = eval_hhs$Pobre, positive = 1)
+  
   metricas_train11 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train11,
-                                 "Accuracy" = acc_train11)
+                                 "Accuracy" = acc_train11,
+                                 "F1" = f1_train11)
   
   metricas_test11 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test11,
-                                "Accuracy" = acc_test11)
+                                "Accuracy" = acc_test11,
+                                "F1" = f1_test11)
   
   metricas_eval11 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval11,
-                                "Accuracy" = acc_eval11)
+                                "Accuracy" = acc_eval11,
+                                "F1" = f1_eval11)
   
   metricas11 <- bind_rows(metricas_train11, metricas_test11, metricas_eval11)
   metricas <- bind_rows(metricas1, metricas11)
@@ -250,23 +264,30 @@
   rec_test12  <- Recall(y_pred = y_hat_test12, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval12  <- Recall(y_pred = y_hat_eval12, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train12 <- F1_Score(y_pred = y_hat_train12, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test12  <- F1_Score(y_pred = y_hat_test12, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval12  <- F1_Score(y_pred = y_hat_eval12, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train12 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train12,
-                                 "Accuracy" = acc_train12)
+                                 "Accuracy" = acc_train12,
+                                 "F1" = f1_train12)
   
   metricas_test12 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test12,
-                                "Accuracy" = acc_test12)
+                                "Accuracy" = acc_test12,
+                                "F1" = f1_test12)
   
   metricas_eval12 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval12,
-                                "Accuracy" = acc_eval12)
+                                "Accuracy" = acc_eval12,
+                                "F1" = f1_eval12)
   
   metricas12 <- bind_rows(metricas_train12, metricas_test12, metricas_eval12)
   metricas <- bind_rows(metricas, metricas12)
@@ -306,23 +327,30 @@
   rec_test_rose13  <- Recall(y_pred = y_hat_test_rose13, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose13  <- Recall(y_pred = y_hat_eval_rose13, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train13 <- F1_Score(y_pred = y_hat_train13, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test13  <- F1_Score(y_pred = y_hat_test13, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval13  <- F1_Score(y_pred = y_hat_eval13, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train13 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose13,
-                                 "Accuracy" = acc_train_rose13)
+                                 "Accuracy" = acc_train_rose13,
+                                 "F1" = f1_train13)
   
   metricas_test13 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose13,
-                                "Accuracy" = acc_test_rose13)
+                                "Accuracy" = acc_test_rose13,
+                                "F1" = f1_test13)
   
   metricas_eval13 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose13,
-                                "Accuracy" = acc_eval_rose13)
+                                "Accuracy" = acc_eval_rose13,
+                                "F1" = f1_eval13)
   
   metricas13 <- bind_rows(metricas_train13, metricas_test13, metricas_eval13)
   metricas <- bind_rows(metricas, metricas13)
@@ -356,23 +384,30 @@
   rec_test2  <- Recall(y_pred = y_hat_test2, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval2  <- Recall(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train2 <- F1_Score(y_pred = y_hat_train2, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test2  <- F1_Score(y_pred = y_hat_test2, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval2  <- F1_Score(y_pred = y_hat_eval2, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train2 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Sensitivity" = rec_train2,
-                                "Accuracy" = acc_train2)
+                                "Accuracy" = acc_train2,
+                                "F1" = f1_train2)
   
   metricas_test2 <- data.frame(Modelo = "Logit - Lasso", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Sensitivity" = rec_test2,
-                               "Accuracy" = acc_test2)
+                               "Accuracy" = acc_test2,
+                               "F1" = f1_test2)
   
   metricas_eval2 <- data.frame(Modelo = "Logit - Lasso", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Sensitivity" = rec_eval2,
-                               "Accuracy" = acc_eval2)
+                               "Accuracy" = acc_eval2,
+                               "F1" = f1_eval2)
   
   
   metricas2 <- bind_rows(metricas_train2, metricas_test2, metricas_eval2)
@@ -431,23 +466,30 @@
   rec_test21  <- Recall(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval21  <- Recall(y_pred = y_hat_eval21, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
+  f1_train21 <- F1_Score(y_pred = y_hat_train21, y_true = train_hhs$Pobre, positive = 1)
+  f1_test21  <- F1_Score(y_pred = y_hat_test21, y_true = test_hhs$Pobre, positive = 1)
+  f1_eval21  <- F1_Score(y_pred = y_hat_eval21, y_true = eval_hhs$Pobre, positive = 1)
+  
   metricas_train21 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train21,
-                                 "Accuracy" = acc_train21)
+                                 "Accuracy" = acc_train21,
+                                 "F1" = f1_train21)
   
   metricas_test21 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test21,
-                                "Accuracy" = acc_test21)
+                                "Accuracy" = acc_test21,
+                                "F1" = f1_test21)
   
   metricas_eval21 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval21,
-                                "Accuracy" = acc_eval21)
+                                "Accuracy" = acc_eval21,
+                                "F1" = f1_eval21)
   
   metricas21 <- bind_rows(metricas_train21, metricas_test21, metricas_eval21)
   metricas <- bind_rows(metricas, metricas21)
@@ -491,23 +533,30 @@
   rec_test22  <- Recall(y_pred = y_hat_test22, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval22  <- Recall(y_pred = y_hat_eval22, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train22 <- F1_Score(y_pred = y_hat_train22, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test22  <- F1_Score(y_pred = y_hat_test22, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval22  <- F1_Score(y_pred = y_hat_eval22, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train22 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train22,
-                                 "Accuracy" = acc_train22)
+                                 "Accuracy" = acc_train22,
+                                 "F1" = f1_train22)
   
   metricas_test22 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test22,
-                                "Accuracy" = acc_test22)
+                                "Accuracy" = acc_test22,
+                                "F1" = f1_test22)
   
   metricas_eval22 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval22,
-                                "Accuracy" = acc_eval22)
+                                "Accuracy" = acc_eval22,
+                                "F1" = f1_eval22)
   
   metricas22 <- bind_rows(metricas_train22, metricas_test22, metricas_eval22)
   metricas <- bind_rows(metricas, metricas22)
@@ -548,23 +597,30 @@
   rec_test_rose23  <- Recall(y_pred = y_hat_test_rose23, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose23  <- Recall(y_pred = y_hat_eval_rose23, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train23 <- F1_Score(y_pred = y_hat_train23, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test23  <- F1_Score(y_pred = y_hat_test23, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval23  <- F1_Score(y_pred = y_hat_eval23, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train23 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose23,
-                                 "Accuracy" = acc_train_rose23)
+                                 "Accuracy" = acc_train_rose23,
+                                 "F1" = f1_train23)
   
   metricas_test23 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose23,
-                                "Accuracy" = acc_test_rose23)
+                                "Accuracy" = acc_test_rose23,
+                                "F1" = f1_test23)
   
   metricas_eval23 <- data.frame(Modelo = "Logit - Lasso", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose23,
-                                "Accuracy" = acc_eval_rose23)
+                                "Accuracy" = acc_eval_rose23,
+                                "F1" = f1_eval23)
   
   metricas23 <- bind_rows(metricas_train23, metricas_test23, metricas_eval23)
   metricas <- bind_rows(metricas, metricas23)
@@ -600,24 +656,30 @@
   rec_test3  <- Recall(y_pred = y_hat_test3, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval3  <- Recall(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train3 <- F1_Score(y_pred = y_hat_train3, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test3  <- F1_Score(y_pred = y_hat_test3, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval3  <- F1_Score(y_pred = y_hat_eval3, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train3 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Sensitivity" = rec_train3,
-                                "Accuracy" = acc_train3)
+                                "Accuracy" = acc_train3,
+                                "F1" = f1_train3)
   
   metricas_test3 <- data.frame(Modelo = "Logit - Ridge", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Sensitivity" = rec_test3,
-                               "Accuracy" = acc_test3)
+                               "Accuracy" = acc_test3,
+                               "F1" = f1_test3)
   
   metricas_eval3 <- data.frame(Modelo = "Logit - Ridge", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Sensitivity" = rec_eval3,
-                               "Accuracy" = acc_eval3)
-  
+                               "Accuracy" = acc_eval3,
+                               "F1" = f1_eval3)
   
   metricas3 <- bind_rows(metricas_train3, metricas_test3, metricas_eval3)
   metricas <- bind_rows(metricas, metricas3)
@@ -675,23 +737,30 @@
   rec_test31  <- Recall(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval31  <- Recall(y_pred = y_hat_eval31, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
+  f1_train31 <- F1_Score(y_pred = y_hat_train31, y_true = train_hhs$Pobre, positive = 1)
+  f1_test31  <- F1_Score(y_pred = y_hat_test31, y_true = test_hhs$Pobre, positive = 1)
+  f1_eval31  <- F1_Score(y_pred = y_hat_eval31, y_true = eval_hhs$Pobre, positive = 1)
+  
   metricas_train31 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train31,
-                                 "Accuracy" = acc_train31)
+                                 "Accuracy" = acc_train31,
+                                 "F1" = f1_train31)
   
   metricas_test31 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test31,
-                                "Accuracy" = acc_test31)
+                                "Accuracy" = acc_test31,
+                                "F1" = f1_test31)
   
   metricas_eval31 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval31,
-                                "Accuracy" = acc_eval31)
+                                "Accuracy" = acc_eval31,
+                                "F1" = f1_eval31)
   
   metricas31 <- bind_rows(metricas_train31, metricas_test31, metricas_eval31)
   metricas <- bind_rows(metricas, metricas31)
@@ -735,23 +804,30 @@
   rec_test32  <- Recall(y_pred = y_hat_test32, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval32  <- Recall(y_pred = y_hat_eval32, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train32 <- F1_Score(y_pred = y_hat_train32, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test32  <- F1_Score(y_pred = y_hat_test32, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval32  <- F1_Score(y_pred = y_hat_eval32, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train32 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train32,
-                                 "Accuracy" = acc_train32)
+                                 "Accuracy" = acc_train32,
+                                 "F1" = f1_train32)
   
   metricas_test32 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test32,
-                                "Accuracy" = acc_test32)
+                                "Accuracy" = acc_test32,
+                                "F1" = f1_test32)
   
   metricas_eval32 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval32,
-                                "Accuracy" = acc_eval32)
+                                "Accuracy" = acc_eval32,
+                                "F1" = f1_eval32)
   
   metricas32 <- bind_rows(metricas_train32, metricas_test32, metricas_eval32)
   metricas <- bind_rows(metricas, metricas32)
@@ -792,23 +868,30 @@
   rec_test_rose33  <- Recall(y_pred = y_hat_test_rose33, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose33  <- Recall(y_pred = y_hat_eval_rose33, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train33 <- F1_Score(y_pred = y_hat_train33, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test33  <- F1_Score(y_pred = y_hat_test33, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval33  <- F1_Score(y_pred = y_hat_eval33, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train33 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose33,
-                                 "Accuracy" = acc_train_rose33)
+                                 "Accuracy" = acc_train_rose33,
+                                 "F1" = f1_train33)
   
   metricas_test33 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose33,
-                                "Accuracy" = acc_test_rose33)
+                                "Accuracy" = acc_test_rose33,
+                                "F1" = f1_test33)
   
   metricas_eval33 <- data.frame(Modelo = "Logit - Ridge", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose33,
-                                "Accuracy" = acc_eval_rose33)
+                                "Accuracy" = acc_eval_rose33,
+                                "F1" = f1_eval33)
   
   metricas33 <- bind_rows(metricas_train33, metricas_test33, metricas_eval33)
   metricas <- bind_rows(metricas, metricas33)
@@ -842,23 +925,30 @@
   rec_test4  <- Recall(y_pred = y_hat_test4, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval4  <- Recall(y_pred = y_hat_eval4, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train4 <- F1_Score(y_pred = y_hat_train4, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test4  <- F1_Score(y_pred = y_hat_test4, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval4  <- F1_Score(y_pred = y_hat_eval4, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train4 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Sensitivity" = rec_train4,
-                                "Accuracy" = acc_train4)
+                                "Accuracy" = acc_train4,
+                                "F1" = f1_train4)
   
   metricas_test4 <- data.frame(Modelo = "Logit - EN", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Sensitivity" = rec_test4,
-                               "Accuracy" = acc_test4)
+                               "Accuracy" = acc_test4,
+                               "F1" = f1_test4)
   
   metricas_eval4 <- data.frame(Modelo = "Logit - EN", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Sensitivity" = rec_eval4,
-                               "Accuracy" = acc_eval4)
+                               "Accuracy" = acc_eval4,
+                               "F1" = f1_eval4)
   
   metricas4 <- bind_rows(metricas_train4, metricas_test4, metricas_eval4)
   metricas <- bind_rows(metricas, metricas4)
@@ -916,23 +1006,30 @@
   rec_test41  <- Recall(y_pred = y_hat_test41, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval41  <- Recall(y_pred = y_hat_eval41, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
+  f1_train41 <- F1_Score(y_pred = y_hat_train41, y_true = train_hhs$Pobre, positive = 1)
+  f1_test41  <- F1_Score(y_pred = y_hat_test41, y_true = test_hhs$Pobre, positive = 1)
+  f1_eval41  <- F1_Score(y_pred = y_hat_eval41, y_true = eval_hhs$Pobre, positive = 1)
+  
   metricas_train41 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train41,
-                                 "Accuracy" = acc_train41)
+                                 "Accuracy" = acc_train41,
+                                 "F1" = f1_train41)
   
   metricas_test41 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test41,
-                                "Accuracy" = acc_test41)
+                                "Accuracy" = acc_test41,
+                                "F1" = f1_test41)
   
   metricas_eval41 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval41,
-                                "Accuracy" = acc_eval41)
+                                "Accuracy" = acc_eval41,
+                                "F1" = f1_eval41)
   
   metricas41 <- bind_rows(metricas_train41, metricas_test41, metricas_eval41)
   metricas <- bind_rows(metricas, metricas41)
@@ -977,23 +1074,30 @@
   rec_test42  <- Recall(y_pred = y_hat_test42, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval42  <- Recall(y_pred = y_hat_eval42, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train42 <- F1_Score(y_pred = y_hat_train42, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test42  <- F1_Score(y_pred = y_hat_test42, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval42  <- F1_Score(y_pred = y_hat_eval42, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train42 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train42,
-                                 "Accuracy" = acc_train42)
+                                 "Accuracy" = acc_train42,
+                                 "F1" = f1_train42)
   
   metricas_test42 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test42,
-                                "Accuracy" = acc_test42)
+                                "Accuracy" = acc_test42,
+                                "F1" = f1_test42)
   
   metricas_eval42 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval42,
-                                "Accuracy" = acc_eval42)
+                                "Accuracy" = acc_eval42,
+                                "F1" = f1_eval42)
   
   metricas42 <- bind_rows(metricas_train42, metricas_test42, metricas_eval42)
   metricas <- bind_rows(metricas, metricas42)
@@ -1034,23 +1138,30 @@
   rec_test_rose43  <- Recall(y_pred = y_hat_test_rose43, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose43  <- Recall(y_pred = y_hat_eval_rose43, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train43 <- F1_Score(y_pred = y_hat_train43, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test43  <- F1_Score(y_pred = y_hat_test43, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval43  <- F1_Score(y_pred = y_hat_eval43, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train43 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose43,
-                                 "Accuracy" = acc_train_rose43)
+                                 "Accuracy" = acc_train_rose43,
+                                 "F1" = f1_train43)
   
   metricas_test43 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose43,
-                                "Accuracy" = acc_test_rose43)
+                                "Accuracy" = acc_test_rose43,
+                                "F1" = f1_test43)
   
   metricas_eval43 <- data.frame(Modelo = "Logit - EN", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose43,
-                                "Accuracy" = acc_eval_rose43)
+                                "Accuracy" = acc_eval_rose43,
+                                "F1" = f1_eval43)
   
   metricas43 <- bind_rows(metricas_train43, metricas_test43, metricas_eval43)
   metricas <- bind_rows(metricas, metricas43)
@@ -1084,23 +1195,30 @@
   rec_test5  <- Recall(y_pred = y_hat_test5, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval5  <- Recall(y_pred = y_hat_eval5, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train5 <- F1_Score(y_pred = y_hat_train5, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test5  <- F1_Score(y_pred = y_hat_test5, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval5  <- F1_Score(y_pred = y_hat_eval5, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train5 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
                                 "Sensitivity" = rec_train5,
-                                "Accuracy" = acc_train5)
+                                "Accuracy" = acc_train5,
+                                "F1" = f1_train5)
   
   metricas_test5 <- data.frame(Modelo = "LDA", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Test",
                                "Sensitivity" = rec_test5,
-                               "Accuracy" = acc_test5)
+                               "Accuracy" = acc_test5,
+                               "F1" = f1_test5)
   
   metricas_eval5 <- data.frame(Modelo = "LDA", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
                                "Sensitivity" = rec_eval5,
-                               "Accuracy" = acc_eval5)
+                               "Accuracy" = acc_eval5,
+                               "F1" = f1_eval5)
   
   metricas5 <- bind_rows(metricas_train5, metricas_test5, metricas_eval5)
   metricas <- bind_rows(metricas, metricas5)
@@ -1157,23 +1275,30 @@
   rec_test51  <- Recall(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval51  <- Recall(y_pred = y_hat_eval51, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
+  f1_train51 <- F1_Score(y_pred = y_hat_train51, y_true = train_hhs$Pobre, positive = 1)
+  f1_test51  <- F1_Score(y_pred = y_hat_test51, y_true = test_hhs$Pobre, positive = 1)
+  f1_eval51  <- F1_Score(y_pred = y_hat_eval51, y_true = eval_hhs$Pobre, positive = 1)
+  
   metricas_train51 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train51,
-                                 "Accuracy" = acc_train51)
+                                 "Accuracy" = acc_train51,
+                                 "F1" = f1_train51)
   
   metricas_test51 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test51,
-                                "Accuracy" = acc_test51)
+                                "Accuracy" = acc_test51,
+                                "F1" = f1_test51)
   
   metricas_eval51 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval51,
-                                "Accuracy" = acc_eval51)
+                                "Accuracy" = acc_eval51,
+                                "F1" = f1_eval51)
   
   metricas51 <- bind_rows(metricas_train51, metricas_test51, metricas_eval51)
   metricas <- bind_rows(metricas, metricas51)
@@ -1217,23 +1342,30 @@
   rec_test52  <- Recall(y_pred = y_hat_test52, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval52  <- Recall(y_pred = y_hat_eval52, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train52 <- F1_Score(y_pred = y_hat_train52, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test52  <- F1_Score(y_pred = y_hat_test52, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval52  <- F1_Score(y_pred = y_hat_eval52, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train52 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "Downsampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train52,
-                                 "Accuracy" = acc_train52)
+                                 "Accuracy" = acc_train52,
+                                 "F1" = f1_train52)
   
   metricas_test52 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test52,
-                                "Accuracy" = acc_test52)
+                                "Accuracy" = acc_test52,
+                                "F1" = f1_test52)
   
   metricas_eval52 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "Downsampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval52,
-                                "Accuracy" = acc_eval52)
+                                "Accuracy" = acc_eval52,
+                                "F1" = f1_eval52)
   
   metricas52 <- bind_rows(metricas_train52, metricas_test52, metricas_eval52)
   metricas <- bind_rows(metricas, metricas52)
@@ -1273,23 +1405,30 @@
   rec_test_rose53  <- Recall(y_pred = y_hat_test_rose53, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose53  <- Recall(y_pred = y_hat_eval_rose53, y_true = eval_hhs$Pobre, positive = "Pobre")
   
+  f1_train53 <- F1_Score(y_pred = y_hat_train53, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test53  <- F1_Score(y_pred = y_hat_test53, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval53  <- F1_Score(y_pred = y_hat_eval53, y_true = eval_hhs$Pobre, positive = "Pobre")
+  
   metricas_train53 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose53,
-                                 "Accuracy" = acc_train_rose53)
+                                 "Accuracy" = acc_train_rose53,
+                                 "F1" = f1_train53)
   
   metricas_test53 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose53,
-                                "Accuracy" = acc_test_rose53)
+                                "Accuracy" = acc_test_rose53,
+                                "F1" = f1_test53)
   
   metricas_eval53 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose53,
-                                "Accuracy" = acc_eval_rose53)
+                                "Accuracy" = acc_eval_rose53,
+                                "F1" = f1_eval53)
   
   metricas53 <- bind_rows(metricas_train53, metricas_test53, metricas_eval53)
   metricas <- bind_rows(metricas, metricas53)
