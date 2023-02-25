@@ -18,7 +18,7 @@
       set.seed(10110)
       modelo11 <- train(Pobre~., 
                         data = train_hhs11,
-                        method = "glmnet",
+                        method = "glm",
                         trControl = control,
                         family = "binomial",
                         preProcess = NULL,
