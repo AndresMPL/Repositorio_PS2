@@ -118,20 +118,26 @@
   acc_test1   <- Accuracy(y_pred = y_hat_test1, y_true = test_hhs$Pobre)
   acc_eval1   <- Accuracy(y_pred = y_hat_eval1, y_true = eval_hhs$Pobre)
   
+  rec_train1 <- Recall(y_pred = y_hat_train1, y_true = train_hhs$Pobre, positive = 1)
+  rec_test1  <- Recall(y_pred = y_hat_test1, y_true = test_hhs$Pobre, positive = 1)
+  rec_eval1  <- Recall(y_pred = y_hat_eval1, y_true = eval_hhs$Pobre, positive = 1)
   
   metricas_train1 <- data.frame(Modelo = "Logit", 
                                 "Muestreo" = "---", 
                                 "Evaluación" = "Entrenamiento",
+                                "Sensitivity" = rec_train1,
                                 "Accuracy" = acc_train1)
   
   metricas_test1 <- data.frame(Modelo = "Logit", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Test",
+                               "Sensitivity" = rec_test1,
                                "Accuracy" = acc_test1)
   
   metricas_eval1 <- data.frame(Modelo = "Logit", 
                                "Muestreo" = "---", 
                                "Evaluación" = "Evaluación",
+                               "Sensitivity" = rec_eval1,
                                "Accuracy" = acc_eval1)
   
   
