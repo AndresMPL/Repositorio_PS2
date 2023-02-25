@@ -23,7 +23,7 @@
   
 #Leer los datos - 
 
-  setwd("C:/Users/User/Documents/Big_Data/BD_Taller 2") #Por tamaño de los archivos, seleecionar el directorio local
+  setwd("/Users/manuelaojeda/Desktop/Universidad /MAESTRIA") #Por tamaño de los archivos, seleecionar el directorio local
   
   test_hogares      <- read.csv("test_hogares.csv")
   test_personas     <- read.csv("test_personas.csv")
@@ -233,4 +233,12 @@
       glimpse(train_hd)
       train_h <- train_hd
 
-      
+##Estadisticas descriptivas---------------------------------------------
+#install.packages("GGally")  
+#p_load(GGally)
+#ggpairs(train_h, columns = 2:5, ggplot2::aes(colour = train_h$sexo_jefe_hogar_mujer))
+
+      train_h2<- train_h %>% 
+        select(num_cuartos_dormir,Nper, Ingpcug, edad_jefe_hogar, sexo_jefe_hogar_Hombre, Clase_Urbano, Vivienda_Propia_paga, Vivienda_Arriendo, nivel_edu_jefe_hogar_Media) 
+      summary(train_h2)
+      stargazer(train_h2, title="Estadísticas descriptivas", type='latex')
