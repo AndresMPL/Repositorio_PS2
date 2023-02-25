@@ -141,7 +141,7 @@
 ###1.1 Logit - Upsampling ----
   
   set.seed(10110)
-  train_hhs11 <- upSample(x = train_hhs, 
+  train_hhs11 <- upSample(x = select(train_hhs, -Pobre),
                           y = train_hhs$Pobre, yname = "Pobre")
   
   prop.table(table(train_hhs$Pobre)) #BD inicial
@@ -204,7 +204,7 @@
 ###1.2 Logit - Downsampling ----
 
   set.seed(10110)
-  train_hhs12 <- downSample(x = train_hhs, 
+  train_hhs12 <- downSample(x = select(train_hhs, -Pobre), 
                             y = train_hhs$Pobre, yname = "Pobre")
   
   prop.table(table(train_hhs$Pobre)) #BD inicial
