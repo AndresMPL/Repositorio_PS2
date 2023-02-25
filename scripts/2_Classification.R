@@ -246,9 +246,9 @@
   
   metricas12 <- bind_rows(metricas_train12, metricas_test12, metricas_eval12)
   metricas <- bind_rows(metricas, metricas12)
+  
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
-
 
 #2 - Logit con Lasso (1)------------------------------------------------------------
 
@@ -408,8 +408,8 @@
   
   metricas22 <- bind_rows(metricas_train22, metricas_test22, metricas_eval22)
   metricas <- bind_rows(metricas, metricas22)
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
 
 #3 - Logit con Ridge (0)------------------------------------------------------------
@@ -571,6 +571,7 @@
   
   metricas32 <- bind_rows(metricas_train32, metricas_test32, metricas_eval32)
   metricas <- bind_rows(metricas, metricas32)
+  
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
 
@@ -682,6 +683,7 @@
   
   metricas41 <- bind_rows(metricas_train41, metricas_test41, metricas_eval41)
   metricas <- bind_rows(metricas, metricas41)
+  
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
@@ -733,6 +735,7 @@
   
   metricas42 <- bind_rows(metricas_train42, metricas_test42, metricas_eval42)
   metricas <- bind_rows(metricas, metricas42)
+  
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
