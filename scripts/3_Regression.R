@@ -73,4 +73,56 @@ EN_incomes <- train(Pobre_1~P5000+P5010+Nper+Npersug+Lp+Ingtotugarr+Ingpcug+P509
 
 EN_incomes
 
- 
+-----------------------------------------------------------------------------
+  
+  #Dividimos train/test/eval (70/20/10) - BD Hogares
+  
+  set.seed(10110)
+index_3 <- createDataPartition(y = train_h$Ingpcug , p = 0.7)[[1]]
+trainhh2<- train_h[index_3,]
+other2 <- train_h[-index_3,]
+
+
+set.seed(10110)
+index_4<- createDataPartition(y = other2$Ingpcug , p = 1/3)[[1]]
+testhh2 <- other2[index_4,]
+evalhh2 <- other2[-index_4,]
+
+
+dim(train_h)   
+dim(trainhh2)
+dim(testhh2)
+dim(evalhh2)
+
+dim(train_h)[1] - dim(trainhh2)[1] - dim(testhh2)[1] - dim(evalhh2)[1]
+
+##Estandarizamos
+
+train_hhs2 <- trainhh2 #Guardamos las tres BD Originales aparte
+test_hhs2  <- testhh2  
+eval_hhs2  <- evalhh2
+glimpse(train_hhs2)
+
+variables_numericas <- c("num_cuartos", "num_cuartos_dormir", "Npersug",
+                         "edad_jefe_hogar", "num_Menores_edad", "num_adulto_mayor", 
+                         "Numper_por_dor", "Ocupados_por_perhog")
+
+escalador <- preProcess(train_hhs2[, variables_numericas],
+                        method = c("center", "scale"))
+
+train_hhs2[, variables_numericas] <- predict(escalador, trainhh2[, variables_numericas])
+test_hhs2[, variables_numericas] <- predict(escalador, testhh2[, variables_numericas])
+eval_hhs2[, variables_numericas] <- predict(escalador, evalhh2[, variables_numericas])  
+
+#Control------------------------------------------------------------------------
+
+grilla2 <- 10^seq(10, -1, length = 100)
+
+fiveStats2 <- function(...) c(twoClassSummary(...), defaultSummary(...))
+
+control2 <- trainControl(method = "cv",
+                         number = 5,
+                         summaryFunction = fiveStats2,
+                         classProbs = TRUE,
+                         verbose=FALSE,
+                         savePredictions = T)
