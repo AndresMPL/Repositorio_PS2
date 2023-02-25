@@ -21,12 +21,10 @@
   p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies, tidyverse, caret)
 
   
-#Leer los datos - 
+#Leer los datos
 
   setwd("C:/Users/User/Documents/Big_Data/BD_Taller 2") #Por tamaño de los archivos, seleecionar el directorio local
   
-  test_hogares      <- read.csv("test_hogares.csv")
-  test_personas     <- read.csv("test_personas.csv")
   train_hogares     <- read.csv("train_hogares.csv")
   train_personas    <- read.csv("train_personas.csv")
 
