@@ -712,7 +712,8 @@
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
-                    metric = 'Accuracy')
+                    metric = 'Accuracy',
+                    tuneGrid = expand.grid(alpha = seq(0,1,by = 0.1),lambda=grilla))
   
   y_hat_train42  <- predict(modelo42, train_hhs)
   y_hat_test42   <- predict(modelo42, test_hhs)
