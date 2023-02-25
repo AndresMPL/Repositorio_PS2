@@ -11,7 +11,7 @@ eval_hhs12 <- eval_hhs %>% mutate(across(.cols = var_categoricas, .fns = factor)
 
 table(train_hhs12$Pobre)
 
-rose_train <- ROSE(Pobre ~ ., data = train_hhs12, N = nrow(train_hhs12) + 217, p = 0.5)$data 
+rose_train <- ROSE(Pobre ~ ., data = train_hhs12, N = nrow(train_hhs12) + 69239, p = 0.5)$data 
 
 prop.table(table(train_hhs$Pobre))
 nrow(train_hhs)
@@ -31,9 +31,9 @@ train_hhs121 <- data.frame(sapply(train_hhs12, as.numeric))
 test_hhs121  <- data.frame(sapply(test_hhs12, as.numeric))
 eval_hhs121  <- data.frame(sapply(eval_hhs12, as.numeric))
 
-y_hat_train_rose <- predict(modelo_rose, newdata = train_hhs)
-y_hat_test_rose  <- predict(modelo_rose, newdata = test_hhs)
-y_hat_eval_rose  <- predict(modelo_rose, newdata = eval_hhs)
+y_hat_train_rose <- predict(modelo12, newdata = train_hhs)
+y_hat_test_rose  <- predict(modelo12, newdata = test_hhs)
+y_hat_eval_rose  <- predict(modelo12, newdata = eval_hhs)
 
 acc_train_rose <- Accuracy(y_pred = y_hat_train_rose, y_true = train_hhs$Pobre)
 acc_test_rose  <- Accuracy(y_pred = y_hat_test_rose, y_true = test_hhs$Pobre)
