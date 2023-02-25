@@ -291,7 +291,7 @@
   
   
   metricas2 <- bind_rows(metricas_train2, metricas_test2, metricas_eval2)
-  metricas <- bind_rows(metricas1, metricas2)
+  metricas <- bind_rows(metricas, metricas2)
   
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
@@ -519,10 +519,8 @@
                                 "Accuracy" = acc_eval31)
   
   metricas31 <- bind_rows(metricas_train31, metricas_test31, metricas_eval31)
-  metricas <- bind_rows(metricas1, metricas31)
+  metricas <- bind_rows(metricas, metricas31)
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
-  
-  
   
   
   ###3.2 Logit - Ridge - Downsampling ----
