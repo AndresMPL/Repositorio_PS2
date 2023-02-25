@@ -14,11 +14,7 @@
       nrow(train_hhs11) 
       
       glimpse(train_hhs11) 
-      
-      #train_hhs11$Pobre <- as.numeric(train_hhs$Pobre)
-      #train_hhs11$Pobre <- as.numeric(train_hhs$Pobre)
-      #train_hhs11$Pobre <- as.numeric(train_hhs$Pobre)
-      
+
       set.seed(10110)
       modelo11 <- train(Pobre~., 
                         data = train_hhs11,
