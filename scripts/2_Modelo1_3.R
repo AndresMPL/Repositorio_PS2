@@ -1,17 +1,29 @@
 
-##1.3 Logit sin regularizar - ROSE Oversampling ----
+##1.3 Logit - ROSE Oversampling ----
 
 filtro <- sapply(train_hhs, function(variable) length(unique(variable)) == 2)
 
 var_categoricas <- names(train_hhs)[filtro]
 
-train_hhs12 <- train_hhs %>% mutate(across(.cols = var_categoricas, .fns = factor))
-test_hhs12 <- test_hhs %>% mutate(across(.cols = var_categoricas, .fns = factor))
-eval_hhs12 <- eval_hhs %>% mutate(across(.cols = var_categoricas, .fns = factor))
 
-table(train_hhs12$Pobre)
+predictors<-c(colnames(train_hhs))
 
-rose_train <- ROSE(Pobre ~ ., data = train_hhs12, N = nrow(train_hhs12) + 69239, p = 0.5)$data 
+train_hhs13 <- train_hhs %>% mutate(across(.cols = predictors, .fns = factor))
+test_hhs13 <- test_hhs %>% mutate(across(.cols = predictors, .fns = factor))
+eval_hhs13 <- eval_hhs %>% mutate(across(.cols = predictors, .fns = factor))
+
+table(train_hhs13$Pobre)
+
+rose_train <- ROSE(Pobre ~ ., data = train_hhs13, p = 0.5)$data
+
+
+
+rose_train$Pobre <- as.numeric(rose_train$Pobre) - 1
+
+
+rose_train <- data.frame(sapply(rose_train, as.numeric))
+rose_train$Pobre <- as.factor(rose_train$Pobre)
+glimpse(rose_train)
 
 prop.table(table(train_hhs$Pobre))
 nrow(train_hhs)
@@ -19,12 +31,9 @@ nrow(train_hhs)
 prop.table(table(rose_train$Pobre)) #Verificamos proporciones de cada clase
 nrow(rose_train)
 
-rose_train <- data.frame(sapply(rose_train, as.numeric))
-
-   modelo12 <- train(Pobre~., 
+   modelo13 <- train(Pobre~., 
                      data = rose_train,
                      method = "glmnet",
-                     family = "binomial",
                      preProcess = NULL)
 
    backup_train_hhs <- train_hhs 
@@ -35,29 +44,29 @@ rose_train <- data.frame(sapply(rose_train, as.numeric))
    test_hhs  <- data.frame(sapply(test_hhs, as.numeric))
    eval_hhs  <- data.frame(sapply(eval_hhs, as.numeric))
 
-y_hat_train_rose <- predict(modelo12, newdata = train_hhs)
-y_hat_test_rose  <- predict(modelo12, newdata = test_hhs)
-y_hat_eval_rose  <- predict(modelo12, newdata = eval_hhs)
+y_hat_train_rose <- predict(modelo13, newdata = train_hhs)
+y_hat_test_rose  <- predict(modelo13, newdata = test_hhs)
+y_hat_eval_rose  <- predict(modelo13, newdata = eval_hhs)
 
 acc_train_rose <- Accuracy(y_pred = y_hat_train_rose, y_true = train_hhs$Pobre)
 acc_test_rose  <- Accuracy(y_pred = y_hat_test_rose, y_true = test_hhs$Pobre)
 acc_eval_rose  <- Accuracy(y_pred = y_hat_eval_rose, y_true = eval_hhs$Pobre)
 
-metricas_train12 <- data.frame(Modelo = "Logit - ROSE", 
+metricas_train13 <- data.frame(Modelo = "Logit - ROSE", 
                                "Muestreo" = "Oversampling", 
                                "Evaluación" = "Entrenamiento",
                                "Accuracy" = acc_train_rose)
 
-metricas_test12 <- data.frame(Modelo = "Logit - ROSE", 
+metricas_test13 <- data.frame(Modelo = "Logit - ROSE", 
                               "Muestreo" = "Oversampling", 
                               "Evaluación" = "Test",
                               "Accuracy" = acc_test_rose)
 
-metricas_eval12 <- data.frame(Modelo = "Logit - ROSE", 
+metricas_eval13 <- data.frame(Modelo = "Logit - ROSE", 
                               "Muestreo" = "Oversampling", 
                               "Evaluación" = "Evaluación",
                               "Accuracy" = acc_eval_rose)
 
-metricas12 <- bind_rows(metricas_train12, metricas_test12, metricas_eval12)
-metricas <- bind_rows(metricas, metricas12)
+metricas13 <- bind_rows(metricas_train13, metricas_test13, metricas_eval13)
+metricas <- bind_rows(metricas, metricas13)
 metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
