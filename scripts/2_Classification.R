@@ -203,10 +203,43 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
-
 ###1.2 Logit - Downsampling ----
 
-
+  modelo12 <- train(Pobre~., 
+                    data = train_hhs12,
+                    method = "glmnet",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train12  <- predict(modelo12, train_hhs)
+  y_hat_test12   <- predict(modelo12, test_hhs)
+  y_hat_eval12   <- predict(modelo12, eval_hhs)
+  
+  acc_train12  <- Accuracy(y_pred = y_hat_train12, y_true = train_hhs$Pobre)
+  acc_test12   <- Accuracy(y_pred = y_hat_test12, y_true = test_hhs$Pobre)
+  acc_eval12   <- Accuracy(y_pred = y_hat_eval12, y_true = eval_hhs$Pobre)
+  
+  metricas_train12 <- data.frame(Modelo = "Logit - Down", 
+                                 "Muestreo" = "Downsampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Accuracy" = acc_train12)
+  
+  metricas_test12 <- data.frame(Modelo = "Logit - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Test",
+                                "Accuracy" = acc_test12)
+  
+  metricas_eval12 <- data.frame(Modelo = "Logit - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Evaluación",
+                                "Accuracy" = acc_eval12)
+  
+  metricas12 <- bind_rows(metricas_train12, metricas_test12, metricas_eval12)
+  metricas <- bind_rows(metricas, metricas12)
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  
 
 
 #2 - Logit con Lasso (1)------------------------------------------------------------
@@ -489,7 +522,6 @@
   metricas <- bind_rows(metricas, metricas4)
   
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
-
 
   
   ###4.1 Logit - EN - Upsampling ----
