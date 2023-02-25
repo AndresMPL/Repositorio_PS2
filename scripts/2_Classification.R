@@ -142,7 +142,7 @@
   
   
   metricas1 <- bind_rows(metricas_train1, metricas_test1, metricas_eval1)
-  metricas1 %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas1 %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 ###1.1 Logit - Upsampling ----
   
@@ -211,7 +211,7 @@
   
   metricas11 <- bind_rows(metricas_train11, metricas_test11, metricas_eval11)
   metricas <- bind_rows(metricas1, metricas11)
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
   
 ###1.2 Logit - Downsampling ----
@@ -267,7 +267,7 @@
   metricas12 <- bind_rows(metricas_train12, metricas_test12, metricas_eval12)
   metricas <- bind_rows(metricas, metricas12)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
 
 #2 - Logit - Lasso (1)------------------------------------------------------------
@@ -319,7 +319,7 @@
   metricas2 <- bind_rows(metricas_train2, metricas_test2, metricas_eval2)
   metricas <- bind_rows(metricas, metricas2)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
   
   ###2.1 Logit - Lasso - Upsampling ----
@@ -366,9 +366,9 @@
   acc_test21   <- Accuracy(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre))
   acc_eval21   <- Accuracy(y_pred = y_hat_eval21, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train21 <- Recall(y_pred = y_hat_train21, y_true = train_hhs$Pobre, positive = "Pobre")
-  rec_test21  <- Recall(y_pred = y_hat_test21, y_true = test_hhs$Pobre, positive = "Pobre")
-  rec_eval21  <- Recall(y_pred = y_hat_eval21, y_true = eval_hhs$Pobre, positive = "Pobre")
+  rec_train21 <- Recall(y_pred = y_hat_train21, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  rec_test21  <- Recall(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  rec_eval21  <- Recall(y_pred = y_hat_eval21, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train21 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "Upsampling", 
@@ -390,7 +390,7 @@
   
   metricas21 <- bind_rows(metricas_train21, metricas_test21, metricas_eval21)
   metricas <- bind_rows(metricas, metricas21)
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
   
   ###2.2 Logit - Lasso - Downsampling ----
@@ -448,7 +448,7 @@
   metricas22 <- bind_rows(metricas_train22, metricas_test22, metricas_eval22)
   metricas <- bind_rows(metricas, metricas22)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
 
 #3 - Logit - Ridge (0)------------------------------------------------------------
@@ -501,7 +501,7 @@
   metricas3 <- bind_rows(metricas_train3, metricas_test3, metricas_eval3)
   metricas <- bind_rows(metricas, metricas3)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
   
   ###3.1 Logit - Ridge - Upsampling ----
@@ -548,9 +548,9 @@
   acc_test31   <- Accuracy(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre))
   acc_eval31   <- Accuracy(y_pred = y_hat_eval31, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train31 <- Recall(y_pred = y_hat_train31, y_true = train_hhs$Pobre, positive = "Pobre")
-  rec_test31  <- Recall(y_pred = y_hat_test31, y_true = test_hhs$Pobre, positive = "Pobre")
-  rec_eval31  <- Recall(y_pred = y_hat_eval31, y_true = eval_hhs$Pobre, positive = "Pobre")
+  rec_train31 <- Recall(y_pred = y_hat_train31, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  rec_test31  <- Recall(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  rec_eval31  <- Recall(y_pred = y_hat_eval31, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train31 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "Upsampling", 
@@ -572,7 +572,7 @@
   
   metricas31 <- bind_rows(metricas_train31, metricas_test31, metricas_eval31)
   metricas <- bind_rows(metricas, metricas31)
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
   
   ###3.2 Logit - Ridge - Downsampling ----
@@ -630,7 +630,7 @@
   metricas32 <- bind_rows(metricas_train32, metricas_test32, metricas_eval32)
   metricas <- bind_rows(metricas, metricas32)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 
   #4 - Logit - EN-------------------------------------------------------------------
@@ -682,7 +682,7 @@
   metricas4 <- bind_rows(metricas_train4, metricas_test4, metricas_eval4)
   metricas <- bind_rows(metricas, metricas4)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
   
   ###4.1 Logit - EN - Upsampling ----
@@ -729,9 +729,9 @@
   acc_test41   <- Accuracy(y_pred = y_hat_test41, y_true = as.numeric(test_hhs$Pobre))
   acc_eval41   <- Accuracy(y_pred = y_hat_eval41, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train41 <- Recall(y_pred = y_hat_train41, y_true = train_hhs$Pobre, positive = "Pobre")
-  rec_test41  <- Recall(y_pred = y_hat_test41, y_true = test_hhs$Pobre, positive = "Pobre")
-  rec_eval41  <- Recall(y_pred = y_hat_eval41, y_true = eval_hhs$Pobre, positive = "Pobre")
+  rec_train41 <- Recall(y_pred = y_hat_train41, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  rec_test41  <- Recall(y_pred = y_hat_test41, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  rec_eval41  <- Recall(y_pred = y_hat_eval41, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train41 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "Upsampling", 
@@ -754,7 +754,7 @@
   metricas41 <- bind_rows(metricas_train41, metricas_test41, metricas_eval41)
   metricas <- bind_rows(metricas, metricas41)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
   
   ###4.2 Logit - EN - Downsampling ----
@@ -813,7 +813,7 @@
   metricas42 <- bind_rows(metricas_train42, metricas_test42, metricas_eval42)
   metricas <- bind_rows(metricas, metricas42)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
   #5 - LDA ---------------------------------------------------------------------
   
@@ -863,7 +863,7 @@
   metricas5 <- bind_rows(metricas_train5, metricas_test5, metricas_eval5)
   metricas <- bind_rows(metricas, metricas5)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
   
   ###5.1 LDA - Upsampling ----
@@ -909,9 +909,9 @@
   acc_test51   <- Accuracy(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre))
   acc_eval51   <- Accuracy(y_pred = y_hat_eval51, y_true = as.numeric(eval_hhs$Pobre))
   
-  rec_train51 <- Recall(y_pred = y_hat_train51, y_true = train_hhs$Pobre, positive = "Pobre")
-  rec_test51  <- Recall(y_pred = y_hat_test51, y_true = test_hhs$Pobre, positive = "Pobre")
-  rec_eval51  <- Recall(y_pred = y_hat_eval51, y_true = eval_hhs$Pobre, positive = "Pobre")
+  rec_train51 <- Recall(y_pred = y_hat_train51, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  rec_test51  <- Recall(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  rec_eval51  <- Recall(y_pred = y_hat_eval51, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train51 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "Upsampling", 
@@ -934,7 +934,7 @@
   metricas51 <- bind_rows(metricas_train51, metricas_test51, metricas_eval51)
   metricas <- bind_rows(metricas, metricas51)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
   
   ###5.2 LDA - Downsampling ----
@@ -992,5 +992,5 @@
   metricas52 <- bind_rows(metricas_train52, metricas_test52, metricas_eval52)
   metricas <- bind_rows(metricas, metricas52)
   
-  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
