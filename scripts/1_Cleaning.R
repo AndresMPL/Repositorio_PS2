@@ -21,10 +21,12 @@
   p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies, tidyverse, caret)
 
   
-#Leer los datos
+#Leer los datos - 
 
-  setwd("C:/Users/User/Documents/Big_Data/BD_Taller 2") #Por tamaño de los archivos, seleecionar el directorio local
+  setwd("/Users/manuelaojeda/Desktop/Universidad /MAESTRIA") #Por tamaño de los archivos, seleecionar el directorio local
   
+  test_hogares      <- read.csv("test_hogares.csv")
+  test_personas     <- read.csv("test_personas.csv")
   train_hogares     <- read.csv("train_hogares.csv")
   train_personas    <- read.csv("train_personas.csv")
 
@@ -231,4 +233,28 @@
       glimpse(train_hd)
       train_h <- train_hd
 
+##Estadisticas descriptivas---------------------------------------------
+#install.packages("GGally")  
+#p_load(GGally)
+#ggpairs(train_h, columns = 2:5, ggplot2::aes(colour = train_h$sexo_jefe_hogar_mujer))
+
+      train_h2<- train_h %>% 
+        select(num_cuartos_dormir,Nper, Ingpcug, edad_jefe_hogar, sexo_jefe_hogar_Hombre, Clase_Urbano, Vivienda_Propia_paga, Vivienda_Arriendo, nivel_edu_jefe_hogar_Media) 
+      summary(train_h2)
+      stargazer(train_h2, title="Estadísticas descriptivas", type='latex')
       
+      dist_edad <- ggplot(data = train_h,
+                          mapping = aes(x = edad_jefe_hogar))  + 
+        geom_histogram(aes(y =after_stat(density)),
+                       bins = 9,
+                       position = 'identity',
+                       color="#424242", fill="#E3E3E3") +
+        stat_function(fun = dnorm, xlim = c(min(train_h$edad_jefe_hogar),max(train_h$edad_jefe_hogar)), colour="#1C86EE", linewidth=1,
+                      args = list(mean = mean(train_h$edad_jefe_hogar), 
+                                  sd = sd(train_h$edad_jefe_hogar))) + 
+        labs(title = 'Figura 1: Distribución de edad',
+             x = 'Edad jefe hogar',
+             y = 'Frecuencia') + 
+        theme_bw()
+      
+      dist_edad
