@@ -126,3 +126,64 @@ control2 <- trainControl(method = "cv",
                          classProbs = TRUE,
                          verbose=FALSE,
                          savePredictions = T)
+
+#1 - Logit 2 ---------------------------------------------------------
+
+set.seed(10110)
+modelo2 <-   train(Ingpcug ~Nper+Npersug+num_cuartos+Vivienda_Propia_paga+sexo_jefe_hogar_Mujer, 
+                   data = trainhh2,
+                   method = "lm",
+                   trControl = control2,
+                   metric = 'Roc')
+modelo2
+
+#1 - Ridge 2 ---------------------------------------------------------
+
+p_load("glmnet")
+y<-trainhh2$Ingpcug
+X<-model.matrix(~Nper+Npersug+num_cuartos+Vivienda_Propia_paga+sexo_jefe_hogar_Mujer-1,trainhh2)
+head(X)
+
+grid=10^seq(10,-2,length=100)
+grid
+
+ridge2<-glmnet(x=X,
+               y=y,
+               alpha=0, #0 is ridge, 1 is lasso
+               lambda=grid)
+coef(ridge2)
+
+#Put coefficients in a data frame, except the intercept
+coefs_ridge<-data.frame(t(as.matrix(coef(ridge2)))) %>% select(-X.Intercept.)
+#add the lambda grid to to data frame
+coefs_ridge<- coefs_ridge %>% mutate(lambda=grid)              
+
+#ggplot friendly format
+coefs_ridge<- coefs_ridge %>% pivot_longer(cols=!lambda,
+                                           names_to="variables",
+                                           values_to="coefficients")
+
+
+
+ggplot(data=coefs_ridge, aes(x = lambda, y = coefficients, color = variables)) +
+  geom_line() +
+  scale_x_log10(
+    breaks = scales::trans_breaks("log10", function(x) 10^x),
+    labels = scales::trans_format("log10",
+                                  scales::math_format(10^.x))
+  ) +
+  labs(title = "Coeficientes Ridge", x = "Lambda", y = "Coeficientes") +
+  theme_bw() +
+  theme(legend.position="bottom")
+
+#1 - Lasso 2 ---------------------------------------------------------
+
+modelo_lasso <- glmnet(
+  x = X,
+  y = y,
+  alpha = 1,
+  nlambda = 300,
+  standardize = FALSE
+)
+
+modelo_lasso
