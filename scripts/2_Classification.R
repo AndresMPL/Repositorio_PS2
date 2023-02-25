@@ -286,12 +286,12 @@
   #probs_train21[probs_train21 > 1] <- 1
   
   probs_test21   <- predict(modelo21, newdata = test_hhs, type = "prob")[, 1, drop = T]
-  #probs_test21[probs_train21 < 0] <- 0
-  #probs_test21[probs_train21 > 1] <- 1
+  #probs_test21[probs_test21 < 0] <- 0
+  #probs_test21[probs_test21 > 1] <- 1
   
   probs_eval21   <- predict(modelo21, newdata = eval_hhs, type = "prob")[, 1, drop = T]
-  #probs_eval21[probs_train21 < 0] <- 0
-  #probs_eval21[probs_train21 > 1] <- 1
+  #probs_eval21[probs_eval21 < 0] <- 0
+  #probs_eval21[probs_eval21 > 1] <- 1
   
   y_hat_train21  <- as.numeric(probs_train21 > 0.5)
   y_hat_test21   <- as.numeric(probs_test21 > 0.5)
@@ -317,10 +317,8 @@
                                 "Accuracy" = acc_eval21)
   
   metricas21 <- bind_rows(metricas_train21, metricas_test21, metricas_eval21)
-  metricas1 <- bind_rows(metricas1, metricas11)
-  metricas1 %>% kbl(digits = 2) %>% kable_styling(full_width = T)
-  
-  
+  metricas <- bind_rows(metricas, metricas21)
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
   ###2.3 Logit - Downsampling ----
@@ -376,70 +374,68 @@
   
   ###3.1 Logit - Upsampling ----
   
-  
-  
-  
   train_hhs$Pobre <- factor(train_hhs$Pobre)
   
   set.seed(10110)
-  train_hhs11 <- upSample(x = train_hhs, 
+  train_hhs31 <- upSample(x = train_hhs, 
                           y = train_hhs$Pobre, yname = "Pobre")
   
   prop.table(table(train_hhs$Pobre)) #BD inicial
   nrow(train_hhs) 
   
-  prop.table(table(train_hhs11$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
-  nrow(train_hhs11) 
+  prop.table(table(train_hhs31$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(train_hhs31) 
   
-  glimpse(train_hhs11) 
+  glimpse(train_hhs31) 
   
   set.seed(10110)
-  modelo11 <- train(Pobre~., 
-                    data = train_hhs11,
-                    method = "glm",
+  modelo31 <- train(Pobre ~ . , 
+                    data = train_hhs31,
+                    method = "glmnet",
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
-                    metric = 'Accuracy')
+                    metric = 'Accuracy',
+                    tuneGrid = expand.grid(alpha = 0,lambda=grilla))
   
-  probs_train11  <- predict(modelo11, newdata = train_hhs, type = "prob")[, 1, drop = T]
-  #probs_train11[probs_train11 < 0] <- 0
-  #probs_train11[probs_train11 > 1] <- 1
+  probs_train31  <- predict(modelo31, newdata = train_hhs, type = "prob")[, 1, drop = T]
+  #probs_train31[probs_train31 < 0] <- 0
+  #probs_train31[probs_train31 > 1] <- 1
   
-  probs_test11   <- predict(modelo11, newdata = test_hhs, type = "prob")[, 1, drop = T]
-  #probs_test11[probs_train11 < 0] <- 0
-  #probs_test11[probs_train11 > 1] <- 1
+  probs_test31   <- predict(modelo31, newdata = test_hhs, type = "prob")[, 1, drop = T]
+  #probs_test31[probs_test31 < 0] <- 0
+  #probs_test31[probs_test31 > 1] <- 1
   
-  probs_eval11   <- predict(modelo11, newdata = eval_hhs, type = "prob")[, 1, drop = T]
-  #probs_eval11[probs_train11 < 0] <- 0
-  #probs_eval11[probs_train11 > 1] <- 1
+  probs_eval31   <- predict(modelo31, newdata = eval_hhs, type = "prob")[, 1, drop = T]
+  #probs_eval31[probs_eval31 < 0] <- 0
+  #probs_eval31[probs_eval31 > 1] <- 1
   
-  y_hat_train11  <- as.numeric(probs_train11 > 0.5)
-  y_hat_test11   <- as.numeric(probs_test11 > 0.5)
-  y_hat_eval11   <- as.numeric(probs_eval11 > 0.5)
+  y_hat_train31  <- as.numeric(probs_train31 > 0.5)
+  y_hat_test31   <- as.numeric(probs_test31 > 0.5)
+  y_hat_eval31   <- as.numeric(probs_eval31 > 0.5)
   
-  acc_train11  <- Accuracy(y_pred = y_hat_train11, y_true = as.numeric(train_hhs$Pobre))
-  acc_test11   <- Accuracy(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre))
-  acc_eval11   <- Accuracy(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre))
+  acc_train31  <- Accuracy(y_pred = y_hat_train31, y_true = as.numeric(train_hhs$Pobre))
+  acc_test31   <- Accuracy(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre))
+  acc_eval31   <- Accuracy(y_pred = y_hat_eval31, y_true = as.numeric(eval_hhs$Pobre))
   
-  metricas_train11 <- data.frame(Modelo = "Logit - Up", 
+  metricas_train31 <- data.frame(Modelo = "Logit - Up", 
                                  "Muestreo" = "Upsampling", 
                                  "Evaluación" = "Entrenamiento",
-                                 "Accuracy" = acc_train11)
+                                 "Accuracy" = acc_train31)
   
-  metricas_test11 <- data.frame(Modelo = "Logit - Up", 
+  metricas_test31 <- data.frame(Modelo = "Logit - Up", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Test",
-                                "Accuracy" = acc_test11)
+                                "Accuracy" = acc_test31)
   
-  metricas_eval11 <- data.frame(Modelo = "Logit - Up", 
+  metricas_eval31 <- data.frame(Modelo = "Logit - Up", 
                                 "Muestreo" = "Upsampling", 
                                 "Evaluación" = "Evaluación",
-                                "Accuracy" = acc_eval11)
+                                "Accuracy" = acc_eval31)
   
-  metricas11 <- bind_rows(metricas_train11, metricas_test11, metricas_eval11)
-  metricas1 <- bind_rows(metricas1, metricas11)
-  metricas1 %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  metricas31 <- bind_rows(metricas_train31, metricas_test31, metricas_eval31)
+  metricas <- bind_rows(metricas1, metricas31)
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
   
   
