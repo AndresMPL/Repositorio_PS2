@@ -190,8 +190,6 @@
   y_hat_test11   <- as.numeric(probs_test11 > 0.5)
   y_hat_eval11   <- as.numeric(probs_eval11 > 0.5)
   
-  confusionMatrix(y_hat_eval11, eval_hhs$Pobre)
-  
   acc_train11  <- Accuracy(y_pred = y_hat_train11, y_true = as.numeric(train_hhs$Pobre))
   acc_test11   <- Accuracy(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre))
   acc_eval11   <- Accuracy(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre))
@@ -327,9 +325,9 @@
   rec_test_rose13  <- Recall(y_pred = y_hat_test_rose13, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose13  <- Recall(y_pred = y_hat_eval_rose13, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  f1_train13 <- F1_Score(y_pred = y_hat_train13, y_true = train_hhs$Pobre, positive = "Pobre")
-  f1_test13  <- F1_Score(y_pred = y_hat_test13, y_true = test_hhs$Pobre, positive = "Pobre")
-  f1_eval13  <- F1_Score(y_pred = y_hat_eval13, y_true = eval_hhs$Pobre, positive = "Pobre")
+  f1_train13 <- F1_Score(y_pred = y_hat_train_rose13, y_true = train_hhs$Pobre, positive = "Pobre")
+  f1_test13  <- F1_Score(y_pred = y_hat_test_rose13, y_true = test_hhs$Pobre, positive = "Pobre")
+  f1_eval13  <- F1_Score(y_pred = y_hat_eval_rose13, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train13 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "ROSE - Oversampling", 
@@ -362,7 +360,7 @@
   set.seed(1010)
   modelo2 <- train(Pobre ~ . , 
                    data = train_hhs, 
-                   method = "glm",
+                   method = "glmnet",
                    trControl = control,
                    family = "binomial",
                    preProcess = NULL,
@@ -455,8 +453,6 @@
   y_hat_train21  <- as.numeric(probs_train21 > 0.5)
   y_hat_test21   <- as.numeric(probs_test21 > 0.5)
   y_hat_eval21   <- as.numeric(probs_eval21 > 0.5)
-  
-  confusionMatrix(y_hat_eval21, eval_hhs$Pobre)
   
   acc_train21  <- Accuracy(y_pred = y_hat_train21, y_true = as.numeric(train_hhs$Pobre))
   acc_test21   <- Accuracy(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre))
@@ -576,7 +572,7 @@
   
   modelo23 <- train(Pobre ~ . , 
                     data = rose_train23,
-                    method = "glm",
+                    method = "glmnet",
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
@@ -726,8 +722,6 @@
   y_hat_train31  <- as.numeric(probs_train31 > 0.5)
   y_hat_test31   <- as.numeric(probs_test31 > 0.5)
   y_hat_eval31   <- as.numeric(probs_eval31 > 0.5)
-  
-  confusionMatrix(y_hat_eval31, eval_hhs$Pobre)
   
   acc_train31  <- Accuracy(y_pred = y_hat_train31, y_true = as.numeric(train_hhs$Pobre))
   acc_test31   <- Accuracy(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre))
@@ -996,8 +990,6 @@
   y_hat_test41   <- as.numeric(probs_test41 > 0.5)
   y_hat_eval41   <- as.numeric(probs_eval41 > 0.5)
   
-  confusionMatrix(y_hat_eval41, eval_hhs$Pobre)
-  
   acc_train41  <- Accuracy(y_pred = y_hat_train41, y_true = as.numeric(train_hhs$Pobre))
   acc_test41   <- Accuracy(y_pred = y_hat_test41, y_true = as.numeric(test_hhs$Pobre))
   acc_eval41   <- Accuracy(y_pred = y_hat_eval41, y_true = as.numeric(eval_hhs$Pobre))
@@ -1264,8 +1256,6 @@
   y_hat_train51  <- as.numeric(probs_train51 > 0.5)
   y_hat_test51   <- as.numeric(probs_test51 > 0.5)
   y_hat_eval51   <- as.numeric(probs_eval51 > 0.5)
-  
-  confusionMatrix(y_hat_eval51, eval_hhs$Pobre)
   
   acc_train51  <- Accuracy(y_pred = y_hat_train51, y_true = as.numeric(train_hhs$Pobre))
   acc_test51   <- Accuracy(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre))
