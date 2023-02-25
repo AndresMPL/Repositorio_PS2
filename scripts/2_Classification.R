@@ -142,7 +142,7 @@
 
 
 
-###1.3 Logit - Downsampling ----
+###1.2 Logit - Downsampling ----
 
 
 
@@ -193,11 +193,11 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
   
-  ###1.1 Logit - Upsampling ----
+  ###2.1 Logit - Upsampling ----
   
   
   
-  ###1.3 Logit - Downsampling ----
+  ###2.3 Logit - Downsampling ----
   
   
 
@@ -248,11 +248,11 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
 
   
-  ###1.1 Logit - Upsampling ----
+  ###3.1 Logit - Upsampling ----
   
   
   
-  ###1.3 Logit - Downsampling ----
+  ###3.2 Logit - Downsampling ----
   
   
 
@@ -304,11 +304,15 @@
 
 
   
-  ###1.1 Logit - Upsampling ----
+  ###4.1 Logit - Upsampling ----
   
   
   
-  ###1.3 Logit - Downsampling ----
+  ###4.2 Logit - Downsampling ----
+  
+  
+  
+  
   
   
 ## Up sampling-------------------------------------------------------------------
