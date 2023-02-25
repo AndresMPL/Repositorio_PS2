@@ -1243,19 +1243,19 @@
   rec_test_rose53  <- Recall(y_pred = y_hat_test_rose53, y_true = test_hhs$Pobre, positive = "Pobre")
   rec_eval_rose53  <- Recall(y_pred = y_hat_eval_rose53, y_true = eval_hhs$Pobre, positive = "Pobre")
   
-  metricas_train53 <- data.frame(Modelo = "Logit - LDA", 
+  metricas_train53 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "ROSE - Oversampling", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose53,
                                  "Accuracy" = acc_train_rose53)
   
-  metricas_test53 <- data.frame(Modelo = "Logit - LDA", 
+  metricas_test53 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose53,
                                 "Accuracy" = acc_test_rose53)
   
-  metricas_eval53 <- data.frame(Modelo = "Logit - LDA", 
+  metricas_eval53 <- data.frame(Modelo = "LDA", 
                                 "Muestreo" = "ROSE - Oversampling", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose53,
