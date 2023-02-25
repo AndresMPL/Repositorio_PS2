@@ -1,22 +1,19 @@
 
 #------------------------------------------------------------------------------#
 #
-#                           4. MODEL COMPARISON
+#                           4. FINAL MODEL
 #
 #------------------------------------------------------------------------------#
 
-#Imágenes en el Problem Set
+#Lectura de datos Test para el modelo final
 
-  Imagen_1
-
-#Comparación resultados de los modelos------------------------------------------
-
+  test_hogares      <- read.csv("test_hogares.csv")
+  test_personas     <- read.csv("test_personas.csv")
 
 
 
 #Generación del Modelo de Entrega-----------------------------------------------
-#Ejemplo Archivo "sample_submission.csv"
-  
+
   
   best_model <- 
   

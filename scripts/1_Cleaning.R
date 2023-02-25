@@ -21,12 +21,10 @@
   p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies, tidyverse, caret)
 
   
-#Leer los datos - 
+#Leer los datos
 
   setwd("/Users/manuelaojeda/Desktop/Universidad /MAESTRIA") #Por tamaño de los archivos, seleecionar el directorio local
   
-  test_hogares      <- read.csv("test_hogares.csv")
-  test_personas     <- read.csv("test_personas.csv")
   train_hogares     <- read.csv("train_hogares.csv")
   train_personas    <- read.csv("train_personas.csv")
 
