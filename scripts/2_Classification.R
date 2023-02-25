@@ -743,4 +743,164 @@
   
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
+  #5 - LDA-------------------------------------------------------------------
+  
+  set.seed(10110)
+  modelo5 <- train(Pobre ~ . , 
+                   data = train_hhs,
+                   method = "lda",
+                   trControl = control,
+                   family = "binomial",
+                   preProcess = NULL,
+                   metric = 'Accuracy')
+  
+  modelo5
+  
+  y_hat_train5 <- predict(modelo5, train_hhs)
+  y_hat_test5  <- predict(modelo5, test_hhs)
+  y_hat_eval5  <- predict(modelo5, eval_hhs)
+  
+  confusionMatrix(y_hat_eval5, eval_hhs$Pobre)
+  
+  acc_train5  <- Accuracy(y_pred = y_hat_train5, y_true = train_hhs$Pobre)
+  acc_test5   <- Accuracy(y_pred = y_hat_test5, y_true = test_hhs$Pobre)
+  acc_eval5   <- Accuracy(y_pred = y_hat_eval5, y_true = eval_hhs$Pobre)
+  
+  
+  metricas_train5 <- data.frame(Modelo = "LDA", 
+                                "Muestreo" = NA, 
+                                "Evaluación" = "Entrenamiento",
+                                "Accuracy" = acc_train5)
+  
+  metricas_test5 <- data.frame(Modelo = "LDA", 
+                               "Muestreo" = NA, 
+                               "Evaluación" = "Test",
+                               "Accuracy" = acc_test5)
+  
+  metricas_eval5 <- data.frame(Modelo = "LDA", 
+                               "Muestreo" = NA, 
+                               "Evaluación" = "Evaluación",
+                               "Accuracy" = acc_eval5)
+  
+  
+  metricas5 <- bind_rows(metricas_train5, metricas_test5, metricas_eval5)
+  metricas <- bind_rows(metricas, metricas5)
+  
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  
+  
+  ###5.1 LDA - Upsampling ----
+  
+  set.seed(10110)
+  train_hhs51 <- upSample(x = select(train_hhs, -Pobre), 
+                          y = train_hhs$Pobre, yname = "Pobre")
+  
+  prop.table(table(train_hhs$Pobre)) #BD inicial
+  nrow(train_hhs) 
+  
+  prop.table(table(train_hhs51$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(train_hhs51) 
+  
+  glimpse(train_hhs51) 
+  
+  set.seed(10110)
+  modelo51 <- train(Pobre ~ . , 
+                    data = train_hhs51,
+                    method = "lda",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  probs_train51  <- predict(modelo51, newdata = train_hhs, type = "prob")[, 1, drop = T]
+  #probs_train51[probs_train51 < 0] <- 0
+  #probs_train51[probs_train51 > 1] <- 1
+  
+  probs_test51   <- predict(modelo51, newdata = test_hhs, type = "prob")[, 1, drop = T]
+  #probs_test51[probs_test51 < 0] <- 0
+  #probs_test51[probs_test51 > 1] <- 1
+  
+  probs_eval51   <- predict(modelo51, newdata = eval_hhs, type = "prob")[, 1, drop = T]
+  #probs_eval51[probs_eval51 < 0] <- 0
+  #probs_eval51[probs_eval51 > 1] <- 1
+  
+  y_hat_train51  <- as.numeric(probs_train51 > 0.5)
+  y_hat_test51   <- as.numeric(probs_test51 > 0.5)
+  y_hat_eval51   <- as.numeric(probs_eval51 > 0.5)
+  
+  acc_train51  <- Accuracy(y_pred = y_hat_train51, y_true = as.numeric(train_hhs$Pobre))
+  acc_test51   <- Accuracy(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre))
+  acc_eval51   <- Accuracy(y_pred = y_hat_eval51, y_true = as.numeric(eval_hhs$Pobre))
+  
+  metricas_train51 <- data.frame(Modelo = "LDA - Up", 
+                                 "Muestreo" = "Upsampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Accuracy" = acc_train51)
+  
+  metricas_test51 <- data.frame(Modelo = "LDA - Up", 
+                                "Muestreo" = "Upsampling", 
+                                "Evaluación" = "Test",
+                                "Accuracy" = acc_test51)
+  
+  metricas_eval51 <- data.frame(Modelo = "LDA - Up", 
+                                "Muestreo" = "Upsampling", 
+                                "Evaluación" = "Evaluación",
+                                "Accuracy" = acc_eval51)
+  
+  metricas51 <- bind_rows(metricas_train51, metricas_test51, metricas_eval51)
+  metricas <- bind_rows(metricas, metricas51)
+  
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
+  
+  
+  ###5.2 LDA - Downsampling ----
+  
+  
+  set.seed(10110)
+  train_hhs52 <- downSample(x = select(train_hhs, -Pobre), 
+                            y = train_hhs$Pobre, yname = "Pobre")
+  
+  prop.table(table(train_hhs$Pobre)) #BD inicial
+  nrow(train_hhs) 
+  
+  prop.table(table(train_hhs52$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(train_hhs52) 
+  
+  #train_hhs52 <- data.frame(sapply(train_hhs52, as.numeric))
+  
+  modelo52 <- train(Pobre~., 
+                    data = train_hhs52,
+                    method = "glmnet",
+                    trControl = control,
+                    family = "binomial",
+                    preProcess = NULL,
+                    metric = 'Accuracy')
+  
+  y_hat_train52  <- predict(modelo52, train_hhs)
+  y_hat_test52   <- predict(modelo52, test_hhs)
+  y_hat_eval52   <- predict(modelo52, eval_hhs)
+  
+  acc_train52  <- Accuracy(y_pred = y_hat_train52, y_true = train_hhs$Pobre)
+  acc_test52   <- Accuracy(y_pred = y_hat_test52, y_true = test_hhs$Pobre)
+  acc_eval52   <- Accuracy(y_pred = y_hat_eval52, y_true = eval_hhs$Pobre)
+  
+  metricas_train52 <- data.frame(Modelo = "LDA - Down", 
+                                 "Muestreo" = "Downsampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Accuracy" = acc_train52)
+  
+  metricas_test52 <- data.frame(Modelo = "LDA - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Test",
+                                "Accuracy" = acc_test52)
+  
+  metricas_eval52 <- data.frame(Modelo = "LDA - Down", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Evaluación",
+                                "Accuracy" = acc_eval52)
+  
+  metricas52 <- bind_rows(metricas_train52, metricas_test52, metricas_eval52)
+  metricas <- bind_rows(metricas, metricas52)
+  
+  metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
