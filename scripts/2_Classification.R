@@ -183,6 +183,8 @@
   y_hat_test11   <- as.numeric(probs_test11 > 0.5)
   y_hat_eval11   <- as.numeric(probs_eval11 > 0.5)
   
+  confusionMatrix(y_hat_eval11, eval_hhs$Pobre)
+  
   acc_train11  <- Accuracy(y_pred = y_hat_train11, y_true = as.numeric(train_hhs$Pobre))
   acc_test11   <- Accuracy(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre))
   acc_eval11   <- Accuracy(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre))
@@ -238,6 +240,8 @@
   y_hat_test12   <- predict(modelo12, test_hhs)
   y_hat_eval12   <- predict(modelo12, eval_hhs)
   
+  confusionMatrix(y_hat_eval12, eval_hhs$Pobre)
+  
   acc_train12  <- Accuracy(y_pred = y_hat_train12, y_true = train_hhs$Pobre)
   acc_test12   <- Accuracy(y_pred = y_hat_test12, y_true = test_hhs$Pobre)
   acc_eval12   <- Accuracy(y_pred = y_hat_eval12, y_true = eval_hhs$Pobre)
@@ -291,6 +295,8 @@
   y_hat_train_rose13 <- predict(modelo13, newdata = train_hhs)
   y_hat_test_rose13  <- predict(modelo13, newdata = test_hhs)
   y_hat_eval_rose13  <- predict(modelo13, newdata = eval_hhs)
+  
+  confusionMatrix(y_hat_eval_rose13, eval_hhs$Pobre)
   
   acc_train_rose13 <- Accuracy(y_pred = y_hat_train_rose13, y_true = train_hhs$Pobre)
   acc_test_rose13  <- Accuracy(y_pred = y_hat_test_rose13, y_true = test_hhs$Pobre)
@@ -415,6 +421,8 @@
   y_hat_test21   <- as.numeric(probs_test21 > 0.5)
   y_hat_eval21   <- as.numeric(probs_eval21 > 0.5)
   
+  confusionMatrix(y_hat_eval21, eval_hhs$Pobre)
+  
   acc_train21  <- Accuracy(y_pred = y_hat_train21, y_true = as.numeric(train_hhs$Pobre))
   acc_test21   <- Accuracy(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre))
   acc_eval21   <- Accuracy(y_pred = y_hat_eval21, y_true = as.numeric(eval_hhs$Pobre))
@@ -473,6 +481,8 @@
   y_hat_test22   <- predict(modelo22, test_hhs)
   y_hat_eval22   <- predict(modelo22, eval_hhs)
   
+  confusionMatrix(y_hat_eval22, eval_hhs$Pobre)
+  
   acc_train22  <- Accuracy(y_pred = y_hat_train22, y_true = train_hhs$Pobre)
   acc_test22   <- Accuracy(y_pred = y_hat_test22, y_true = test_hhs$Pobre)
   acc_eval22   <- Accuracy(y_pred = y_hat_eval22, y_true = eval_hhs$Pobre)
@@ -527,6 +537,8 @@
   y_hat_train_rose23 <- predict(modelo23, newdata = train_hhs)
   y_hat_test_rose23  <- predict(modelo23, newdata = test_hhs)
   y_hat_eval_rose23  <- predict(modelo23, newdata = eval_hhs)
+  
+  confusionMatrix(y_hat_eval_rose23, eval_hhs$Pobre)
   
   acc_train_rose23 <- Accuracy(y_pred = y_hat_train_rose23, y_true = train_hhs$Pobre)
   acc_test_rose23  <- Accuracy(y_pred = y_hat_test_rose23, y_true = test_hhs$Pobre)
@@ -653,6 +665,8 @@
   y_hat_test31   <- as.numeric(probs_test31 > 0.5)
   y_hat_eval31   <- as.numeric(probs_eval31 > 0.5)
   
+  confusionMatrix(y_hat_eval31, eval_hhs$Pobre)
+  
   acc_train31  <- Accuracy(y_pred = y_hat_train31, y_true = as.numeric(train_hhs$Pobre))
   acc_test31   <- Accuracy(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre))
   acc_eval31   <- Accuracy(y_pred = y_hat_eval31, y_true = as.numeric(eval_hhs$Pobre))
@@ -711,6 +725,8 @@
   y_hat_test32   <- predict(modelo32, test_hhs)
   y_hat_eval32   <- predict(modelo32, eval_hhs)
   
+  confusionMatrix(y_hat_eval32, eval_hhs$Pobre)
+  
   acc_train32  <- Accuracy(y_pred = y_hat_train32, y_true = train_hhs$Pobre)
   acc_test32   <- Accuracy(y_pred = y_hat_test32, y_true = test_hhs$Pobre)
   acc_eval32   <- Accuracy(y_pred = y_hat_eval32, y_true = eval_hhs$Pobre)
@@ -765,6 +781,8 @@
   y_hat_train_rose33 <- predict(modelo33, newdata = train_hhs)
   y_hat_test_rose33  <- predict(modelo33, newdata = test_hhs)
   y_hat_eval_rose33  <- predict(modelo33, newdata = eval_hhs)
+  
+  confusionMatrix(y_hat_eval_rose33, eval_hhs$Pobre)
   
   acc_train_rose33 <- Accuracy(y_pred = y_hat_train_rose33, y_true = train_hhs$Pobre)
   acc_test_rose33  <- Accuracy(y_pred = y_hat_test_rose33, y_true = test_hhs$Pobre)
@@ -888,6 +906,8 @@
   y_hat_test41   <- as.numeric(probs_test41 > 0.5)
   y_hat_eval41   <- as.numeric(probs_eval41 > 0.5)
   
+  confusionMatrix(y_hat_eval41, eval_hhs$Pobre)
+  
   acc_train41  <- Accuracy(y_pred = y_hat_train41, y_true = as.numeric(train_hhs$Pobre))
   acc_test41   <- Accuracy(y_pred = y_hat_test41, y_true = as.numeric(test_hhs$Pobre))
   acc_eval41   <- Accuracy(y_pred = y_hat_eval41, y_true = as.numeric(eval_hhs$Pobre))
@@ -947,6 +967,8 @@
   y_hat_test42   <- predict(modelo42, test_hhs)
   y_hat_eval42   <- predict(modelo42, eval_hhs)
   
+  confusionMatrix(y_hat_eval42, eval_hhs$Pobre)
+  
   acc_train42  <- Accuracy(y_pred = y_hat_train42, y_true = train_hhs$Pobre)
   acc_test42   <- Accuracy(y_pred = y_hat_test42, y_true = test_hhs$Pobre)
   acc_eval42   <- Accuracy(y_pred = y_hat_eval42, y_true = eval_hhs$Pobre)
@@ -1001,6 +1023,8 @@
   y_hat_train_rose43 <- predict(modelo43, newdata = train_hhs)
   y_hat_test_rose43  <- predict(modelo43, newdata = test_hhs)
   y_hat_eval_rose43  <- predict(modelo43, newdata = eval_hhs)
+  
+  confusionMatrix(y_hat_eval_rose43, eval_hhs$Pobre)
   
   acc_train_rose43 <- Accuracy(y_pred = y_hat_train_rose43, y_true = train_hhs$Pobre)
   acc_test_rose43  <- Accuracy(y_pred = y_hat_test_rose43, y_true = test_hhs$Pobre)
@@ -1123,6 +1147,8 @@
   y_hat_test51   <- as.numeric(probs_test51 > 0.5)
   y_hat_eval51   <- as.numeric(probs_eval51 > 0.5)
   
+  confusionMatrix(y_hat_eval51, eval_hhs$Pobre)
+  
   acc_train51  <- Accuracy(y_pred = y_hat_train51, y_true = as.numeric(train_hhs$Pobre))
   acc_test51   <- Accuracy(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre))
   acc_eval51   <- Accuracy(y_pred = y_hat_eval51, y_true = as.numeric(eval_hhs$Pobre))
@@ -1181,6 +1207,8 @@
   y_hat_test52   <- predict(modelo52, test_hhs)
   y_hat_eval52   <- predict(modelo52, eval_hhs)
   
+  confusionMatrix(y_hat_eval52, eval_hhs$Pobre)
+  
   acc_train52  <- Accuracy(y_pred = y_hat_train52, y_true = train_hhs$Pobre)
   acc_test52   <- Accuracy(y_pred = y_hat_test52, y_true = test_hhs$Pobre)
   acc_eval52   <- Accuracy(y_pred = y_hat_eval52, y_true = eval_hhs$Pobre)
@@ -1234,6 +1262,8 @@
   y_hat_train_rose53 <- predict(modelo53, newdata = train_hhs)
   y_hat_test_rose53  <- predict(modelo53, newdata = test_hhs)
   y_hat_eval_rose53  <- predict(modelo53, newdata = eval_hhs)
+  
+  confusionMatrix(y_hat_eval_rose53, eval_hhs$Pobre)
   
   acc_train_rose53 <- Accuracy(y_pred = y_hat_train_rose53, y_true = train_hhs$Pobre)
   acc_test_rose53  <- Accuracy(y_pred = y_hat_test_rose53, y_true = test_hhs$Pobre)
