@@ -93,6 +93,7 @@
 
 #1 - Logit sin regularizar ---------------------------------------------------------
 
+  set.seed(10110)
   modelo1 <-   train(Pobre ~ . , 
                      data = train_hhs,
                      method = "glmnet",
@@ -154,7 +155,6 @@
 #2 - Logit con Lasso (1)------------------------------------------------------------
 
   set.seed(1010)
-  
   modelo2 <- train(Pobre ~ . , 
                    data = train_hhs, 
                    method = "glmnet",
@@ -200,6 +200,7 @@
 
 #3 - Logit con Ridge (0)------------------------------------------------------------
 
+  set.seed(10110)
   modelo3 <- train(Pobre ~ . , 
                    data = train_hhs,
                    method = "glmnet",
@@ -246,6 +247,7 @@
 
 #4 - Logit con EN-------------------------------------------------------------------
 
+  set.seed(10110)
   modelo4 <- train(Pobre ~ . , 
                    data = train_hhs,
                    method = "glmnet",
