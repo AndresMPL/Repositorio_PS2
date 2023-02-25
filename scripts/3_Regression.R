@@ -83,3 +83,46 @@ ridge_p3
 
 coef_ridge_p3 <- coef(ridge_p3$finalModel, ridge_p3$bestTune$lambda)
 coef_ridge_p3
+
+##LASSO
+
+set.seed(1010)
+lasso_p3<-train(Ingpcug ~ .,
+                data=train_hhs2,
+                method = 'glmnet', 
+                trControl = control2,
+                tuneGrid = expand.grid(alpha = 1, lambda = grilla2)) 
+
+lasso_p3
+
+coef_lasso_p3 <- coef(lasso_p3$finalModel, lasso_p3$bestTune$lambda)
+coef_lasso_p3
+
+##ELASTIC NET
+
+set.seed(10110)
+en_p3 <- train(Ingpcug ~ . , 
+               data = train_hhs2,
+               method = "glmnet",
+               trControl = control2,
+               preProcess = NULL,
+               tuneGrid = expand.grid(alpha = seq(0,1,by = 0.1),lambda=grilla2))
+
+en_p3
+
+coef_en_p3 <- coef(en_p3$finalModel, en_p3$bestTune$lambda)
+coef_en_p3
+##---------------------
+
+coefs_df_p3<-cbind(coef(lineal_p3$finalModel),as.matrix(coef_ridge_p3),as.matrix(coef_lasso_p3),as.matrix(coef_en_p3))
+colnames(coefs_df_p3)<-c("OLS","RIDGE","LASSO","ELASTIC_NET")
+round(coefs_df_p3,4)
+
+####----
+
+RMSE_df_p3<-cbind(lineal_p3$results$RMSE,ridge_p3$results$RMSE[which.min(ridge_p3$results$lambda)],lasso_p3$results$RMSE[which.min(lasso_p3$results$
+                                                                                                                                     lambda)],en_p3$results$
+                    RMSE[which.min(en_p3$results$
+                                     lambda)])
+colnames(RMSE_df_p3)<-c("OLS","RIDGE","LASSO","EN")
+RMSE_df_p3
