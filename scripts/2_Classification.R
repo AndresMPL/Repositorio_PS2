@@ -272,9 +272,9 @@
 
 ###1.3 Logit - ROSE - Oversamplig ----
 
-  rose_train13 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs13) + 69239, p = 0.5)$data
+  rose_train13 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69239, p = 0.5)$data
   nrow(rose_train13)
-  table(rose_train$Pobre)
+  table(rose_train13$Pobre)
   prop.table(table(rose_train13$Pobre))
   
   prop.table(table(train_hhs$Pobre))
@@ -506,7 +506,7 @@
   
 ###2.3 Logit - Lasso - ROSE - Oversamplig ----
 
-  rose_train23 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs23) + 69239, p = 0.5)$data
+  rose_train23 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69239, p = 0.5)$data
   nrow(rose_train23)
   table(rose_train23$Pobre)
   prop.table(table(rose_train23$Pobre))
@@ -742,7 +742,7 @@
 
 ###3.3 Logit - Ridge - ROSE - Oversamplig ----
 
-  rose_train33 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs33) + 69339, p = 0.5)$data
+  rose_train33 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69339, p = 0.5)$data
   nrow(rose_train33)
   table(rose_train33$Pobre)
   prop.table(table(rose_train33$Pobre))
@@ -974,9 +974,10 @@
   
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
+  
 ###4.3 Logit - EN - ROSE - Oversamplig ----
 
-  rose_train43 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs43) + 69439, p = 0.5)$data
+  rose_train43 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69439, p = 0.5)$data
   nrow(rose_train43)
   table(rose_train43$Pobre)
   prop.table(table(rose_train43$Pobre))
@@ -1209,7 +1210,7 @@
   
 ###5.3 Logit - LDA - ROSE - Oversamplig ----
   
-  rose_train53 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs53) + 69539, p = 0.5)$data
+  rose_train53 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69539, p = 0.5)$data
   nrow(rose_train53)
   table(rose_train53$Pobre)
   prop.table(table(rose_train53$Pobre))
