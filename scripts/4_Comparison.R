@@ -5,6 +5,10 @@
 #
 #------------------------------------------------------------------------------#
 
+metricas_inicial <- metricas
+
+print(xtable(metricas), include.rownames = FALSE)
+
 #Lectura de datos Test para el modelo final
 
   test_hogares      <- read.csv("test_hogares.csv")
