@@ -24,6 +24,7 @@
 #Leer los datos - 
 
   setwd("/Users/manuelaojeda/Desktop/Universidad /MAESTRIA") #Por tamaño de los archivos, seleecionar el directorio local
+  setwd("C:/Users/User/Documents/Big_Data/BD_Taller 2")
   
   test_hogares      <- read.csv("test_hogares.csv")
   test_personas     <- read.csv("test_personas.csv")
@@ -216,7 +217,7 @@
      
       glimpse(train_h)
       
-      #-------------------------------------------------------------------------
+#-------------------------------------------------------------------------
       
       colnames(train_h)
       
