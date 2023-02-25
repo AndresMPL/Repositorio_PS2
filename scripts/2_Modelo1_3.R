@@ -1,11 +1,9 @@
 
 ##1.3 Logit sin regularizar - Downsampling ----
 
-
-train_hhs$Pobre <- factor(train_hhs$Pobre)
-
-train_hhs13 <- downSample(x = select(train_hhs, -Pobre), 
-                          y = train_hhs$Pobre, list = F, yname = "Pobre")
+set.seed(10110)
+train_hhs13 <- downSample(x = train_hhs, 
+                          y = train_hhs$Pobre, yname = "Pobre")
 
 prop.table(table(train_hhs$Pobre)) #BD inicial
 nrow(train_hhs) 
@@ -13,11 +11,12 @@ nrow(train_hhs)
 prop.table(table(train_hhs13$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
 nrow(train_hhs13) 
 
-train_hhs13 <- data.frame(sapply(train_hhs13, as.numeric))
+#train_hhs13 <- data.frame(sapply(train_hhs13, as.numeric))
 
 modelo13 <- train(Pobre~., 
                   data = train_hhs13,
                   method = "glmnet",
+                  trControl = control,
                   family = "binomial",
                   preProcess = NULL,
                   metric = 'Accuracy')
