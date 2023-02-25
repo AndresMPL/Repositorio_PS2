@@ -841,7 +841,7 @@
   
   modelo33 <- train(Pobre ~ . , 
                     data = rose_train33,
-                    method = "glm",
+                    method = "glmnet",
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
@@ -1109,7 +1109,7 @@
   
   modelo43 <- train(Pobre ~ . , 
                     data = rose_train43,
-                    method = "glm",
+                    method = "glmnet",
                     trControl = control,
                     family = "binomial",
                     preProcess = NULL,
