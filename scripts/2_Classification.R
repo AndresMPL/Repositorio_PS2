@@ -200,9 +200,9 @@
   rec_test11  <- Recall(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval11  <- Recall(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
-  f1_train11 <- F1_Score(y_pred = y_hat_train11, y_true = train_hhs$Pobre, positive = 1)
-  f1_test11  <- F1_Score(y_pred = y_hat_test11, y_true = test_hhs$Pobre, positive = 1)
-  f1_eval11  <- F1_Score(y_pred = y_hat_eval11, y_true = eval_hhs$Pobre, positive = 1)
+  f1_train11 <- F1_Score(y_pred = y_hat_train11, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  f1_test11  <- F1_Score(y_pred = y_hat_test11, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  f1_eval11  <- F1_Score(y_pred = y_hat_eval11, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train11 <- data.frame(Modelo = "Logit", 
                                  "Muestreo" = "Upsampling", 
@@ -466,9 +466,9 @@
   rec_test21  <- Recall(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval21  <- Recall(y_pred = y_hat_eval21, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
-  f1_train21 <- F1_Score(y_pred = y_hat_train21, y_true = train_hhs$Pobre, positive = 1)
-  f1_test21  <- F1_Score(y_pred = y_hat_test21, y_true = test_hhs$Pobre, positive = 1)
-  f1_eval21  <- F1_Score(y_pred = y_hat_eval21, y_true = eval_hhs$Pobre, positive = 1)
+  f1_train21 <- F1_Score(y_pred = y_hat_train21, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  f1_test21  <- F1_Score(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  f1_eval21  <- F1_Score(y_pred = y_hat_eval21, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train21 <- data.frame(Modelo = "Logit - Lasso", 
                                  "Muestreo" = "Upsampling", 
@@ -737,9 +737,9 @@
   rec_test31  <- Recall(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval31  <- Recall(y_pred = y_hat_eval31, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
-  f1_train31 <- F1_Score(y_pred = y_hat_train31, y_true = train_hhs$Pobre, positive = 1)
-  f1_test31  <- F1_Score(y_pred = y_hat_test31, y_true = test_hhs$Pobre, positive = 1)
-  f1_eval31  <- F1_Score(y_pred = y_hat_eval31, y_true = eval_hhs$Pobre, positive = 1)
+  f1_train31 <- F1_Score(y_pred = y_hat_train31, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  f1_test31  <- F1_Score(y_pred = y_hat_test31, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  f1_eval31  <- F1_Score(y_pred = y_hat_eval31, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train31 <- data.frame(Modelo = "Logit - Ridge", 
                                  "Muestreo" = "Upsampling", 
@@ -1006,9 +1006,9 @@
   rec_test41  <- Recall(y_pred = y_hat_test41, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval41  <- Recall(y_pred = y_hat_eval41, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
-  f1_train41 <- F1_Score(y_pred = y_hat_train41, y_true = train_hhs$Pobre, positive = 1)
-  f1_test41  <- F1_Score(y_pred = y_hat_test41, y_true = test_hhs$Pobre, positive = 1)
-  f1_eval41  <- F1_Score(y_pred = y_hat_eval41, y_true = eval_hhs$Pobre, positive = 1)
+  f1_train41 <- F1_Score(y_pred = y_hat_train41, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  f1_test41  <- F1_Score(y_pred = y_hat_test41, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  f1_eval41  <- F1_Score(y_pred = y_hat_eval41, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train41 <- data.frame(Modelo = "Logit - EN", 
                                  "Muestreo" = "Upsampling", 
@@ -1275,9 +1275,9 @@
   rec_test51  <- Recall(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre), positive = 1)
   rec_eval51  <- Recall(y_pred = y_hat_eval51, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
-  f1_train51 <- F1_Score(y_pred = y_hat_train51, y_true = train_hhs$Pobre, positive = 1)
-  f1_test51  <- F1_Score(y_pred = y_hat_test51, y_true = test_hhs$Pobre, positive = 1)
-  f1_eval51  <- F1_Score(y_pred = y_hat_eval51, y_true = eval_hhs$Pobre, positive = 1)
+  f1_train51 <- F1_Score(y_pred = y_hat_train51, y_true = as.numeric(train_hhs$Pobre), positive = 1)
+  f1_test51  <- F1_Score(y_pred = y_hat_test51, y_true = as.numeric(test_hhs$Pobre), positive = 1)
+  f1_eval51  <- F1_Score(y_pred = y_hat_eval51, y_true = as.numeric(eval_hhs$Pobre), positive = 1)
   
   metricas_train51 <- data.frame(Modelo = "LDA", 
                                  "Muestreo" = "Upsampling", 
