@@ -299,7 +299,7 @@
   ###2.1 Logit Lasso - Upsampling ----
   
   set.seed(10110)
-  train_hhs21 <- upSample(x = train_hhs, 
+  train_hhs21 <- upSample(x = select(train_hhs, -Pobre), 
                           y = train_hhs$Pobre, yname = "Pobre")
   
   prop.table(table(train_hhs$Pobre)) #BD inicial
@@ -320,6 +320,8 @@
                     metric = 'Accuracy',
                     tuneGrid = expand.grid(alpha = 1,lambda=grilla))
   
+  
+  
   probs_train21  <- predict(modelo21, newdata = train_hhs, type = "prob")[, 1, drop = T]
   #probs_train21[probs_train21 < 0] <- 0
   #probs_train21[probs_train21 > 1] <- 1
@@ -336,6 +338,7 @@
   y_hat_test21   <- as.numeric(probs_test21 > 0.5)
   y_hat_eval21   <- as.numeric(probs_eval21 > 0.5)
   
+
   acc_train21  <- Accuracy(y_pred = y_hat_train21, y_true = as.numeric(train_hhs$Pobre))
   acc_test21   <- Accuracy(y_pred = y_hat_test21, y_true = as.numeric(test_hhs$Pobre))
   acc_eval21   <- Accuracy(y_pred = y_hat_eval21, y_true = as.numeric(eval_hhs$Pobre))
@@ -364,7 +367,7 @@
   
   
   set.seed(10110)
-  train_hhs22 <- downSample(x = train_hhs, 
+  train_hhs22 <- downSample(x = select(train_hhs, -Pobre), 
                             y = train_hhs$Pobre, yname = "Pobre")
   
   prop.table(table(train_hhs$Pobre)) #BD inicial
@@ -462,7 +465,7 @@
   ###3.1 Logit - Ridge - Upsampling ----
   
   set.seed(10110)
-  train_hhs31 <- upSample(x = train_hhs, 
+  train_hhs31 <- upSample(x = select(train_hhs, -Pobre), 
                           y = train_hhs$Pobre, yname = "Pobre")
   
   prop.table(table(train_hhs$Pobre)) #BD inicial
@@ -527,7 +530,7 @@
   
   
   set.seed(10110)
-  train_hhs32 <- downSample(x = train_hhs, 
+  train_hhs32 <- downSample(x = select(train_hhs, -Pobre), 
                             y = train_hhs$Pobre, yname = "Pobre")
   
   prop.table(table(train_hhs$Pobre)) #BD inicial
@@ -575,7 +578,8 @@
   metricas %>% kbl(digits = 2) %>% kable_styling(full_width = T)
   
 
-#4 - Logit con EN-------------------------------------------------------------------
+
+  #4 - Logit con EN-------------------------------------------------------------------
 
   set.seed(10110)
   modelo4 <- train(Pobre ~ . , 
@@ -625,7 +629,7 @@
   ###4.1 Logit - EN - Upsampling ----
   
   set.seed(10110)
-  train_hhs41 <- upSample(x = train_hhs, 
+  train_hhs41 <- upSample(x = select(train_hhs, -Pobre), 
                           y = train_hhs$Pobre, yname = "Pobre")
   
   prop.table(table(train_hhs$Pobre)) #BD inicial
@@ -691,7 +695,7 @@
   
   
   set.seed(10110)
-  train_hhs42 <- downSample(x = train_hhs, 
+  train_hhs42 <- downSample(x = select(train_hhs, -Pobre), 
                             y = train_hhs$Pobre, yname = "Pobre")
   
   prop.table(table(train_hhs$Pobre)) #BD inicial
