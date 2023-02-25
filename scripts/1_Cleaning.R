@@ -18,7 +18,7 @@
 #Cargar librerías
   
   library(pacman)
-  p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies, tidyverse, caret)
+  p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies, tidyverse, caret, xtable)
 
   
 #Leer los datos - 
@@ -219,7 +219,7 @@
       
       colnames(train_h)
       
-      db <- dummyVars(~.,train_h) #Ver cuáles tienen solo dos factores
+      db <- dummyVars(~.,train_h) #Ver cuáles tienen solo dos factores para no dummyficar
         #nivel_edu_jefe_hogar
         #Vivienda
       
