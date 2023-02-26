@@ -1404,3 +1404,165 @@
   metricas <- bind_rows(metricas, metricas53)
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
+  
+  
+  #6 - Árboles -------------------------------------------------------------------
+  
+  #Vamos a usar la BD sin dummys - "train_h_factores"
+  train_h_factores <- train_h_factores %>% select(-id)
+  glimpse(train_h_factores)
+  
+  #Dividimos train/test/eval (70%/20%/10%)
+  
+  set.seed(10110)
+  index_3 <- createDataPartition(y=train_h_factores$Pobre, p = 0.7, list = FALSE)
+  train_arboles  <- train_h_factores[index_3,]
+  other_arboles  <- train_h_factores[-index_3,]
+  
+  set.seed(10110)
+  index4  <- createDataPartition(other_arboles$Pobre, p = 1/3, list = FALSE)
+  test_arboles <- other_arboles[-index4,]
+  eval_arboles <- other_arboles[ index4,]
+  
+  dim(train_arboles)   
+  dim(test_arboles)
+  dim(eval_arboles)
+  
+  dim(train_h_factores)[1] - dim(train_arboles)[1] - dim(test_arboles)[1] - dim(eval_arboles)[1] #Cero para verificar que las particiones hayan quedado bien
+  
+  prop.table(table(train_h_factores$Pobre))    #Verificamos que las particiones conserven las mismas proporciones
+  prop.table(table(train_arboles$Pobre))       #Verificamos que las muestras se encuentran desbalanceadas
+  prop.table(table(test_arboles$Pobre))
+  prop.table(table(eval_arboles$Pobre))
+  
+  
+  #Ejecutamos el modelo de árbol de decisión
+  
+  set.seed(10101)
+  modelo6 <- train(Pobre ~ .,
+                   data = train_arboles, 
+                   method = "rpart", 
+                   trControl = control)
+  
+  library(rattle)
+  fancyRpartPlot(modelo6$finalModel)
+  
+  arbol6 <- rpart(Pobre ~ ., 
+                  data = train_arboles,
+                  method = "class")
+  
+  arbol6
+  
+  prp(arbol1, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
+  
+  y_hat_train6 = predict(modelo6, newdata = train_arboles)
+  y_hat_test6 = predict(modelo6, newdata = test_arboles)
+  y_hat_eval6 = predict(modelo6, newdata = eval_arboles)
+  
+  acc_train6 <- Accuracy(y_pred = y_hat_train6, y_true = train_arboles$Pobre)
+  acc_test6 <- Accuracy(y_pred = y_hat_test6, y_true = test_arboles$Pobre)
+  acc_eval6 <- Accuracy(y_pred = y_hat_eval6, y_true = eval_arboles$Pobre)
+  
+  rec_train6 <- Recall(y_pred = y_hat_train6, y_true = train_arboles$Pobre, positive = "Pobre")
+  rec_test6 <- Recall(y_pred = y_hat_test6, y_true = test_arboles$Pobre, positive = "Pobre")
+  rec_eval6 <- Recall(y_pred = y_hat_eval6, y_true = eval_arboles$Pobre, positive = "Pobre")
+  
+  f1_train6 <- F1_Score(y_pred = y_hat_train6, y_true = train_arboles$Pobre, positive = "Pobre")
+  f1_test6 <- F1_Score(y_pred = y_hat_test6, y_true = test_arboles$Pobre, positive = "Pobre")
+  f1_eval6 <- F1_Score(y_pred = y_hat_eval6, y_true = eval_arboles$Pobre, positive = "Pobre")
+  
+  metricas_train6 <- data.frame(Modelo = "Árbol de decisión", 
+                                "Muestreo" = "---", 
+                                "Evaluación" = "Entrenamiento",
+                                "Sensitivity" = rec_train6,
+                                "Accuracy" = acc_train6,
+                                "F1" = f1_train6)
+  
+  metricas_test6 <- data.frame(Modelo = "Árbol de decisión", 
+                               "Muestreo" = "---", 
+                               "Evaluación" = "Test",
+                               "Sensitivity" = rec_test6,
+                               "Accuracy" = acc_test6,
+                               "F1" = f1_test6)
+  
+  metricas_eval6 <- data.frame(Modelo = "Árbol de decisión", 
+                               "Muestreo" = "---", 
+                               "Evaluación" = "Evaluación",
+                               "Sensitivity" = rec_eval6,
+                               "Accuracy" = acc_eval6,
+                               "F1" = f1_eval6)
+  
+  metricas6 <- bind_rows(metricas_train6, metricas_test6, metricas_eval6)
+  metricas <- bind_rows(metricas, metricas6)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+  
+  ###6.1 Árbol de decisión - Upsampling ----
+  
+  train_arbol61 <- upSample(x = select(train_arboles, -Pobre), 
+                            y = train_arboles$Pobre, yname = "Pobre")
+  
+  prop.table(table(train_arboles$Pobre)) #BD inicial
+  nrow(train_arboles) 
+  
+  prop.table(table(train_arbol61$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(train_arbol61) 
+  
+  glimpse(train_arbol61)
+  
+  set.seed(10101)
+  modelo61 <- train(Pobre ~ .,
+                    data = train_arbol61, 
+                    method = "rpart", 
+                    trControl = control)
+  
+  fancyRpartPlot(modelo61$finalModel)
+  
+  arbol61 <- rpart(Pobre ~ ., 
+                   data = train_arbol61,
+                   method = "class")
+  
+  arbol61
+  
+  prp(arbol1, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
+  
+  y_hat_train61 = predict(modelo61, newdata = train_arboles)
+  y_hat_test61 = predict(modelo61, newdata = test_arboles)
+  y_hat_eval61 = predict(modelo61, newdata = eval_arboles)
+  
+  acc_train61 <- Accuracy(y_pred = y_hat_train61, y_true = train_arboles$Pobre)
+  acc_test61 <- Accuracy(y_pred = y_hat_test61, y_true = test_arboles$Pobre)
+  acc_eval61 <- Accuracy(y_pred = y_hat_eval61, y_true = eval_arboles$Pobre)
+  
+  rec_train61 <- Recall(y_pred = y_hat_train61, y_true = train_arboles$Pobre, positive = "Pobre")
+  rec_test61 <- Recall(y_pred = y_hat_test61, y_true = test_arboles$Pobre, positive = "Pobre")
+  rec_eval61 <- Recall(y_pred = y_hat_eval61, y_true = eval_arboles$Pobre, positive = "Pobre")
+  
+  f1_train61 <- F1_Score(y_pred = y_hat_train61, y_true = train_arboles$Pobre, positive = "Pobre")
+  f1_test61 <- F1_Score(y_pred = y_hat_test61, y_true = test_arboles$Pobre, positive = "Pobre")
+  f1_eval61 <- F1_Score(y_pred = y_hat_eval61, y_true = eval_arboles$Pobre, positive = "Pobre")
+  
+  metricas_train61 <- data.frame(Modelo = "Árbol de decisión", 
+                                 "Muestreo" = "Upsampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Sensitivity" = rec_train61,
+                                 "Accuracy" = acc_train61,
+                                 "F1" = f1_train61)
+  
+  metricas_test61 <- data.frame(Modelo = "Árbol de decisión", 
+                                "Muestreo" = "Upsampling", 
+                                "Evaluación" = "Test",
+                                "Sensitivity" = rec_test61,
+                                "Accuracy" = acc_test61,
+                                "F1" = f1_test61)
+  
+  metricas_eval61 <- data.frame(Modelo = "Árbol de decisión", 
+                                "Muestreo" = "Upsampling", 
+                                "Evaluación" = "Evaluación",
+                                "Sensitivity" = rec_eval61,
+                                "Accuracy" = acc_eval61,
+                                "F1" = f1_eval61)
+  
+  metricas61 <- bind_rows(metricas_train61, metricas_test61, metricas_eval61)
+  metricas <- bind_rows(metricas, metricas61)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+  
