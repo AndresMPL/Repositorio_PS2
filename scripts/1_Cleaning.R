@@ -216,39 +216,42 @@
       train_hp3 <-train_h
       
 ##Estadisticas descriptivas---------------------------------------------
+      
 #install.packages("GGally")  
 #p_load(GGally)
 #ggpairs(train_h, columns = 2:5, ggplot2::aes(colour = train_h$sexo_jefe_hogar_mujer))
 
       train_h2<- train_h %>% 
         select(num_cuartos_dormir,Nper, Ingpcug, edad_jefe_hogar, sexo_jefe_hogar_Hombre, Clase_Urbano, Vivienda_Propia_paga, Vivienda_Arriendo, nivel_edu_jefe_hogar_Media) 
+      
       summary(train_h2)
+      
       stargazer(train_h2, title="Estadísticas descriptivas", type='latex')
       
       dist_edad <- ggplot(data = train_h,
                           mapping = aes(x = edad_jefe_hogar))  + 
-        geom_histogram(aes(y =after_stat(density)),
-                       bins = 9,
-                       position = 'identity',
-                       color="#424242", fill="#E3E3E3") +
-        stat_function(fun = dnorm, xlim = c(min(train_h$edad_jefe_hogar),max(train_h$edad_jefe_hogar)), colour="#1C86EE", linewidth=1,
-                      args = list(mean = mean(train_h$edad_jefe_hogar), 
-                                  sd = sd(train_h$edad_jefe_hogar))) + 
-        labs(title = 'Figura 2: Distribución de edad',
-             x = 'Edad jefe hogar',
-             y = 'Frecuencia') + 
-        theme_bw()
+                          geom_histogram(aes(y =after_stat(density)),
+                          bins = 9,
+                          position = 'identity',
+                          color="#424242", fill="#E3E3E3") +
+                          stat_function(fun = dnorm, xlim = c(min(train_h$edad_jefe_hogar),max(train_h$edad_jefe_hogar)), colour="#1C86EE", linewidth=1,
+                          args = list(mean = mean(train_h$edad_jefe_hogar), 
+                          sd = sd(train_h$edad_jefe_hogar))) + 
+                          labs(title = 'Figura 1: Distribución de edad',
+                          x = 'Edad jefe hogar',
+                          y = 'Frecuencia') + 
+                          theme_bw()
       
       dist_edad
       
-      Imagen_1 <- ggplot(train_h, aes(x = Pobre_Pobre)) +
-        geom_bar(fill = "darkblue") +
-        theme_bw() +
-        scale_y_continuous(labels = label_number()) +
-        labs(title = "Figura 1: Distribución de la Clasificación de Pobreza por hogares",
-             y = "Número de hogares",
-             x = "Clasificación")
+      imagen_1 <- ggplot(train_h, aes(x = Pobre_Pobre)) +
+                  geom_bar(fill = "#B3B3B3") +
+                  theme_bw() +
+                  scale_y_continuous(labels = label_number()) +
+                  labs(title = "Figura 1: Distribución de la Clasificación de Pobreza por hogares",
+                       y = "Número de hogares",
+                       x = "Clasificación")
       
-      Imagen_1
+      imagen_1
       
       
