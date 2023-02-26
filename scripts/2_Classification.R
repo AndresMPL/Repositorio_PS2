@@ -1405,12 +1405,13 @@
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
   
-  
   #6 - Árboles -------------------------------------------------------------------
   
   #Vamos a usar la BD sin dummys - "train_h_factores"
-  train_h_factores <- train_h_factores %>% select(-id)
   glimpse(train_h_factores)
+  
+  train_h_factores <- train_h_factores %>% select(-Nper, -Lp,-Ingtotugarr, -Ingpcug, -num_oc_hogar)
+  
   
   #Dividimos train/test/eval (70%/20%/10%)
   
@@ -1433,8 +1434,7 @@
   prop.table(table(train_h_factores$Pobre))    #Verificamos que las particiones conserven las mismas proporciones
   prop.table(table(train_arboles$Pobre))       #Verificamos que las muestras se encuentran desbalanceadas
   prop.table(table(test_arboles$Pobre))
-  prop.table(table(eval_arboles$Pobre))
-  
+  prop.table(table(eval_arboles$Pobre))  
   
   #Ejecutamos el modelo de árbol de decisión
   
@@ -1453,7 +1453,7 @@
   
   arbol6
   
-  prp(arbol1, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
+  prp(arbol6, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
   
   y_hat_train6 = predict(modelo6, newdata = train_arboles)
   y_hat_test6 = predict(modelo6, newdata = test_arboles)
@@ -1496,6 +1496,7 @@
   metricas <- bind_rows(metricas, metricas6)
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
+  
   ###6.1 Árbol de decisión - Upsampling ----
   
   train_arbol61 <- upSample(x = select(train_arboles, -Pobre), 
@@ -1523,7 +1524,7 @@
   
   arbol61
   
-  prp(arbol1, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
+  prp(arbol61, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
   
   y_hat_train61 = predict(modelo61, newdata = train_arboles)
   y_hat_test61 = predict(modelo61, newdata = test_arboles)
@@ -1565,4 +1566,149 @@
   metricas61 <- bind_rows(metricas_train61, metricas_test61, metricas_eval61)
   metricas <- bind_rows(metricas, metricas61)
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+  
+  ###6.2 Árbol de decisión - Downsampling ----
+  
+  train_arbol62 <- downSample(x = select(train_arboles, -Pobre), 
+                              y = train_arboles$Pobre, yname = "Pobre")
+  
+  prop.table(table(train_arboles$Pobre)) #BD inicial
+  nrow(train_arboles) 
+  
+  prop.table(table(train_arbol62$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(train_arbol62) 
+  
+  glimpse(train_arbol62)
+  
+  
+  set.seed(10101)
+  modelo62 <- train(Pobre ~ .,
+                    data = train_arbol62, 
+                    method = "rpart", 
+                    trControl = control)
+  
+  fancyRpartPlot(modelo62$finalModel)
+  
+  arbol62 <- rpart(Pobre ~ ., 
+                   data = train_arbol62,
+                   method = "class")
+  
+  arbol62
+  
+  prp(arbol62, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
+  
+  y_hat_train62 = predict(modelo62, newdata = train_arboles)
+  y_hat_test62 = predict(modelo62, newdata = test_arboles)
+  y_hat_eval62 = predict(modelo62, newdata = eval_arboles)
+  
+  acc_train62 <- Accuracy(y_pred = y_hat_train62, y_true = train_arboles$Pobre)
+  acc_test62 <- Accuracy(y_pred = y_hat_test62, y_true = test_arboles$Pobre)
+  acc_eval62 <- Accuracy(y_pred = y_hat_eval62, y_true = eval_arboles$Pobre)
+  
+  rec_train62 <- Recall(y_pred = y_hat_train62, y_true = train_arboles$Pobre, positive = "Pobre")
+  rec_test62 <- Recall(y_pred = y_hat_test62, y_true = test_arboles$Pobre, positive = "Pobre")
+  rec_eval62 <- Recall(y_pred = y_hat_eval62, y_true = eval_arboles$Pobre, positive = "Pobre")
+  
+  f1_train62 <- F1_Score(y_pred = y_hat_train62, y_true = train_arboles$Pobre, positive = "Pobre")
+  f1_test62 <- F1_Score(y_pred = y_hat_test62, y_true = test_arboles$Pobre, positive = "Pobre")
+  f1_eval62 <- F1_Score(y_pred = y_hat_eval62, y_true = eval_arboles$Pobre, positive = "Pobre")
+  
+  metricas_train62 <- data.frame(Modelo = "Árbol de decisión", 
+                                 "Muestreo" = "Downsampling", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Sensitivity" = rec_train62,
+                                 "Accuracy" = acc_train62,
+                                 "F1" = f1_train62)
+  
+  metricas_test62 <- data.frame(Modelo = "Árbol de decisión", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Test",
+                                "Sensitivity" = rec_test62,
+                                "Accuracy" = acc_test62,
+                                "F1" = f1_test62)
+  
+  metricas_eval62 <- data.frame(Modelo = "Árbol de decisión", 
+                                "Muestreo" = "Downsampling", 
+                                "Evaluación" = "Evaluación",
+                                "Sensitivity" = rec_eval62,
+                                "Accuracy" = acc_eval62,
+                                "F1" = f1_eval62)
+  
+  metricas62 <- bind_rows(metricas_train62, metricas_test62, metricas_eval62)
+  metricas <- bind_rows(metricas, metricas62)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+  
+  
+  ###6.3 Árbol de decisión - Oversamplig (ROSE) ----
+  
+  table(train_arboles$Pobre)
+  rose_train63 <- ROSE(Pobre ~ ., data = train_arboles, N = nrow(train_arboles) + 69539, p = 0.5)$data
+  
+  prop.table(table(rose_train63$Pobre))  #BD remuestreo - Verificamos proporciones de cada clase
+  nrow(rose_train63)
+  table(rose_train63$Pobre)
+  
+  prop.table(table(train_arboles$Pobre)) #BD inicial
+  nrow(train_arboles)
+  
+  glimpse(rose_train63)
+  
+  
+  set.seed(10101)
+  modelo63 <- train(Pobre ~ .,
+                    data = rose_train63, 
+                    method = "rpart", 
+                    trControl = control)
+  
+  fancyRpartPlot(modelo63$finalModel)
+  
+  arbol63 <- rpart(Pobre ~ ., 
+                   data = rose_train63,
+                   method = "class")
+  
+  arbol63
+  
+  prp(arbol63, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
+  
+  y_hat_train63 = predict(modelo63, newdata = train_arboles)
+  y_hat_test63 = predict(modelo63, newdata = test_arboles)
+  y_hat_eval63 = predict(modelo63, newdata = eval_arboles)
+  
+  acc_train63 <- Accuracy(y_pred = y_hat_train63, y_true = train_arboles$Pobre)
+  acc_test63 <- Accuracy(y_pred = y_hat_test63, y_true = test_arboles$Pobre)
+  acc_eval63 <- Accuracy(y_pred = y_hat_eval63, y_true = eval_arboles$Pobre)
+  
+  rec_train63 <- Recall(y_pred = y_hat_train63, y_true = train_arboles$Pobre, positive = "Pobre")
+  rec_test63 <- Recall(y_pred = y_hat_test63, y_true = test_arboles$Pobre, positive = "Pobre")
+  rec_eval63 <- Recall(y_pred = y_hat_eval63, y_true = eval_arboles$Pobre, positive = "Pobre")
+  
+  f1_train63 <- F1_Score(y_pred = y_hat_train63, y_true = train_arboles$Pobre, positive = "Pobre")
+  f1_test63 <- F1_Score(y_pred = y_hat_test63, y_true = test_arboles$Pobre, positive = "Pobre")
+  f1_eval63 <- F1_Score(y_pred = y_hat_eval63, y_true = eval_arboles$Pobre, positive = "Pobre")
+  
+  metricas_train63 <- data.frame(Modelo = "Árbol de decisión", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
+                                 "Evaluación" = "Entrenamiento",
+                                 "Sensitivity" = rec_train63,
+                                 "Accuracy" = acc_train63,
+                                 "F1" = f1_train63)
+  
+  metricas_test63 <- data.frame(Modelo = "Árbol de decisión", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
+                                "Evaluación" = "Test",
+                                "Sensitivity" = rec_test63,
+                                "Accuracy" = acc_test63,
+                                "F1" = f1_test63)
+  
+  metricas_eval63 <- data.frame(Modelo = "Árbol de decisión", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
+                                "Evaluación" = "Evaluación",
+                                "Sensitivity" = rec_eval63,
+                                "Accuracy" = acc_eval63,
+                                "F1" = f1_eval63)
+  
+  metricas63 <- bind_rows(metricas_train63, metricas_test63, metricas_eval63)
+  metricas <- bind_rows(metricas, metricas63)
+  metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+  
   
