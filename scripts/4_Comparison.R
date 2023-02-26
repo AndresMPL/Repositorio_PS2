@@ -77,6 +77,7 @@
   test_h <- test_h %>% mutate(Numper_por_dor= Nper/num_cuartos_dormir,
                                 Hacinamiento = if_else(Numper_por_dor>3, 1 , 0),
                                 Ocupados_por_perhog = if_else(num_oc_hogar>0, Npersug/num_oc_hogar, as.double(Npersug)))
+  test_h <- test_h %>% mutate(edad_2 = edad_jefe_hogar^2)
   
   #Variables con NA´s
   
@@ -221,5 +222,60 @@
   
   exportar <- test_h %>% select(id, prediccion) %>% rename("pobre" = prediccion)
   write.csv(exportar, "modelo_kaggle.csv", row.names = FALSE)
+  
+  
+#Modelos de regresion 
+  
+  test_h2$modelo_1 <- predict(modelo_1, newdata = test_h2)
+  test_h2$y_hat_1 <- exp(test_h2$modelo_1)/test_h2$N_personas_hog
+  test_h2$Pobre_1 <- if_else(test_h2$y_hat_1<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_2 <- predict(modelo_2, newdata = test_h2)
+  test_h2$y_hat_2 <- exp(test_h2$modelo_2)/test_h2$N_personas_hog
+  test_h2$Pobre_2 <- if_else(test_h2$y_hat_2<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_3 <- predict(modelo_3, newdata = test_h2)
+  test_h2$y_hat_3 <- exp(test_h2$modelo_3)/test_h2$N_personas_hog
+  test_h2$Pobre_3 <- if_else(test_h2$y_hat_3<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_4 <- predict(modelo_4, newdata = test_h2)
+  test_h2$y_hat_4 <- exp(test_h2$modelo_4)/test_h2$N_personas_hog
+  test_h2$Pobre_4 <- if_else(test_h2$y_hat_4<=test_h2$Lp, 1, 0)    
+  
+  test_h2$modelo_5 <- predict(modelo_5, newdata = test_h2)
+  test_h2$y_hat_5 <- exp(test_h2$modelo_5)/test_h2$N_personas_hog
+  test_h2$Pobre_5 <- if_else(test_h2$y_hat_5<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_6 <- predict(modelo_6, newdata = test_h2)
+  test_h2$y_hat_6 <- exp(test_h2$modelo_6)/test_h2$N_personas_hog
+  test_h2$Pobre_6 <- if_else(test_h2$y_hat_6<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_7 <- predict(modelo_7, newdata = test_h2)
+  test_h2$y_hat_7 <- exp(test_h2$modelo_7)/test_h2$N_personas_hog
+  test_h2$Pobre_7 <- if_else(test_h2$y_hat_7<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_8 <- predict(modelo_8, newdata = test_h2)
+  test_h2$y_hat_8 <- exp(test_h2$modelo_8)/test_h2$N_personas_hog
+  test_h2$Pobre_8 <- if_else(test_h2$y_hat_8<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_9 <- predict(modelo_9, newdata = test_h2)
+  test_h2$y_hat_9 <- exp(test_h2$modelo_9)/test_h2$N_personas_hog
+  test_h2$Pobre_9 <- if_else(test_h2$y_hat_9<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_10 <- predict(modelo_10, newdata = test_h2)
+  test_h2$y_hat_10 <- exp(test_h2$modelo_10)/test_h2$N_personas_hog
+  test_h2$Pobre_10 <- if_else(test_h2$y_hat_10<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_11 <- predict(modelo_11, newdata = test_h2)
+  test_h2$y_hat_11 <- exp(test_h2$modelo_11)/test_h2$N_personas_hog
+  test_h2$Pobre_11 <- if_else(test_h2$y_hat_11<=test_h2$Lp, 1, 0)
+  
+#exportar base  
+
+  exportar2 <- test_h2 %>% select(id, Pobre_4) %>% rename(pobre = Pobre_4)
+  write.csv(exportar, "Pobre_4.csv", row.names = FALSE)
+    
+ 
+
 
   
