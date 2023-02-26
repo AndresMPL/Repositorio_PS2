@@ -54,7 +54,8 @@
 #Selección de Variables de interés
   
   train_p <- train_personas %>% 
-    select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Pet, Oc, Des, Ina, Ingtot)
+    select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, P7472, P7422, P7500s2, P7500s3, P7505, P7510s1, P7510s2, P7510s3, P7510s5, P7510s6, P7510s7,  Pet, Oc, Des, Ina, Ingtot)
+  
   
   train_h <- train_hogares %>% 
     select(Pobre, id, Clase, P5000, P5010, P5090, Nper, Npersug, Lp, Ingtotugarr, Ingpcug)
@@ -67,6 +68,8 @@
   
 #Crear variables de interes  
   
+  
+  
   train_p$Genero <- ifelse(train_p$P6020 == 2, 1, 0) %>% as.numeric()
   train_p$Menores_edad <- if_else(train_p$P6040<=14, 1, 0 , missing = NULL)
   train_p$adulto_mayor <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL)
@@ -78,6 +81,8 @@
   
   train_p$Clase <- if_else(train_p$Clase== 2, 1, 0 , missing = NULL)
   train_h$Clase <- if_else(train_h$Clase== 2, 1, 0 , missing = NULL)
+  
+  
   
   
   train_personas_hog <- train_p %>%
@@ -100,7 +105,7 @@
   train_h <- left_join(train_h,train_personas_hog)
   colnames(train_h) 
   
-  #Creacion de variables 
+  #Creacion de variables en base pegada de hogares
   
   train_h$jefe_hogar_ina2 <- if_else(train_h$edad_jefe_hogar==11, as.integer(1), train_h$jefe_hogar_ina) ##observacion de 11 años que no clasifica como inactivo, desempleado, ocupado se asigna como inactiva
   train_h <- train_h %>% select(-jefe_hogar_ina)# se retira la variable antigua
