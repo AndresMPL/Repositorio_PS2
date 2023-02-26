@@ -5,13 +5,13 @@
 #
 #------------------------------------------------------------------------------#
 
-metricas_inicial <- metricas
-
-metricas_eval <- metricas %>% filter("Evaluación" == Evaluación)
-metricas_eval
-metricas_eval %>% kbl(digits = 4) %>% kable_styling(full_width = T)
-
-print(xtable(metricas), include.rownames = FALSE)
+  metricas_inicial <- metricas
+  
+  metricas_eval <- metricas %>% filter("Evaluación" == Evaluación)
+  metricas_eval
+  metricas_eval %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+  
+  print(xtable(metricas), include.rownames = FALSE)
 
 #Lectura de datos Test para el modelo final
 
