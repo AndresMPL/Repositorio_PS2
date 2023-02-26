@@ -1363,7 +1363,7 @@
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
   
-###5.3 Logit - LDA - ROSE - Oversamplig ----
+###5.3 LDA - ROSE - Oversamplig ----
   
   rose_train53 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69539, p = 0.5)$data
   nrow(rose_train53)
