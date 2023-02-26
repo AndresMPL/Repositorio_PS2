@@ -5,17 +5,15 @@
 #
 #------------------------------------------------------------------------------#
 
-#Aquí guardamos las métricas de todos los modelos de Clasificación generados en el Script 2
-
   metricas_total <- metricas
   
-  metricas_eval <- metricas %>% filter(Evaluación == "Evaluación") %>% as.data.frame()
+  metricas_eval <- metricas %>% filter(Evaluación == "Eval") %>% as.data.frame()
   View(metricas_eval)
   print(xtable(metricas_eval), include.rownames = FALSE)
   
   metricas_test <- metricas %>% filter(Evaluación == "Test") %>% as.data.frame()
   View(metricas_test)
-  print(xtable(metricas_test, digits = 4), include.rownames = FALSE)
+  print(xtable(metricas_test), include.rownames = FALSE)
 
 #Lectura de datos Test para el modelo final
 
@@ -162,7 +160,7 @@
                                 Hacinamiento = factor(Hacinamiento, levels = c(0,1), labels = c("No","Si")))
   
   test_h <- test_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
-
+  test_h$N_personas_hog <- test_h$Npersug
   glimpse(test_h)
   
   #Copia de la BD ajustada - Train Hogares
@@ -186,7 +184,29 @@
   glimpse(test_h)
 
   
-#Modelo seleccionado------------------------------------------------------------
+  #Estandarizacion 
+  
+  test_h2  <- test_h
+  
+  variables_numericas <- c("num_cuartos", "num_cuartos_dormir", "Npersug",
+                           "edad_jefe_hogar", "num_Menores_edad", "num_adulto_mayor", 
+                           "Numper_por_dor", "Ocupados_por_perhog")
+  
+  
+  
+  escalador_test <- preProcess(test_h2[, variables_numericas],
+                          method = c("center", "scale"))
+  
+  test_h2[, variables_numericas] <- predict(escalador_test, test_h2[, variables_numericas])
+  
+  
+#Predicción sobre el modelo seleccionado
+  
+  final <- modelo11
+  test_h$y_hat_final <- predict(final, newdata = test_h)
+  
+#Modelo seleccionado
+  
   
   final <- modelo11
   
@@ -197,14 +217,9 @@
   print(xtable(coefs), include.rownames = FALSE)
 
   
-#Predicción sobre el modelo seleccionado
-  
-  test_h$prediccion   <- predict(final, newdata = test_h)
-  test_h$prediccion <- ifelse(test_h$prediccion == "Pobre", 1, 0)
-
-
 #Archivo de Kaggle
   
   exportar <- test_h %>% select(id, prediccion) %>% rename("pobre" = prediccion)
   write.csv(exportar, "modelo_kaggle.csv", row.names = FALSE)
+
   
