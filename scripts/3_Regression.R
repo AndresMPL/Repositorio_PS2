@@ -596,46 +596,6 @@ metricas_7 <- bind_rows(metricas_train_7, metricas_test_7, metricas_eval_7)
 metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5, metricas_6, metricas_7)
 metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
-
-#Ajuste Datos para ARBOLES----------------------------------------------------------
-
-##Factores-----
-
-train_h3 <- train_h2 %>% mutate(Clase_Rural=factor(Clase_Rural,levels=c(0,1),labels=c("Urbano","Rural")),
-                                Vivienda_Propia_No_Paga=factor(Vivienda_Propia_No_Paga,levels=c(0,1),labels=c("No","Si")),
-                                Vivienda_Arriendo=factor(Vivienda_Arriendo,levels=c(0,1),labels=c("No","Si")),
-                                Vivienda_Usufructo=factor(Vivienda_Usufructo,levels=c(0,1),labels=c("No","Si")),
-                                Vivienda_Ocupante_No_Dueño=factor(Vivienda_Ocupante_No_Dueño,levels=c(0,1),labels=c("No","Si")),
-                                nivel_edu_jefe_hogar_Basica_primaria=factor(nivel_edu_jefe_hogar_Basica_primaria,levels=c(0,1),labels=c("No","Si")),
-                                nivel_edu_jefe_hogar_Basica_secundaria=factor(nivel_edu_jefe_hogar_Basica_secundaria,levels=c(0,1),labels=c("No","Si")),
-                                nivel_edu_jefe_hogar_Media=factor(nivel_edu_jefe_hogar_Media,levels=c(0,1),labels=c("No","Si")),
-                                nivel_edu_jefe_hogar_Superior=factor(nivel_edu_jefe_hogar_Superior,levels=c(0,1),labels=c("No","Si")),
-                                jefe_hogar_des_Si=factor(jefe_hogar_des_Si,levels=c(0,1),labels=c("No","Si")),
-                                jefe_hogar_ina_Si=factor(jefe_hogar_ina_Si,levels=c(0,1),labels=c("No","Si")),
-                                Hacinamiento_Si=factor(Hacinamiento_Si,levels=c(0,1),labels=c("No","Si")))
-
-##Train/test/eval (70/20/10) - BD Hogares -------
-
-set.seed(10110)
-index_5 <- createDataPartition(y = train_h3$Log_ing , p = 0.7)[[1]]
-train_hh3<- train_h3[index_5,]
-other_3 <- train_h3[-index_5,]
-
-
-set.seed(10110)
-index_6<- createDataPartition(y = other_3$Log_ing , p = 1/3)[[1]]
-test_hh3 <- other_3[index_4,]
-eval_hh3 <- other_3[-index_4,]
-
-
-dim(train_h3)   
-dim(train_hh3)
-dim(test_hh3)
-dim(eval_hh3)
-
-dim(train_h3)[1] - dim(train_hh3)[1] - dim(test_hh3)[1] - dim(eval_hh3)[1]
-
-
 #8 - ARBOL de decisión----------------------------------------------------------
 
 p_load(rattle)
@@ -710,7 +670,7 @@ metricas_8 <- bind_rows(metricas_train_8, metricas_test_8, metricas_eval_8)
 metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5, metricas_6, metricas_7, metricas_8)
 metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
-#9 - Random forest----------------------------------------------------------
+#Random forest----------------------------------------------------------
 
 ##Grilla ramdom forest 
 
@@ -724,7 +684,8 @@ tunegrid_rf2 <- expand.grid(mtry = c(10, 15),
                            splitrule = "variance")
 
 
-##Modelos
+
+#9 - Primer grilla para tunear --------
 
 modelo_9 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe_hogar + edad_2 + 
                    num_Menores_edad + num_adulto_mayor + Numper_por_dor + Ocupados_por_perhog +
@@ -740,6 +701,73 @@ modelo_9 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_je
                  trControl = control2,
                  metric = 'RMSE', 
                  tuneGrid = tunegrid_rf)
+
+Grilla_1 <- ggplot(modelo_9$results, aes(x = min.node.size, y = RMSE, 
+                             color = as.factor(mtry))) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Resultados del grid search",
+       x = "Mínima cantidad de observaciones por hoja",
+       y = "RMSE (Cross-Validation)") +
+  scale_color_discrete("Número de predictores seleccionados al azar") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+train_hhs2$modelo_9 <- predict(modelo_9, newdata = train_hhs2)
+test_hhs2$modelo_9  <- predict(modelo_9, newdata = test_hhs2)
+eval_hhs2$modelo_9  <- predict(modelo_9, newdata = eval_hhs2)
+
+train_hhs2$y_hat_9 <- exp(train_hhs2$modelo_9)/train_hhs2$N_personas_hog
+test_hhs2$y_hat_9  <- exp(test_hhs2$modelo_9)/test_hhs2$N_personas_hog
+eval_hhs2$y_hat_9  <- exp(eval_hhs2$modelo_9)/eval_hhs2$N_personas_hog
+
+train_hhs2$Pobre_9 <- if_else(train_hhs2$y_hat_9<=train_hhs2$Lp, 1, 0)
+test_hhs2$Pobre_9  <- if_else(test_hhs2$y_hat_9<=test_hhs2$Lp, 1, 0)
+eval_hhs2$Pobre_9  <- if_else(eval_hhs2$y_hat_9<=eval_hhs2$Lp, 1, 0)
+
+train_hhs2 <- train_hhs2 %>% mutate(Pobre_9=factor(Pobre_9,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+test_hhs2 <- test_hhs2 %>% mutate(Pobre_9=factor(Pobre_9,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+eval_hhs2 <- eval_hhs2 %>% mutate(Pobre_9=factor(Pobre_9,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+
+acc_train_9  <- Accuracy(y_pred = train_hhs2$Pobre_9, y_true = train_hhs2$Pobre)
+acc_test_9   <- Accuracy(y_pred = test_hhs2$Pobre_9, y_true = test_hhs2$Pobre)
+acc_eval_9   <- Accuracy(y_pred = eval_hhs2$Pobre_9, y_true = eval_hhs2$Pobre)
+
+rec_train_9 <- Recall(y_pred = train_hhs2$Pobre_9, y_true = train_hhs2$Pobre)
+rec_test_9  <- Recall(y_pred = test_hhs2$Pobre_9, y_true = test_hhs2$Pobre)
+rec_eval_9  <- Recall(y_pred = eval_hhs2$Pobre_9, y_true = eval_hhs2$Pobre)
+
+f1_train_9 <- F1_Score(y_pred = train_hhs2$Pobre_9, y_true = train_hhs2$Pobre)
+f1_test_9  <- F1_Score(y_pred = test_hhs2$Pobre_9, y_true = test_hhs2$Pobre)
+f1_eval_9  <- F1_Score(y_pred = eval_hhs2$Pobre_9, y_true = eval_hhs2$Pobre)
+
+
+metricas_train_9 <- data.frame(Modelo = "RAMDOM FOREST", 
+                               "Muestreo" = "---", 
+                               "Evaluación" = "Entrenamiento",
+                               "Sensitivity" = rec_train_9,
+                               "Accuracy" = acc_train_9,
+                               "F1" = f1_train_9)
+
+metricas_test_9 <- data.frame(Modelo = "RAMDOM FOREST", 
+                              "Muestreo" = "---", 
+                              "Evaluación" = "Test",
+                              "Sensitivity" = rec_test_9,
+                              "Accuracy" = acc_test_9,
+                              "F1" = f1_test_9)
+
+metricas_eval_9 <- data.frame(Modelo = "RAMDOM FOREST", 
+                              "Muestreo" = "---", 
+                              "Evaluación" = "Evaluación",
+                              "Sensitivity" = rec_eval_9,
+                              "Accuracy" = acc_eval_9,
+                              "F1" = f1_eval_9)
+
+metricas_9 <- bind_rows(metricas_train_9, metricas_test_9, metricas_eval_9)
+metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5, metricas_6, metricas_7, metricas_8, metricas_9)
+metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+
+#10 - Segunda grilla para tunear --------
 
 modelo_10 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe_hogar + edad_2 + 
                     num_Menores_edad + num_adulto_mayor + Numper_por_dor + Ocupados_por_perhog +
@@ -757,15 +785,27 @@ modelo_10 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_j
                   tuneGrid = tunegrid_rf2)
 
 
+#Gradient Boosting tree----------------------------------------------------------
 
-ggplot(modelo_9$results, aes(x = min.node.size, y = RMSE, 
-                            color = as.factor(mtry))) +
-  geom_line() +
-  geom_point() +
-  labs(title = "Resultados del grid search",
-       x = "Mínima cantidad de observaciones por hoja",
-       y = "RMSE (Cross-Validation)") +
-  scale_color_discrete("Número de predictores seleccionados al azar") +
-  theme_bw() +
-  theme(legend.position = "bottom")
+##Grilla Boosting tree
+
+tunegrid_gbm3 <- expand.grid(learn_rate = c(0.1, 0.01, 0.001),
+                            ntrees = 50,
+                            max_depth = 2,
+                            col_sample_rate = 1,
+                            min_rows = 70) 
+
+
+#instalación
+if ("package:h2o" %in% search()) {detach("package:h2o", unload=TRUE) }
+if ("h2o" %in% rownames(installed.packages())) {remove.packages("h2o")}
+library(pacman)
+p_load("RCurl","jsonlite") 
+install.packages("h2o", type = "source",
+                 repos = (c("http://h2o-release.s3.amazonaws.com/h2o/latest_stable_R")))
+
+library(h2o)
+
+
+
 
