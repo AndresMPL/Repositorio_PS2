@@ -205,25 +205,25 @@ print(xtable(metricas), include.rownames = FALSE)
   
   #-----------------------------------------------------------------------------
   
-  test_h$y_hat_modelo1 <- ifelse(test_h$y_hat_modelo1 == "Pobre", 1, 0)
-  test_h$y_hat_modelo11probs <- ifelse(test_h$y_hat_modelo11probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo12 <- ifelse(test_h$y_hat_modelo12 == "Pobre", 1, 0)
-  test_h$y_hat_modelo13 <- ifelse(test_h$y_hat_modelo13 == "Pobre", 1, 0)
-  test_h$y_hat_modelo2 <- ifelse(test_h$y_hat_modelo2 == "Pobre", 1, 0)
-  test_h$y_hat_modelo21probs <- ifelse(test_h$y_hat_modelo21probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo22 <- ifelse(test_h$y_hat_modelo22 == "Pobre", 1, 0)
-  test_h$y_hat_modelo23 <- ifelse(test_h$y_hat_modelo23 == "Pobre", 1, 0)
-  test_h$y_hat_modelo3 <- ifelse(test_h$y_hat_modelo3 == "Pobre", 1, 0)
-  test_h$y_hat_modelo31probs <- ifelse(test_h$y_hat_modelo31probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo32 <- ifelse(test_h$y_hat_modelo32 == "Pobre", 1, 0)
-  test_h$y_hat_modelo33 <- ifelse(test_h$y_hat_modelo33 == "Pobre", 1, 0)
-  test_h$y_hat_modelo41probs <- ifelse(test_h$y_hat_modelo41probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo42 <- ifelse(test_h$y_hat_modelo42 == "Pobre", 1, 0)
+  test_h$y_hat_modelo1        <- ifelse(test_h$y_hat_modelo1 == "Pobre", 1, 0)
+  test_h$y_hat_modelo11probs  <- ifelse(test_h$y_hat_modelo11probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo12       <- ifelse(test_h$y_hat_modelo12 == "Pobre", 1, 0)
+  test_h$y_hat_modelo13       <- ifelse(test_h$y_hat_modelo13 == "Pobre", 1, 0)
+  test_h$y_hat_modelo2        <- ifelse(test_h$y_hat_modelo2 == "Pobre", 1, 0)
+  test_h$y_hat_modelo21probs  <- ifelse(test_h$y_hat_modelo21probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo22       <- ifelse(test_h$y_hat_modelo22 == "Pobre", 1, 0)
+  test_h$y_hat_modelo23       <- ifelse(test_h$y_hat_modelo23 == "Pobre", 1, 0)
+  test_h$y_hat_modelo3        <- ifelse(test_h$y_hat_modelo3 == "Pobre", 1, 0)
+  test_h$y_hat_modelo31probs  <- ifelse(test_h$y_hat_modelo31probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo32       <- ifelse(test_h$y_hat_modelo32 == "Pobre", 1, 0)
+  test_h$y_hat_modelo33       <- ifelse(test_h$y_hat_modelo33 == "Pobre", 1, 0)
+  test_h$y_hat_modelo41probs  <- ifelse(test_h$y_hat_modelo41probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo42       <- ifelse(test_h$y_hat_modelo42 == "Pobre", 1, 0)
   #4.3 Logit - EN - ROSE
-  test_h$y_hat_modelo5 <- ifelse(test_h$y_hat_modelo5 == "Pobre", 1, 0)
-  test_h$y_hat_modelo51probs <- ifelse(test_h$y_hat_modelo51probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo52 <- ifelse(test_h$y_hat_modelo52 == "Pobre", 1, 0)
-  test_h$y_hat_modelo53 <- ifelse(test_h$y_hat_modelo53 == "Pobre", 1, 0)
+  test_h$y_hat_modelo5        <- ifelse(test_h$y_hat_modelo5 == "Pobre", 1, 0)
+  test_h$y_hat_modelo51probs  <- ifelse(test_h$y_hat_modelo51probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo52       <- ifelse(test_h$y_hat_modelo52 == "Pobre", 1, 0)
+  test_h$y_hat_modelo53       <- ifelse(test_h$y_hat_modelo53 == "Pobre", 1, 0)
   
   #-----------------------------------------------------------------------------  
   
@@ -242,9 +242,8 @@ print(xtable(metricas), include.rownames = FALSE)
   
   glimpse(sample)
   
-  
   exportar <- test_h %>% select(id, y_hat_modelo53) %>% rename("pobre" = y_hat_modelo53)
-  write.csv(exportar, "modelo53.csv")
+  write.csv(exportar, "modelo53.csv", row.names = FALSE)
    
   
 #Calculamos con modelo seleccionado de todo el proceso 
