@@ -7,7 +7,7 @@
 
 #Predicción de ingresos - Intento de predecir primero los ingresos
 
-         #PROPUESTA ESTRUCTURA PRELIMINAR
+#Ajuste de datos y base --------      
   
 train_h2 <- train_h %>% mutate(Pobre=factor(Pobre_Pobre,levels=c(0,1),labels=c("No_Pobre","Pobre")))
 train_h2 <- train_h2 %>% select( -Nper, -num_oc_hogar, -Pobre_No_Pobre, -Pobre_Pobre, -Clase_Urbano, -Vivienda_Propia_paga, -sexo_jefe_hogar_Hombre, -nivel_edu_jefe_hogar_Ninguno, -jefe_hogar_des_No, -jefe_hogar_oc_No, -jefe_hogar_ina_No, -Hacinamiento_No, -jefe_hogar_oc_Si)
@@ -23,7 +23,7 @@ c <- sum(train_h2$ingresos_no)
 
 glimpse(train_h2)
 
-#Dividimos train/test/eval (70/20/10) - BD Hogares
+#Train/test/eval (70/20/10) - BD Hogares -------
 
 set.seed(10110)
 index_3 <- createDataPartition(y = train_h2$Log_ing , p = 0.7)[[1]]
@@ -44,7 +44,7 @@ dim(eval_hh2)
 
 dim(train_h2)[1] - dim(train_hh2)[1] - dim(test_hh2)[1] - dim(eval_hh2)[1]
 
-##Estandarizamos
+#Estandarizacion-----------
 
 train_hhs2 <- train_hh2 #Guardamos las tres BD Originales aparte
 test_hhs2  <- test_hh2  
