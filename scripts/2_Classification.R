@@ -1404,3 +1404,34 @@
   metricas <- bind_rows(metricas, metricas53)
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
+  
+  
+  #6 - Árboles -------------------------------------------------------------------
+  
+  #Vamos a usar la BD sin dummys - "train_h_factores"
+  train_h_factores <- train_h_factores %>% select(-id)
+  glimpse(train_h_factores)
+  
+  #Dividimos train/test/eval (70%/20%/10%)
+  
+  set.seed(10110)
+  index_3 <- createDataPartition(y=train_h_factores$Pobre, p = 0.7, list = FALSE)
+  train_arboles  <- train_h_factores[index_3,]
+  other_arboles  <- train_h_factores[-index_3,]
+  
+  set.seed(10110)
+  index4  <- createDataPartition(other_arboles$Pobre, p = 1/3, list = FALSE)
+  test_arboles <- other_arboles[-index4,]
+  eval_arboles <- other_arboles[ index4,]
+  
+  dim(train_arboles)   
+  dim(test_arboles)
+  dim(eval_arboles)
+  
+  dim(train_h_factores)[1] - dim(train_arboles)[1] - dim(test_arboles)[1] - dim(eval_arboles)[1] #Cero para verificar que las particiones hayan quedado bien
+  
+  prop.table(table(train_h_factores$Pobre))    #Verificamos que las particiones conserven las mismas proporciones
+  prop.table(table(train_arboles$Pobre))       #Verificamos que las muestras se encuentran desbalanceadas
+  prop.table(table(test_arboles$Pobre))
+  prop.table(table(eval_arboles$Pobre))  
+  
