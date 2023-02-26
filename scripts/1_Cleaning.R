@@ -23,8 +23,8 @@
   
 #Leer los datos - 
 
-  setwd("/Users/manuelaojeda/Desktop/Universidad /MAESTRIA") #Por tamaño de los archivos, seleecionar el directorio local
-  setwd("C:/Users/User/Documents/Big_Data/BD_Taller 2")
+  setwd("C:/Users/Isabella/Desktop/Big data/TALLER 2") #Por tamaño de los archivos, seleecionar el directorio local
+
   
   test_hogares      <- read.csv("test_hogares.csv")
   test_personas     <- read.csv("test_personas.csv")
@@ -215,6 +215,27 @@
      
       glimpse(train_h)
       
+<<<<<<< HEAD
+      train_hp3 <-train_h
+      
+#-------------------------------------------------------------------------
+      
+      colnames(train_h)
+      
+      db <- dummyVars(~.,train_h) #Ver cuáles tienen solo dos factores
+        #nivel_edu_jefe_hogar
+        #Vivienda
+      
+      train_hd <- dummy_cols(train_h, 
+                            select_columns = c("nivel_edu_jefe_hogar", "Vivienda"), 
+                            remove_selected_columns = TRUE)
+      
+      train_hd <- train_hd %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug, -num_oc_hogar, -Vivienda_Propia_paga, -nivel_edu_jefe_hogar_Ninguno)
+      
+      glimpse(train_hd)
+      train_h <- train_hd
+=======
+>>>>>>> b5c5cc6083565a8ad32b02cc19aabda99bf20b9a
 
 ##Estadisticas descriptivas---------------------------------------------
 #install.packages("GGally")  
