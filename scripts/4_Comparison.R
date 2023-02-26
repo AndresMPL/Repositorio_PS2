@@ -179,6 +179,22 @@
   
   glimpse(test_h)
 
+#Predicción sobre el modelo seleccionado
+  
+  final <- modelo11
+  test_h$y_hat_final <- predict(final, newdata = test_h)
+  
+#Modelo seleccionado
+  
+  
+  coefs <- coef(final$finalModel) %>% as.data.frame()
+  colnames(coefs)<-c("Modelo")
+  round(coefs,4)
+  coefs
+  print(xtable(coefs), include.rownames = FALSE)
+
+
+  
 #Modelos trabajados
   
   test_h$y_hat_modelo1 <- predict(modelo1, newdata = test_h)
@@ -226,8 +242,8 @@
 
 #Archivo de Kaggle
   
-  exportar <- test_h %>% select(id, y_hat_modelo53) %>% rename("pobre" = y_hat_modelo53)
-  write.csv(exportar, "modelo53.csv", row.names = FALSE)
+  exportar <- test_h %>% select(id, final) %>% rename("pobre" = final)
+  write.csv(exportar, "modelo_kaggle.csv", row.names = FALSE)
 
 
     
