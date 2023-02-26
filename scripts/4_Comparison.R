@@ -160,7 +160,7 @@
                                 Hacinamiento = factor(Hacinamiento, levels = c(0,1), labels = c("No","Si")))
   
   test_h <- test_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
-
+  test_h$N_personas_hog <- test_h$Npersug
   glimpse(test_h)
   
   #Copia de la BD ajustada - Train Hogares
@@ -183,6 +183,23 @@
   
   glimpse(test_h)
 
+  
+  #Estandarizacion 
+  
+  test_h2  <- test_h
+  
+  variables_numericas <- c("num_cuartos", "num_cuartos_dormir", "Npersug",
+                           "edad_jefe_hogar", "num_Menores_edad", "num_adulto_mayor", 
+                           "Numper_por_dor", "Ocupados_por_perhog")
+  
+  
+  
+  escalador_test <- preProcess(test_h2[, variables_numericas],
+                          method = c("center", "scale"))
+  
+  test_h2[, variables_numericas] <- predict(escalador_test, test_h2[, variables_numericas])
+  
+  
 #Predicción sobre el modelo seleccionado
   
   final <- modelo11
@@ -191,66 +208,18 @@
 #Modelo seleccionado
   
   
+  final <- modelo11
+  
   coefs <- coef(final$finalModel) %>% as.data.frame()
   colnames(coefs)<-c("Modelo")
   round(coefs,4)
   coefs
   print(xtable(coefs), include.rownames = FALSE)
 
-
   
-#Modelos trabajados
-  
-  test_h$y_hat_modelo1 <- predict(modelo1, newdata = test_h)
-  test_h$y_hat_modelo11probs <- predict(modelo11, newdata = test_h)
-  test_h$y_hat_modelo12 <- predict(modelo12, newdata = test_h)
-  test_h$y_hat_modelo13 <- predict(modelo13, newdata = test_h)
-  test_h$y_hat_modelo2 <- predict(modelo2, newdata = test_h)
-  test_h$y_hat_modelo21probs <- predict(modelo21, newdata = test_h)
-  test_h$y_hat_modelo22 <- predict(modelo22, newdata = test_h)
-  test_h$y_hat_modelo23 <- predict(modelo23, newdata = test_h)
-  test_h$y_hat_modelo3 <- predict(modelo3, newdata = test_h)
-  test_h$y_hat_modelo31probs <- predict(modelo31, newdata = test_h)
-  test_h$y_hat_modelo32 <- predict(modelo32, newdata = test_h)
-  test_h$y_hat_modelo33 <- predict(modelo33, newdata = test_h)
-  test_h$y_hat_modelo41probs <- predict(modelo41, newdata = test_h)
-  test_h$y_hat_modelo42 <- predict(modelo42, newdata = test_h)
-  #4.3 Logit - EN - ROSE
-  test_h$y_hat_modelo5 <- predict(modelo5, newdata = test_h)
-  test_h$y_hat_modelo51probs <- predict(modelo51, newdata = test_h)
-  test_h$y_hat_modelo52 <- predict(modelo52, newdata = test_h)
-  test_h$y_hat_modelo53 <- predict(modelo53, newdata = test_h)
-  
-  #-----------------------------------------------------------------------------
-  
-  test_h$y_hat_modelo1        <- ifelse(test_h$y_hat_modelo1 == "Pobre", 1, 0)
-  test_h$y_hat_modelo11probs  <- ifelse(test_h$y_hat_modelo11probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo12       <- ifelse(test_h$y_hat_modelo12 == "Pobre", 1, 0)
-  test_h$y_hat_modelo13       <- ifelse(test_h$y_hat_modelo13 == "Pobre", 1, 0)
-  test_h$y_hat_modelo2        <- ifelse(test_h$y_hat_modelo2 == "Pobre", 1, 0)
-  test_h$y_hat_modelo21probs  <- ifelse(test_h$y_hat_modelo21probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo22       <- ifelse(test_h$y_hat_modelo22 == "Pobre", 1, 0)
-  test_h$y_hat_modelo23       <- ifelse(test_h$y_hat_modelo23 == "Pobre", 1, 0)
-  test_h$y_hat_modelo3        <- ifelse(test_h$y_hat_modelo3 == "Pobre", 1, 0)
-  test_h$y_hat_modelo31probs  <- ifelse(test_h$y_hat_modelo31probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo32       <- ifelse(test_h$y_hat_modelo32 == "Pobre", 1, 0)
-  test_h$y_hat_modelo33       <- ifelse(test_h$y_hat_modelo33 == "Pobre", 1, 0)
-  test_h$y_hat_modelo41probs  <- ifelse(test_h$y_hat_modelo41probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo42       <- ifelse(test_h$y_hat_modelo42 == "Pobre", 1, 0)
-  #4.3 Logit - EN - ROSE
-  test_h$y_hat_modelo5        <- ifelse(test_h$y_hat_modelo5 == "Pobre", 1, 0)
-  test_h$y_hat_modelo51probs  <- ifelse(test_h$y_hat_modelo51probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo52       <- ifelse(test_h$y_hat_modelo52 == "Pobre", 1, 0)
-  test_h$y_hat_modelo53       <- ifelse(test_h$y_hat_modelo53 == "Pobre", 1, 0)
-  
-
 #Archivo de Kaggle
   
-  exportar <- test_h %>% select(id, final) %>% rename("pobre" = final)
+  exportar <- test_h %>% select(id, prediccion) %>% rename("pobre" = prediccion)
   write.csv(exportar, "modelo_kaggle.csv", row.names = FALSE)
 
-
-    
-  
-  
   
