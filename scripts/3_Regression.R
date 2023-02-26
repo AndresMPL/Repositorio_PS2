@@ -618,22 +618,22 @@ train_h3 <- train_h2 %>% mutate(Clase_Rural=factor(Clase_Rural,levels=c(0,1),lab
 
 set.seed(10110)
 index_5 <- createDataPartition(y = train_h3$Log_ing , p = 0.7)[[1]]
-train_hh2<- train_h2[index_3,]
-other_2 <- train_h2[-index_3,]
+train_hh3<- train_h3[index_5,]
+other_3 <- train_h3[-index_5,]
 
 
 set.seed(10110)
-index_6<- createDataPartition(y = other_2$Log_ing , p = 1/3)[[1]]
-test_hh2 <- other_2[index_4,]
-eval_hh2 <- other_2[-index_4,]
+index_6<- createDataPartition(y = other_3$Log_ing , p = 1/3)[[1]]
+test_hh3 <- other_3[index_4,]
+eval_hh3 <- other_3[-index_4,]
 
 
-dim(train_h2)   
-dim(train_hh2)
-dim(test_hh2)
-dim(eval_hh2)
+dim(train_h3)   
+dim(train_hh3)
+dim(test_hh3)
+dim(eval_hh3)
 
-dim(train_h2)[1] - dim(train_hh2)[1] - dim(test_hh2)[1] - dim(eval_hh2)[1]
+dim(train_h3)[1] - dim(train_hh3)[1] - dim(test_hh3)[1] - dim(eval_hh3)[1]
 
 
 #8 - ARBOL de decisión----------------------------------------------------------
