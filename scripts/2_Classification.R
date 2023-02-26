@@ -317,21 +317,21 @@
   f1_eval13  <- F1_Score(y_pred = y_hat_eval_rose13, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train13 <- data.frame(Modelo = "Logit", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose13,
                                  "Accuracy" = acc_train_rose13,
                                  "F1" = f1_train13)
   
   metricas_test13 <- data.frame(Modelo = "Logit", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose13,
                                 "Accuracy" = acc_test_rose13,
                                 "F1" = f1_test13)
   
   metricas_eval13 <- data.frame(Modelo = "Logit", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose13,
                                 "Accuracy" = acc_eval_rose13,
@@ -583,21 +583,21 @@
   f1_eval23  <- F1_Score(y_pred = y_hat_eval_rose23, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train23 <- data.frame(Modelo = "Logit - Lasso", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose23,
                                  "Accuracy" = acc_train_rose23,
                                  "F1" = f1_train23)
   
   metricas_test23 <- data.frame(Modelo = "Logit - Lasso", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose23,
                                 "Accuracy" = acc_test_rose23,
                                 "F1" = f1_test23)
   
   metricas_eval23 <- data.frame(Modelo = "Logit - Lasso", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose23,
                                 "Accuracy" = acc_eval_rose23,
@@ -851,21 +851,21 @@
   f1_eval33  <- F1_Score(y_pred = y_hat_eval_rose33, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train33 <- data.frame(Modelo = "Logit - Ridge", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose33,
                                  "Accuracy" = acc_train_rose33,
                                  "F1" = f1_train33)
   
   metricas_test33 <- data.frame(Modelo = "Logit - Ridge", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose33,
                                 "Accuracy" = acc_test_rose33,
                                 "F1" = f1_test33)
   
   metricas_eval33 <- data.frame(Modelo = "Logit - Ridge", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose33,
                                 "Accuracy" = acc_eval_rose33,
@@ -1117,21 +1117,21 @@
   f1_eval43  <- F1_Score(y_pred = y_hat_eval_rose43, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train43 <- data.frame(Modelo = "Logit - EN", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose43,
                                  "Accuracy" = acc_train_rose43,
                                  "F1" = f1_train43)
   
   metricas_test43 <- data.frame(Modelo = "Logit - EN", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose43,
                                 "Accuracy" = acc_test_rose43,
                                 "F1" = f1_test43)
   
   metricas_eval43 <- data.frame(Modelo = "Logit - EN", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose43,
                                 "Accuracy" = acc_eval_rose43,
@@ -1380,21 +1380,21 @@
   f1_eval53  <- F1_Score(y_pred = y_hat_eval_rose53, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train53 <- data.frame(Modelo = "LDA", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose53,
                                  "Accuracy" = acc_train_rose53,
                                  "F1" = f1_train53)
   
   metricas_test53 <- data.frame(Modelo = "LDA", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose53,
                                 "Accuracy" = acc_test_rose53,
                                 "F1" = f1_test53)
   
   metricas_eval53 <- data.frame(Modelo = "LDA", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose53,
                                 "Accuracy" = acc_eval_rose53,
