@@ -20,18 +20,8 @@
   prop.table(table(train_h$Pobre)) #1-Pobre, 0-No Pobre
   #Grado de desbalance Moderado
   
-  
-  Imagen_1 <- ggplot(train_h, aes(x = Pobre)) +
-              geom_bar(fill = "#B5B5B5") +
-              theme_bw() +
-              scale_y_continuous(labels = label_number()) +
-              labs(title = "Distribución de la Clasificación de Pobreza por hogares",
-                   y = "Número de hogares",
-                   x = "Clasificación")
-  
-  Imagen_1
 
-#Dividimos train/test/eval (70/20/10) - BD Hogares
+#Dividimos train/test/eval (70%/20%/10%) - BD Hogares
 
   set.seed(10110)
   index_1 <- createDataPartition(y=train_h$Pobre, p = 0.7, list = FALSE)
@@ -63,9 +53,6 @@
 
   glimpse(train_hhs)
 
-#names <- data.frame(vars = colnames(train_hhs)) %>% 
-#filter(vars != "Pobre") 
-
   variables_numericas <- c("num_cuartos", "num_cuartos_dormir", "Npersug",
                            "edad_jefe_hogar", "num_Menores_edad", "num_adulto_mayor", 
                            "Numper_por_dor", "Ocupados_por_perhog")
@@ -78,7 +65,7 @@
   eval_hhs[, variables_numericas] <- predict(escalador, eval_hh[, variables_numericas])  
 
 
-#Control------------------------------------------------------------------------
+#Control de CV-------------------------------------------------------------------
 
   grilla <- 10^seq(10, -1, length = 100)
   
@@ -153,7 +140,6 @@
 
 ###1.1 Logit - Upsampling ----
   
-  set.seed(10110)
   train_hhs11 <- upSample(x = select(train_hhs, -Pobre),
                           y = train_hhs$Pobre, yname = "Pobre")
   
@@ -230,7 +216,6 @@
   
 ###1.2 Logit - Downsampling ----
 
-  set.seed(10110)
   train_hhs12 <- downSample(x = select(train_hhs, -Pobre), 
                             y = train_hhs$Pobre, yname = "Pobre")
   
@@ -240,6 +225,7 @@
   prop.table(table(train_hhs12$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
   nrow(train_hhs12) 
   
+  set.seed(10110)
   modelo12 <- train(Pobre~., 
                     data = train_hhs12,
                     method = "glm",
@@ -293,7 +279,7 @@
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 
-###1.3 Logit - ROSE - Oversamplig ----
+###1.3 Logit - Oversamplig (ROSE) ----
 
   rose_train13 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69239, p = 0.5)$data
   nrow(rose_train13)
@@ -303,6 +289,7 @@
   prop.table(table(train_hhs$Pobre))
   nrow(train_hhs)
 
+  set.seed(10110)
   modelo13 <- train(Pobre~., 
                     data = rose_train13,
                     method = "glm",
@@ -330,21 +317,21 @@
   f1_eval13  <- F1_Score(y_pred = y_hat_eval_rose13, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train13 <- data.frame(Modelo = "Logit", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose13,
                                  "Accuracy" = acc_train_rose13,
                                  "F1" = f1_train13)
   
   metricas_test13 <- data.frame(Modelo = "Logit", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose13,
                                 "Accuracy" = acc_test_rose13,
                                 "F1" = f1_test13)
   
   metricas_eval13 <- data.frame(Modelo = "Logit", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose13,
                                 "Accuracy" = acc_eval_rose13,
@@ -416,7 +403,6 @@
   
   ###2.1 Logit - Lasso - Upsampling ----
   
-  set.seed(10110)
   train_hhs21 <- upSample(x = select(train_hhs, -Pobre), 
                           y = train_hhs$Pobre, yname = "Pobre")
   
@@ -494,7 +480,6 @@
   
   ###2.2 Logit - Lasso - Downsampling ----
   
-  set.seed(10110)
   train_hhs22 <- downSample(x = select(train_hhs, -Pobre), 
                             y = train_hhs$Pobre, yname = "Pobre")
   
@@ -504,8 +489,7 @@
   prop.table(table(train_hhs22$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
   nrow(train_hhs22) 
   
-  #train_hhs22 <- data.frame(sapply(train_hhs22, as.numeric))
-  
+  set.seed(10110)
   modelo22 <- train(Pobre~., 
                     data = train_hhs22,
                     method = "glmnet",
@@ -560,7 +544,7 @@
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
   
-###2.3 Logit - Lasso - ROSE - Oversamplig ----
+###2.3 Logit - Lasso - Oversamplig (ROSE) ----
 
   rose_train23 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69239, p = 0.5)$data
   nrow(rose_train23)
@@ -570,6 +554,7 @@
   prop.table(table(train_hhs$Pobre))
   nrow(train_hhs)
   
+  set.seed(10110)
   modelo23 <- train(Pobre ~ . , 
                     data = rose_train23,
                     method = "glmnet",
@@ -598,21 +583,21 @@
   f1_eval23  <- F1_Score(y_pred = y_hat_eval_rose23, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train23 <- data.frame(Modelo = "Logit - Lasso", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose23,
                                  "Accuracy" = acc_train_rose23,
                                  "F1" = f1_train23)
   
   metricas_test23 <- data.frame(Modelo = "Logit - Lasso", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose23,
                                 "Accuracy" = acc_test_rose23,
                                 "F1" = f1_test23)
   
   metricas_eval23 <- data.frame(Modelo = "Logit - Lasso", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose23,
                                 "Accuracy" = acc_eval_rose23,
@@ -763,7 +748,6 @@
   
   ###3.2 Logit - Ridge - Downsampling ----
   
-  set.seed(10110)
   train_hhs32 <- downSample(x = select(train_hhs, -Pobre), 
                             y = train_hhs$Pobre, yname = "Pobre")
   
@@ -773,8 +757,7 @@
   prop.table(table(train_hhs32$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
   nrow(train_hhs32) 
   
-  #train_hhs32 <- data.frame(sapply(train_hhs32, as.numeric))
-  
+  set.seed(10110)
   modelo32 <- train(Pobre~., 
                     data = train_hhs32,
                     method = "glmnet",
@@ -829,7 +812,7 @@
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 
-###3.3 Logit - Ridge - ROSE - Oversamplig ----
+###3.3 Logit - Ridge - Oversamplig (ROSE) ----
 
   rose_train33 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69339, p = 0.5)$data
   nrow(rose_train33)
@@ -839,6 +822,7 @@
   prop.table(table(train_hhs$Pobre))
   nrow(train_hhs)
   
+  set.seed(10110)
   modelo33 <- train(Pobre ~ . , 
                     data = rose_train33,
                     method = "glmnet",
@@ -867,21 +851,21 @@
   f1_eval33  <- F1_Score(y_pred = y_hat_eval_rose33, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train33 <- data.frame(Modelo = "Logit - Ridge", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose33,
                                  "Accuracy" = acc_train_rose33,
                                  "F1" = f1_train33)
   
   metricas_test33 <- data.frame(Modelo = "Logit - Ridge", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose33,
                                 "Accuracy" = acc_test_rose33,
                                 "F1" = f1_test33)
   
   metricas_eval33 <- data.frame(Modelo = "Logit - Ridge", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose33,
                                 "Accuracy" = acc_eval_rose33,
@@ -952,7 +936,6 @@
   
   ###4.1 Logit - EN - Upsampling ----
   
-  set.seed(10110)
   train_hhs41 <- upSample(x = select(train_hhs, -Pobre), 
                           y = train_hhs$Pobre, yname = "Pobre")
   
@@ -1031,7 +1014,6 @@
   
   ###4.2 Logit - EN - Downsampling ----
   
-  set.seed(10110)
   train_hhs42 <- downSample(x = select(train_hhs, -Pobre), 
                             y = train_hhs$Pobre, yname = "Pobre")
   
@@ -1041,8 +1023,7 @@
   prop.table(table(train_hhs42$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
   nrow(train_hhs42) 
   
-  #train_hhs42 <- data.frame(sapply(train_hhs42, as.numeric))
-  
+  set.seed(10110)
   modelo42 <- train(Pobre~., 
                     data = train_hhs42,
                     method = "glmnet",
@@ -1097,7 +1078,7 @@
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
   
-###4.3 Logit - EN - ROSE - Oversamplig ----
+###4.3 Logit - EN - Oversamplig (ROSE) ----
 
   rose_train43 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69439, p = 0.5)$data
   nrow(rose_train43)
@@ -1107,6 +1088,7 @@
   prop.table(table(train_hhs$Pobre))
   nrow(train_hhs)
   
+  set.seed(10110)
   modelo43 <- train(Pobre ~ . , 
                     data = rose_train43,
                     method = "glmnet",
@@ -1135,21 +1117,21 @@
   f1_eval43  <- F1_Score(y_pred = y_hat_eval_rose43, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train43 <- data.frame(Modelo = "Logit - EN", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose43,
                                  "Accuracy" = acc_train_rose43,
                                  "F1" = f1_train43)
   
   metricas_test43 <- data.frame(Modelo = "Logit - EN", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose43,
                                 "Accuracy" = acc_test_rose43,
                                 "F1" = f1_test43)
   
   metricas_eval43 <- data.frame(Modelo = "Logit - EN", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose43,
                                 "Accuracy" = acc_eval_rose43,
@@ -1220,7 +1202,6 @@
   
   ###5.1 LDA - Upsampling ----
   
-  set.seed(10110)
   train_hhs51 <- upSample(x = select(train_hhs, -Pobre), 
                           y = train_hhs$Pobre, yname = "Pobre")
   
@@ -1298,7 +1279,6 @@
   
   ###5.2 LDA - Downsampling ----
   
-  set.seed(10110)
   train_hhs52 <- downSample(x = select(train_hhs, -Pobre), 
                             y = train_hhs$Pobre, yname = "Pobre")
   
@@ -1307,9 +1287,8 @@
   
   prop.table(table(train_hhs52$Pobre)) #BD remuestreo - Verificamos proporciones de cada clase
   nrow(train_hhs52) 
-  
-  #train_hhs52 <- data.frame(sapply(train_hhs52, as.numeric))
-  
+
+  set.seed(10110)
   modelo52 <- train(Pobre~., 
                     data = train_hhs52,
                     method = "lda",
@@ -1363,7 +1342,7 @@
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
   
-###5.3 LDA - ROSE - Oversamplig ----
+###5.3 LDA - Oversamplig (ROSE) ----
   
   rose_train53 <- ROSE(Pobre ~ ., data = train_hhs, N = nrow(train_hhs) + 69539, p = 0.5)$data
   nrow(rose_train53)
@@ -1373,6 +1352,7 @@
   prop.table(table(train_hhs$Pobre))
   nrow(train_hhs)
   
+  set.seed(10110)
   modelo53 <- train(Pobre ~ . , 
                     data = rose_train53,
                     method = "lda",
@@ -1400,21 +1380,21 @@
   f1_eval53  <- F1_Score(y_pred = y_hat_eval_rose53, y_true = eval_hhs$Pobre, positive = "Pobre")
   
   metricas_train53 <- data.frame(Modelo = "LDA", 
-                                 "Muestreo" = "ROSE - Oversampling", 
+                                 "Muestreo" = "Oversamplig (ROSE)", 
                                  "Evaluación" = "Entrenamiento",
                                  "Sensitivity" = rec_train_rose53,
                                  "Accuracy" = acc_train_rose53,
                                  "F1" = f1_train53)
   
   metricas_test53 <- data.frame(Modelo = "LDA", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Test",
                                 "Sensitivity" = rec_test_rose53,
                                 "Accuracy" = acc_test_rose53,
                                 "F1" = f1_test53)
   
   metricas_eval53 <- data.frame(Modelo = "LDA", 
-                                "Muestreo" = "ROSE - Oversampling", 
+                                "Muestreo" = "Oversamplig (ROSE)", 
                                 "Evaluación" = "Evaluación",
                                 "Sensitivity" = rec_eval_rose53,
                                 "Accuracy" = acc_eval_rose53,

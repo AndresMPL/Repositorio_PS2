@@ -5,13 +5,11 @@
 #
 #------------------------------------------------------------------------------#
 
-  metricas_inicial <- metricas
-  
-  metricas_eval <- metricas %>% filter("Evaluación" == Evaluación)
+  print(xtable(metricas), include.rownames = FALSE)  
+
+  metricas_eval <- metricas %>% filter(Evaluación == "Test")
   metricas_eval
-  metricas_eval %>% kbl(digits = 4) %>% kable_styling(full_width = T)
-  
-  print(xtable(metricas), include.rownames = FALSE)
+  print(xtable(metricas_eval), include.rownames = FALSE)
 
 #Lectura de datos Test para el modelo final
 
@@ -225,22 +223,8 @@
   test_h$y_hat_modelo52       <- ifelse(test_h$y_hat_modelo52 == "Pobre", 1, 0)
   test_h$y_hat_modelo53       <- ifelse(test_h$y_hat_modelo53 == "Pobre", 1, 0)
   
-  #-----------------------------------------------------------------------------  
-  
-  glimpse(test_h)
-  summary(test_h)
-  
-  prop.table(table(test_h$y_hat_modelo1))
-  prop.table(table(test_h$y_hat_modelo12))
-  prop.table(table(test_h$y_hat_modelo13))
-  prop.table(table(test_h$y_hat_modelo21probs))
-  prop.table(table(test_h$y_hat_modelo33))
-  prop.table(table(test_h$y_hat_modelo41probs))
-  prop.table(table(test_h$y_hat_modelo5))
-  prop.table(table(test_h$y_hat_modelo52))
-  prop.table(table(test_h$y_hat_modelo53))
-  
-  glimpse(sample)
+
+#Archivo de Kaggle
   
   exportar <- test_h %>% select(id, y_hat_modelo53) %>% rename("pobre" = y_hat_modelo53)
   write.csv(exportar, "modelo53.csv", row.names = FALSE)

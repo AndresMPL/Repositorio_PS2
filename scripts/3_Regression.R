@@ -70,7 +70,7 @@ eval_hhs2[, variables_numericas] <- predict(escalador, eval_hh2[, variables_nume
 grilla2 <- 10^seq(10, -1, length = 100)
 
 
-control2 <- fitControl <- trainControl(method = "cv", number = 5)
+control2 <- trainControl(method = "cv", number = 5)
 
 
 #1 - LM ---------------------------------------------------------
@@ -599,7 +599,7 @@ metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 #Ajuste Datos para ARBOLES----------------------------------------------------------
 
-##factores
+##Factores-----
 
 train_h3 <- train_h2 %>% mutate(Clase_Rural=factor(Clase_Rural,levels=c(0,1),labels=c("Urbano","Rural")),
                                 Vivienda_Propia_No_Paga=factor(Vivienda_Propia_No_Paga,levels=c(0,1),labels=c("No","Si")),
@@ -638,10 +638,134 @@ dim(train_h3)[1] - dim(train_hh3)[1] - dim(test_hh3)[1] - dim(eval_hh3)[1]
 
 #8 - ARBOL de decisión----------------------------------------------------------
 
+p_load(rattle)
+modelo_8 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe_hogar + edad_2 + 
+                    num_Menores_edad + num_adulto_mayor + Numper_por_dor + Ocupados_por_perhog +
+                    Clase_Rural + Vivienda_Propia_No_Paga + Vivienda_Arriendo + Vivienda_Usufructo +
+                    Vivienda_Ocupante_No_Dueño + Vivienda_Otra + sexo_jefe_hogar_Mujer + 
+                    nivel_edu_jefe_hogar_Basica_primaria + nivel_edu_jefe_hogar_Basica_secundaria + nivel_edu_jefe_hogar_Media+
+                    nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si + Npersug*Hacinamiento_Si + 
+                    sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Media + sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Superior + Clase_Rural*sexo_jefe_hogar_Mujer + 
+                    Clase_Rural*nivel_edu_jefe_hogar_Basica_primaria + Clase_Rural*nivel_edu_jefe_hogar_Basica_secundaria + Clase_Rural*nivel_edu_jefe_hogar_Superior + 
+                    edad_2*sexo_jefe_hogar_Mujer + Vivienda_Arriendo*Hacinamiento_Si,
+                 data = train_hh2, 
+                 method = "rpart", 
+                 trControl = control2)
+
+
+fancyRpartPlot(modelo_8$finalModel)
+
+
+train_hhs2$modelo_8 <- predict(modelo_8, newdata = train_hhs2)
+test_hhs2$modelo_8  <- predict(modelo_8, newdata = test_hhs2)
+eval_hhs2$modelo_8  <- predict(modelo_8, newdata = eval_hhs2)
+
+train_hhs2$y_hat_8 <- exp(train_hhs2$modelo_8)/train_hhs2$N_personas_hog
+test_hhs2$y_hat_8  <- exp(test_hhs2$modelo_8)/test_hhs2$N_personas_hog
+eval_hhs2$y_hat_8  <- exp(eval_hhs2$modelo_8)/eval_hhs2$N_personas_hog
+
+train_hhs2$Pobre_8 <- if_else(train_hhs2$y_hat_8<=train_hhs2$Lp, 1, 0)
+test_hhs2$Pobre_8  <- if_else(test_hhs2$y_hat_8<=test_hhs2$Lp, 1, 0)
+eval_hhs2$Pobre_8  <- if_else(eval_hhs2$y_hat_8<=eval_hhs2$Lp, 1, 0)
+
+train_hhs2 <- train_hhs2 %>% mutate(Pobre_8=factor(Pobre_8,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+test_hhs2 <- test_hhs2 %>% mutate(Pobre_8=factor(Pobre_8,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+eval_hhs2 <- eval_hhs2 %>% mutate(Pobre_8=factor(Pobre_8,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+
+acc_train_8  <- Accuracy(y_pred = train_hhs2$Pobre_8, y_true = train_hhs2$Pobre)
+acc_test_8   <- Accuracy(y_pred = test_hhs2$Pobre_8, y_true = test_hhs2$Pobre)
+acc_eval_8   <- Accuracy(y_pred = eval_hhs2$Pobre_8, y_true = eval_hhs2$Pobre)
+
+rec_train_8 <- Recall(y_pred = train_hhs2$Pobre_8, y_true = train_hhs2$Pobre)
+rec_test_8  <- Recall(y_pred = test_hhs2$Pobre_8, y_true = test_hhs2$Pobre)
+rec_eval_8  <- Recall(y_pred = eval_hhs2$Pobre_8, y_true = eval_hhs2$Pobre)
+
+f1_train_8 <- F1_Score(y_pred = train_hhs2$Pobre_8, y_true = train_hhs2$Pobre)
+f1_test_8  <- F1_Score(y_pred = test_hhs2$Pobre_8, y_true = test_hhs2$Pobre)
+f1_eval_8  <- F1_Score(y_pred = eval_hhs2$Pobre_8, y_true = eval_hhs2$Pobre)
+
+
+metricas_train_8 <- data.frame(Modelo = "ARBOL", 
+                               "Muestreo" = "---", 
+                               "Evaluación" = "Entrenamiento",
+                               "Sensitivity" = rec_train_8,
+                               "Accuracy" = acc_train_8,
+                               "F1" = f1_train_8)
+
+metricas_test_8 <- data.frame(Modelo = "ARBOL", 
+                              "Muestreo" = "---", 
+                              "Evaluación" = "Test",
+                              "Sensitivity" = rec_test_8,
+                              "Accuracy" = acc_test_8,
+                              "F1" = f1_test_8)
+
+metricas_eval_8 <- data.frame(Modelo = "ARBOL", 
+                              "Muestreo" = "---", 
+                              "Evaluación" = "Evaluación",
+                              "Sensitivity" = rec_eval_8,
+                              "Accuracy" = acc_eval_8,
+                              "F1" = f1_eval_8)
+
+metricas_8 <- bind_rows(metricas_train_8, metricas_test_8, metricas_eval_8)
+metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5, metricas_6, metricas_7, metricas_8)
+metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+
+#9 - Random forest----------------------------------------------------------
+
+##Grilla ramdom forest 
+
+tunegrid_rf <- expand.grid(mtry = c(3, 5, 10), 
+                           min.node.size = c(10, 30, 50,
+                                             70, 100),
+                           splitrule = "variance")
+
+tunegrid_rf2 <- expand.grid(mtry = c(10, 15), 
+                           min.node.size = c(50,70, 80),
+                           splitrule = "variance")
+
+
+##Modelos
+
+modelo_9 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe_hogar + edad_2 + 
+                   num_Menores_edad + num_adulto_mayor + Numper_por_dor + Ocupados_por_perhog +
+                   Clase_Rural + Vivienda_Propia_No_Paga + Vivienda_Arriendo + Vivienda_Usufructo +
+                   Vivienda_Ocupante_No_Dueño + Vivienda_Otra + sexo_jefe_hogar_Mujer + 
+                   nivel_edu_jefe_hogar_Basica_primaria + nivel_edu_jefe_hogar_Basica_secundaria + nivel_edu_jefe_hogar_Media+
+                   nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si + Npersug*Hacinamiento_Si + 
+                   sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Media + sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Superior + Clase_Rural*sexo_jefe_hogar_Mujer + 
+                   Clase_Rural*nivel_edu_jefe_hogar_Basica_primaria + Clase_Rural*nivel_edu_jefe_hogar_Basica_secundaria + Clase_Rural*nivel_edu_jefe_hogar_Superior + 
+                   edad_2*sexo_jefe_hogar_Mujer + Vivienda_Arriendo*Hacinamiento_Si,
+                 data = train_hh2, 
+                 method = "ranger", 
+                 trControl = control2,
+                 metric = 'RMSE', 
+                 tuneGrid = tunegrid_rf)
+
+modelo_10 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe_hogar + edad_2 + 
+                    num_Menores_edad + num_adulto_mayor + Numper_por_dor + Ocupados_por_perhog +
+                    Clase_Rural + Vivienda_Propia_No_Paga + Vivienda_Arriendo + Vivienda_Usufructo +
+                    Vivienda_Ocupante_No_Dueño + Vivienda_Otra + sexo_jefe_hogar_Mujer + 
+                    nivel_edu_jefe_hogar_Basica_primaria + nivel_edu_jefe_hogar_Basica_secundaria + nivel_edu_jefe_hogar_Media+
+                    nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si + Npersug*Hacinamiento_Si + 
+                    sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Media + sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Superior + Clase_Rural*sexo_jefe_hogar_Mujer + 
+                    Clase_Rural*nivel_edu_jefe_hogar_Basica_primaria + Clase_Rural*nivel_edu_jefe_hogar_Basica_secundaria + Clase_Rural*nivel_edu_jefe_hogar_Superior + 
+                    edad_2*sexo_jefe_hogar_Mujer + Vivienda_Arriendo*Hacinamiento_Si,
+                  data = train_hh2, 
+                  method = "ranger", 
+                  trControl = control2,
+                  metric = 'RMSE', 
+                  tuneGrid = tunegrid_rf2)
 
 
 
-
-
-
+ggplot(modelo_9$results, aes(x = min.node.size, y = RMSE, 
+                            color = as.factor(mtry))) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Resultados del grid search",
+       x = "Mínima cantidad de observaciones por hoja",
+       y = "RMSE (Cross-Validation)") +
+  scale_color_discrete("Número de predictores seleccionados al azar") +
+  theme_bw() +
+  theme(legend.position = "bottom")
 
