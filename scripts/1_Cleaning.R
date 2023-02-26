@@ -215,22 +215,6 @@
      
       glimpse(train_h)
       
-#-------------------------------------------------------------------------
-      
-      colnames(train_h)
-      
-      db <- dummyVars(~.,train_h) #Ver cuáles tienen solo dos factores para no dummyficar
-        #nivel_edu_jefe_hogar
-        #Vivienda
-      
-      train_hd <- dummy_cols(train_h, 
-                            select_columns = c("nivel_edu_jefe_hogar", "Vivienda"), 
-                            remove_selected_columns = TRUE)
-      
-      train_hd <- train_hd %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug, -num_oc_hogar, -Vivienda_Propia_paga, -nivel_edu_jefe_hogar_Ninguno)
-      
-      glimpse(train_hd)
-      train_h <- train_hd
 
 ##Estadisticas descriptivas---------------------------------------------
 #install.packages("GGally")  
