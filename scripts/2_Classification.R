@@ -1405,12 +1405,13 @@
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
   
-  
   #6 - Árboles -------------------------------------------------------------------
   
   #Vamos a usar la BD sin dummys - "train_h_factores"
-  train_h_factores <- train_h_factores %>% select(-id)
   glimpse(train_h_factores)
+  
+  train_h_factores <- train_h_factores %>% select(-Nper, -Lp,-Ingtotugarr, -Ingpcug, -num_oc_hogar)
+  
   
   #Dividimos train/test/eval (70%/20%/10%)
   
@@ -1433,8 +1434,7 @@
   prop.table(table(train_h_factores$Pobre))    #Verificamos que las particiones conserven las mismas proporciones
   prop.table(table(train_arboles$Pobre))       #Verificamos que las muestras se encuentran desbalanceadas
   prop.table(table(test_arboles$Pobre))
-  prop.table(table(eval_arboles$Pobre))
-  
+  prop.table(table(eval_arboles$Pobre))  
   
   #Ejecutamos el modelo de árbol de decisión
   
@@ -1453,7 +1453,7 @@
   
   arbol6
   
-  prp(arbol1, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
+  prp(arbol6, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
   
   y_hat_train6 = predict(modelo6, newdata = train_arboles)
   y_hat_test6 = predict(modelo6, newdata = test_arboles)
@@ -1496,6 +1496,7 @@
   metricas <- bind_rows(metricas, metricas6)
   metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
   
+  
   ###6.1 Árbol de decisión - Upsampling ----
   
   train_arbol61 <- upSample(x = select(train_arboles, -Pobre), 
@@ -1523,7 +1524,7 @@
   
   arbol61
   
-  prp(arbol1, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
+  prp(arbol61, under = TRUE, branch.lty = 3, yesno = 2, faclen = 0, varlen=0, box.palette = "-RdYlGn")
   
   y_hat_train61 = predict(modelo61, newdata = train_arboles)
   y_hat_test61 = predict(modelo61, newdata = test_arboles)
