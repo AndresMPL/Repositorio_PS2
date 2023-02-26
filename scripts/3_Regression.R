@@ -847,10 +847,10 @@ metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 ##Grilla Boosting tree
 
 tunegrid_gbm3 <- expand.grid(learn_rate = c(0.1, 0.01, 0.001),
-                            ntrees = 50,
-                            max_depth = 2,
+                            ntrees = 100,
+                            max_depth = 10,
                             col_sample_rate = 1,
-                            min_rows = 70) 
+                            min_rows = 100) 
 
 
 #instalación
