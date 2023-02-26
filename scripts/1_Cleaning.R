@@ -18,7 +18,7 @@
 #Cargar librerías
   
   library(pacman)
-  p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies, tidyverse, caret)
+  p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies, tidyverse, caret, xtable)
 
   
 #Leer los datos - 
@@ -76,7 +76,6 @@
                     Ocupado = replace_na(Oc, 0),
                     Pet = replace_na(Pet,0))
   
-  train_p$no_ingresos <- if_else(train_p$P6040>=65, 1, 0 , missing = NULL)
   train_p$Clase <- if_else(train_p$Clase== 2, 1, 0 , missing = NULL)
   train_h$Clase <- if_else(train_h$Clase== 2, 1, 0 , missing = NULL)
   
@@ -167,14 +166,13 @@
   #Factores de Personas
       
     train_p <- train_p %>% mutate(Clase=factor(Clase,levels=c(0,1),labels=c("Urbano","Rural")),
-                                  Genero=factor(Genero,levels=c(0,1),labels=c("Hombre","Mujer ")),
+                                  Genero=factor(Genero,levels=c(0,1),labels=c("Hombre","Mujer")),
                                   Parentesco_con_jefe=factor(P6050,levels=c(1,2,3,4,5,6,7,8,9),labels=c("jefe", "pareja", "Hijo/hija", "nieto", "otro", "emplead_servicio", "pensionista", "trabajador", "otro_no_pariente")),
                                   nivel_edu=factor(P6210,levels=c(1,2,3,4,5,6,9),labels=c("Ninguno", "Preescolar", "Basica_primaria", "Basica_secundaria", "Media", "Superior", "No_Saber")),
                                   Desempleado=factor(Desempleado,levels=c(0,1),labels=c("No","Si")),
                                   Inactivo=factor(Inactivo,levels=c(0,1),labels=c("No","Si")),
                                   Ocupado=factor(Ocupado,levels=c(0,1),labels=c("No","Si")),
-                                  Pet=factor(Pet,levels=c(0,1),labels=c("No","Si")),
-                                  no_ingresos=factor(no_ingresos,levels=c(0,1),labels=c("No","Si")))
+                                  Pet=factor(Pet,levels=c(0,1),labels=c("No","Si")))
     
     train_p <- train_p %>% select(-P6020, -P6050, -P6210) # se creo una nueva variable con factores y se elimino la anterior
     
@@ -217,6 +215,7 @@
      
       glimpse(train_h)
       
+<<<<<<< HEAD
       train_hp3 <-train_h
       
 #-------------------------------------------------------------------------
@@ -235,6 +234,8 @@
       
       glimpse(train_hd)
       train_h <- train_hd
+=======
+>>>>>>> b5c5cc6083565a8ad32b02cc19aabda99bf20b9a
 
 ##Estadisticas descriptivas---------------------------------------------
 #install.packages("GGally")  
