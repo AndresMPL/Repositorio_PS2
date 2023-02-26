@@ -5,11 +5,15 @@
 #
 #------------------------------------------------------------------------------#
 
-  print(xtable(metricas), include.rownames = FALSE)  
-
-  metricas_eval <- metricas %>% filter(Evaluación == "Test")
-  metricas_eval
+  metricas_total <- metricas
+  
+  metricas_eval <- metricas %>% filter(Evaluación == "Eval") %>% as.data.frame()
+  View(metricas_eval)
   print(xtable(metricas_eval), include.rownames = FALSE)
+  
+  metricas_test <- metricas %>% filter(Evaluación == "Test") %>% as.data.frame()
+  View(metricas_test)
+  print(xtable(metricas_test), include.rownames = FALSE)
 
 #Lectura de datos Test para el modelo final
 
