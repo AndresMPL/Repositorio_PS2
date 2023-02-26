@@ -20,18 +20,8 @@
   prop.table(table(train_h$Pobre)) #1-Pobre, 0-No Pobre
   #Grado de desbalance Moderado
   
-  
-  Imagen_1 <- ggplot(train_h, aes(x = Pobre)) +
-              geom_bar(fill = "#B5B5B5") +
-              theme_bw() +
-              scale_y_continuous(labels = label_number()) +
-              labs(title = "Distribución de la Clasificación de Pobreza por hogares",
-                   y = "Número de hogares",
-                   x = "Clasificación")
-  
-  Imagen_1
 
-#Dividimos train/test/eval (70/20/10) - BD Hogares
+#Dividimos train/test/eval (70%/20%/10%) - BD Hogares
 
   set.seed(10110)
   index_1 <- createDataPartition(y=train_h$Pobre, p = 0.7, list = FALSE)
@@ -63,9 +53,6 @@
 
   glimpse(train_hhs)
 
-#names <- data.frame(vars = colnames(train_hhs)) %>% 
-#filter(vars != "Pobre") 
-
   variables_numericas <- c("num_cuartos", "num_cuartos_dormir", "Npersug",
                            "edad_jefe_hogar", "num_Menores_edad", "num_adulto_mayor", 
                            "Numper_por_dor", "Ocupados_por_perhog")
@@ -78,7 +65,7 @@
   eval_hhs[, variables_numericas] <- predict(escalador, eval_hh[, variables_numericas])  
 
 
-#Control------------------------------------------------------------------------
+#Control de CV-------------------------------------------------------------------
 
   grilla <- 10^seq(10, -1, length = 100)
   
