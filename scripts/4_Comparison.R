@@ -211,6 +211,7 @@
   test_h$y_hat_modelo33 <- predict(modelo33, newdata = test_h)
   test_h$y_hat_modelo41probs <- predict(modelo41, newdata = test_h)
   test_h$y_hat_modelo42 <- predict(modelo42, newdata = test_h)
+  
   #4.3 Logit - EN - ROSE
   test_h$y_hat_modelo5 <- predict(modelo5, newdata = test_h)
   test_h$y_hat_modelo51probs <- predict(modelo51, newdata = test_h)
@@ -246,6 +247,17 @@
   write.csv(exportar, "modelo_kaggle.csv", row.names = FALSE)
 
 
+  
+  #modeloeas de regresion Lineal 
+  
+  train_hhs2$modelo_11 <- predict(modelo_11, newdata = train_hhs2)
+  train_hhs2$y_hat_11 <- exp(train_hhs2$modelo_11)/train_hhs2$N_personas_hog
+  train_hhs2$Pobre_11 <- if_else(train_hhs2$y_hat_11<=train_hhs2$Lp, 1, 0)
+  
+  
+  
+
+  
     
   
   
