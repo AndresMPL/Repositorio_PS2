@@ -18,7 +18,7 @@
 #Cargar librerías
   
   library(pacman)
-  p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, 
+  p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, rpart.plot, rpart, rattle,
          themis, smotefamily, ROSE, fastDummies, tidyverse, caret, xtable) #Verificamos que ninguna librería genere conflicto
 
   
