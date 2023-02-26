@@ -680,7 +680,7 @@ tunegrid_rf <- expand.grid(mtry = c(3, 5, 10),
                            splitrule = "variance")
 
 tunegrid_rf2 <- expand.grid(mtry = c(10, 15), 
-                           min.node.size = c(50,70, 80),
+                           min.node.size = c(50, 70, 80),
                            splitrule = "variance")
 
 
@@ -769,21 +769,78 @@ metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 #10 - Segunda grilla para tunear --------
 
-modelo_10 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe_hogar + edad_2 + 
-                    num_Menores_edad + num_adulto_mayor + Numper_por_dor + Ocupados_por_perhog +
-                    Clase_Rural + Vivienda_Propia_No_Paga + Vivienda_Arriendo + Vivienda_Usufructo +
-                    Vivienda_Ocupante_No_Dueño + Vivienda_Otra + sexo_jefe_hogar_Mujer + 
-                    nivel_edu_jefe_hogar_Basica_primaria + nivel_edu_jefe_hogar_Basica_secundaria + nivel_edu_jefe_hogar_Media+
-                    nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si + Npersug*Hacinamiento_Si + 
-                    sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Media + sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Superior + Clase_Rural*sexo_jefe_hogar_Mujer + 
-                    Clase_Rural*nivel_edu_jefe_hogar_Basica_primaria + Clase_Rural*nivel_edu_jefe_hogar_Basica_secundaria + Clase_Rural*nivel_edu_jefe_hogar_Superior + 
-                    edad_2*sexo_jefe_hogar_Mujer + Vivienda_Arriendo*Hacinamiento_Si,
+modelo_10 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + Ocupados_por_perhog +
+                     Clase_Rural + sexo_jefe_hogar_Mujer + nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si,
                   data = train_hh2, 
                   method = "ranger", 
                   trControl = control2,
                   metric = 'RMSE', 
                   tuneGrid = tunegrid_rf2)
 
+Grilla_2 <- ggplot(modelo_10$results, aes(x = min.node.size, y = RMSE, 
+                                         color = as.factor(mtry))) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Resultados del grid search",
+       x = "Mínima cantidad de observaciones por hoja",
+       y = "RMSE (Cross-Validation)") +
+  scale_color_discrete("Número de predictores seleccionados al azar") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+train_hhs2$modelo_10 <- predict(modelo_10, newdata = train_hhs2)
+test_hhs2$modelo_10  <- predict(modelo_10, newdata = test_hhs2)
+eval_hhs2$modelo_10  <- predict(modelo_10, newdata = eval_hhs2)
+
+train_hhs2$y_hat_10 <- exp(train_hhs2$modelo_10)/train_hhs2$N_personas_hog
+test_hhs2$y_hat_10  <- exp(test_hhs2$modelo_10)/test_hhs2$N_personas_hog
+eval_hhs2$y_hat_10  <- exp(eval_hhs2$modelo_10)/eval_hhs2$N_personas_hog
+
+train_hhs2$Pobre_10 <- if_else(train_hhs2$y_hat_10<=train_hhs2$Lp, 1, 0)
+test_hhs2$Pobre_10  <- if_else(test_hhs2$y_hat_10<=test_hhs2$Lp, 1, 0)
+eval_hhs2$Pobre_10  <- if_else(eval_hhs2$y_hat_10<=eval_hhs2$Lp, 1, 0)
+
+train_hhs2 <- train_hhs2 %>% mutate(Pobre_10=factor(Pobre_10,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+test_hhs2 <- test_hhs2 %>% mutate(Pobre_10=factor(Pobre_10,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+eval_hhs2 <- eval_hhs2 %>% mutate(Pobre_10=factor(Pobre_10,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+
+acc_train_10  <- Accuracy(y_pred = train_hhs2$Pobre_10, y_true = train_hhs2$Pobre)
+acc_test_10   <- Accuracy(y_pred = test_hhs2$Pobre_10, y_true = test_hhs2$Pobre)
+acc_eval_10   <- Accuracy(y_pred = eval_hhs2$Pobre_10, y_true = eval_hhs2$Pobre)
+
+rec_train_10 <- Recall(y_pred = train_hhs2$Pobre_10, y_true = train_hhs2$Pobre)
+rec_test_10  <- Recall(y_pred = test_hhs2$Pobre_10, y_true = test_hhs2$Pobre)
+rec_eval_10  <- Recall(y_pred = eval_hhs2$Pobre_10, y_true = eval_hhs2$Pobre)
+
+f1_train_10 <- F1_Score(y_pred = train_hhs2$Pobre_10, y_true = train_hhs2$Pobre)
+f1_test_10  <- F1_Score(y_pred = test_hhs2$Pobre_10, y_true = test_hhs2$Pobre)
+f1_eval_10  <- F1_Score(y_pred = eval_hhs2$Pobre_10, y_true = eval_hhs2$Pobre)
+
+
+metricas_train_10 <- data.frame(Modelo = "RAMDOM FOREST Tuning", 
+                               "Muestreo" = "---", 
+                               "Evaluación" = "Entrenamiento",
+                               "Sensitivity" = rec_train_10,
+                               "Accuracy" = acc_train_10,
+                               "F1" = f1_train_10)
+
+metricas_test_10 <- data.frame(Modelo = "RAMDOM FOREST Tuning", 
+                              "Muestreo" = "---", 
+                              "Evaluación" = "Test",
+                              "Sensitivity" = rec_test_10,
+                              "Accuracy" = acc_test_10,
+                              "F1" = f1_test_10)
+
+metricas_eval_10 <- data.frame(Modelo = "RAMDOM FOREST Tuning", 
+                              "Muestreo" = "---", 
+                              "Evaluación" = "Evaluación",
+                              "Sensitivity" = rec_eval_10,
+                              "Accuracy" = acc_eval_10,
+                              "F1" = f1_eval_10)
+
+metricas_10 <- bind_rows(metricas_train_10, metricas_test_10, metricas_eval_10)
+metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5, metricas_6, metricas_7, metricas_8, metricas_9, metricas_10)
+metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 #Gradient Boosting tree----------------------------------------------------------
 
@@ -805,7 +862,72 @@ install.packages("h2o", type = "source",
                  repos = (c("http://h2o-release.s3.amazonaws.com/h2o/latest_stable_R")))
 
 library(h2o)
+h2o.init(nthreads = 2)
+library(caret)
+
+#11 - BOOSTING----------------------------------------------------------
+
+set.seed(10110)
+modelo_11 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + Ocupados_por_perhog +
+                     Clase_Rural + sexo_jefe_hogar_Mujer + nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si,
+                 data = train_hh2, 
+                 method = "gbm_h2o", 
+                 trControl = control2,
+                 metric = 'RMSE', 
+                 tuneGrid = tunegrid_gbm3) 
+plot(modelo_11)
+
+train_hhs2$modelo_11 <- predict(modelo_11, newdata = train_hhs2)
+test_hhs2$modelo_11  <- predict(modelo_11, newdata = test_hhs2)
+eval_hhs2$modelo_11  <- predict(modelo_11, newdata = eval_hhs2)
+
+train_hhs2$y_hat_11 <- exp(train_hhs2$modelo_11)/train_hhs2$N_personas_hog
+test_hhs2$y_hat_11  <- exp(test_hhs2$modelo_11)/test_hhs2$N_personas_hog
+eval_hhs2$y_hat_11  <- exp(eval_hhs2$modelo_11)/eval_hhs2$N_personas_hog
+
+train_hhs2$Pobre_11 <- if_else(train_hhs2$y_hat_11<=train_hhs2$Lp, 1, 0)
+test_hhs2$Pobre_11  <- if_else(test_hhs2$y_hat_11<=test_hhs2$Lp, 1, 0)
+eval_hhs2$Pobre_11  <- if_else(eval_hhs2$y_hat_11<=eval_hhs2$Lp, 1, 0)
+
+train_hhs2 <- train_hhs2 %>% mutate(Pobre_11=factor(Pobre_11,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+test_hhs2 <- test_hhs2 %>% mutate(Pobre_11=factor(Pobre_11,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+eval_hhs2 <- eval_hhs2 %>% mutate(Pobre_11=factor(Pobre_11,levels=c(0,1),labels=c("No_Pobre","Pobre")))
+
+acc_train_11  <- Accuracy(y_pred = train_hhs2$Pobre_11, y_true = train_hhs2$Pobre)
+acc_test_11   <- Accuracy(y_pred = test_hhs2$Pobre_11, y_true = test_hhs2$Pobre)
+acc_eval_11   <- Accuracy(y_pred = eval_hhs2$Pobre_11, y_true = eval_hhs2$Pobre)
+
+rec_train_11 <- Recall(y_pred = train_hhs2$Pobre_11, y_true = train_hhs2$Pobre)
+rec_test_11  <- Recall(y_pred = test_hhs2$Pobre_11, y_true = test_hhs2$Pobre)
+rec_eval_11  <- Recall(y_pred = eval_hhs2$Pobre_11, y_true = eval_hhs2$Pobre)
+
+f1_train_11 <- F1_Score(y_pred = train_hhs2$Pobre_11, y_true = train_hhs2$Pobre)
+f1_test_11  <- F1_Score(y_pred = test_hhs2$Pobre_11, y_true = test_hhs2$Pobre)
+f1_eval_11  <- F1_Score(y_pred = eval_hhs2$Pobre_11, y_true = eval_hhs2$Pobre)
 
 
+metricas_train_11 <- data.frame(Modelo = "BOOSTING", 
+                               "Muestreo" = "---", 
+                               "Evaluación" = "Entrenamiento",
+                               "Sensitivity" = rec_train_11,
+                               "Accuracy" = acc_train_11,
+                               "F1" = f1_train_11)
 
+metricas_test_11 <- data.frame(Modelo = "BOOSTING", 
+                              "Muestreo" = "---", 
+                              "Evaluación" = "Test",
+                              "Sensitivity" = rec_test_11,
+                              "Accuracy" = acc_test_11,
+                              "F1" = f1_test_11)
+
+metricas_eval_11 <- data.frame(Modelo = "BOOSTING", 
+                              "Muestreo" = "---", 
+                              "Evaluación" = "Evaluación",
+                              "Sensitivity" = rec_eval_11,
+                              "Accuracy" = acc_eval_11,
+                              "F1" = f1_eval_11)
+
+metricas_11 <- bind_rows(metricas_train_11, metricas_test_11, metricas_eval_11)
+metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5, metricas_6, metricas_7, metricas_8, metricas_10, metricas_11)
+metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
