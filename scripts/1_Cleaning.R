@@ -18,14 +18,14 @@
 #Cargar librerías
   
   library(pacman)
-  p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, themis, smotefamily, ROSE, fastDummies, tidyverse, caret, xtable)
+  p_load(glmnet, skimr, stargazer, dplyr, kableExtra, AER, MLmetrics, tidymodels, 
+         themis, smotefamily, ROSE, fastDummies, tidyverse, caret, xtable) #Verificamos que ninguna librería genere conflicto
 
   
 #Leer los datos - 
-
+  
   setwd("C:/Users/Isabella/Desktop/Big data/TALLER 2") #Por tamaño de los archivos, seleecionar el directorio local
 
-  
   test_hogares      <- read.csv("test_hogares.csv")
   test_personas     <- read.csv("test_personas.csv")
   train_hogares     <- read.csv("train_hogares.csv")
@@ -56,7 +56,6 @@
   train_p <- train_personas %>% 
     select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, P7472, P7422, P7500s2, P7500s3, P7505, P7510s1, P7510s2, P7510s3, P7510s5, P7510s6, P7510s7,  Pet, Oc, Des, Ina, Ingtot)
   
-  
   train_h <- train_hogares %>% 
     select(Pobre, id, Clase, P5000, P5010, P5090, Nper, Npersug, Lp, Ingtotugarr, Ingpcug)
   
@@ -67,8 +66,6 @@
   
   
 #Crear variables de interes  
-  
-  
   
   train_p$Genero <- ifelse(train_p$P6020 == 2, 1, 0) %>% as.numeric()
   train_p$Menores_edad <- if_else(train_p$P6040<=14, 1, 0 , missing = NULL)
@@ -82,9 +79,6 @@
   train_p$Clase <- if_else(train_p$Clase== 2, 1, 0 , missing = NULL)
   train_h$Clase <- if_else(train_h$Clase== 2, 1, 0 , missing = NULL)
   
-  
-  
-  
   train_personas_hog <- train_p %>%
                         group_by(id) %>%
                         summarize(edad_jefe_hogar = (P6040)[P6050==1], 
@@ -97,7 +91,7 @@
                         jefe_hogar_oc = (Ocupado)[P6050==1],
                         num_oc_hogar = sum(Ocupado))
   
-  train_h <- train_h %>% rename(num_cuartos = P5000, num_cuartos_dormir = P5010) #se renombran variables
+  train_h <- train_h %>% rename(num_cuartos = P5000, num_cuartos_dormir = P5010) #Se renombran variables
   train_p <- train_p %>% rename(edad = P6040) #se renombran variables
   
 #Uniendo bases
@@ -200,10 +194,9 @@
       
       glimpse(train_h)
 
-      #Copia de la BD ajustada - Train Hogares
-      backup <- train_h
-      backup -> train_h
-
+      #Copia de la BD ajustada - Para usar sin Dummys
+      train_h_factores <- train_h
+      
 #Generamos dummys en Train_Personas
   
       train_p <- dummy_cols(train_p, 
@@ -220,28 +213,8 @@
      
       glimpse(train_h)
       
-<<<<<<< HEAD
       train_hp3 <-train_h
       
-#-------------------------------------------------------------------------
-      
-      colnames(train_h)
-      
-      db <- dummyVars(~.,train_h) #Ver cuáles tienen solo dos factores
-        #nivel_edu_jefe_hogar
-        #Vivienda
-      
-      train_hd <- dummy_cols(train_h, 
-                            select_columns = c("nivel_edu_jefe_hogar", "Vivienda"), 
-                            remove_selected_columns = TRUE)
-      
-      train_hd <- train_hd %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug, -num_oc_hogar, -Vivienda_Propia_paga, -nivel_edu_jefe_hogar_Ninguno)
-      
-      glimpse(train_hd)
-      train_h <- train_hd
-=======
->>>>>>> b5c5cc6083565a8ad32b02cc19aabda99bf20b9a
-
 ##Estadisticas descriptivas---------------------------------------------
 #install.packages("GGally")  
 #p_load(GGally)
