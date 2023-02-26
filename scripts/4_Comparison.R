@@ -7,7 +7,7 @@
 
 metricas_inicial <- metricas
 
-metricas_eval <- metricas %>% filter("Evaluación"==Evaluación)
+metricas_eval <- metricas %>% filter("Evaluación" == Evaluación)
 metricas_eval
 metricas_eval %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
@@ -17,15 +17,15 @@ print(xtable(metricas), include.rownames = FALSE)
 
   test_hogares      <- read.csv("test_hogares.csv")
   test_personas     <- read.csv("test_personas.csv")
-
+  sample            <- read.csv("sample_submission.csv")
   
 #Selección de Variables
   
   test_p <- test_personas %>% 
-    select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Pet, Oc, Des, Ina, Ingtot)
+    select(id, Clase, Orden, P6020, P6040, P6050, P6090, P6100, P6210, Pet, Oc, Des, Ina)
   
   test_h <- test_hogares %>% 
-    select(Pobre, id, Clase, P5000, P5010, P5090, Nper, Npersug, Lp, Ingtotugarr, Ingpcug)
+    select(id, Clase, P5000, P5010, P5090, Nper, Npersug, Lp)
   
   glimpse(test_h)
   glimpse(test_p)
@@ -37,10 +37,10 @@ print(xtable(metricas), include.rownames = FALSE)
   test_p$Menores_edad <- if_else(test_p$P6040<=14, 1, 0 , missing = NULL)
   test_p$adulto_mayor <- if_else(test_p$P6040>=65, 1, 0 , missing = NULL)
   test_p <- test_p %>%
-    mutate(Desempleado = replace_na(Des, 0),
-           Inactivo = replace_na(Ina, 0),
-           Ocupado = replace_na(Oc, 0),
-           Pet = replace_na(Pet,0))
+                      mutate(Desempleado = replace_na(Des, 0),
+                      Inactivo = replace_na(Ina, 0),
+                      Ocupado = replace_na(Oc, 0),
+                      Pet = replace_na(Pet,0))
   
   test_p$no_ingresos <- if_else(test_p$P6040>=65, 1, 0 , missing = NULL)
   test_p$Clase <- if_else(test_p$Clase== 2, 1, 0 , missing = NULL)
@@ -79,48 +79,48 @@ print(xtable(metricas), include.rownames = FALSE)
   #Variables con NA´s
   
   #Personas
-  missing_percentage <-sapply(test_p, function(y) sum(length(which(is.na(y))))/length(test_p$id))
-  data_x <- as.data.frame(missing_percentage)
-  var <- cbind(Var_name = rownames(data_x), data_x)
-  rownames(var) <- 1:nrow(var)
-  var_delete <- var[var$missing_percentage>0.5,]
-  var_keep <- var[var$missing_percentage<=0.5,]
-  count(var) # Contamos cuantas variables tenemos en total 
-  count(var_keep) # Contamos cuantas variables tienen % missing menor o igual a 50%
-  count(var_delete) # Contamos cuantas variables tienen % missing mayor a 50% 
+  missing_percentage3 <-sapply(test_p, function(y) sum(length(which(is.na(y))))/length(test_p$id))
+  data_x3 <- as.data.frame(missing_percentage3)
+  var3 <- cbind(Var_name = rownames(data_x3), data_x3)
+  rownames(var3) <- 1:nrow(var3)
+  var_delete3 <- var3[var3$missing_percentage3>0.5,]
+  var_keep3 <- var3[var3$missing_percentage3<=0.5,]
+  count(var3) # Contamos cuantas variables tenemos en total 
+  count(var_keep3) # Contamos cuantas variables tienen % missing menor o igual a 50%
+  count(var_delete3) # Contamos cuantas variables tienen % missing mayor a 50% 
   
-  conteo_variables <- data.frame( total_var = nrow(var),
-                                  keep_bar = nrow(var_keep),
-                                  delete_var = nrow(var_delete))
+  conteo_variables3 <- data.frame( total_var3 = nrow(var3),
+                                  keep_bar3 = nrow(var_keep3),
+                                  delete_var3 = nrow(var_delete3))
   
-  conteo_variables #Tabla de clasificación de variables
+  conteo_variables3 #Tabla de clasificación de variables
   
-  vector_var <- as.vector(var_keep[1]) #Llevamos las variables que trabajaremos a un vector
+  vector_var3 <- as.vector(var_keep3[1]) #Llevamos las variables que trabajaremos a un vector
   
-  test_p <- test_p %>% select(all_of(vector_var$Var_name))
+  test_p <- test_p %>% select(all_of(vector_var3$Var_name))
   
   sapply(test_p, function(x) sum(is.na(x))) %>% as.data.frame()
   
   #Hogares
-  missing_percentage2 <-sapply(test_h, function(y) sum(length(which(is.na(y))))/length(test_h$id))
-  data_x2 <- as.data.frame(missing_percentage2)
-  var2 <- cbind(Var_name = rownames(data_x2), data_x2)
-  rownames(var2) <- 1:nrow(var2)
-  var_delete2 <- var2[var2$missing_percentage2>0.5,]
-  var_keep2 <- var2[var2$missing_percentage2<=0.5,]
-  count(var2) # Contamos cuantas variables tenemos en total 
-  count(var_keep2) # Contamos cuantas variables tienen % missing menor o igual a 50%
-  count(var_delete2) # Contamos cuantas variables tienen % missing mayor a 50% 
+  missing_percentage4 <-sapply(test_h, function(y) sum(length(which(is.na(y))))/length(test_h$id))
+  data_x4 <- as.data.frame(missing_percentage4)
+  var4 <- cbind(Var_name = rownames(data_x4), data_x4)
+  rownames(var4) <- 1:nrow(var4)
+  var_delete4 <- var4[var4$missing_percentage4>0.5,]
+  var_keep4 <- var4[var4$missing_percentage4<=0.5,]
+  count(var4) # Contamos cuantas variables tenemos en total 
+  count(var_keep4) # Contamos cuantas variables tienen % missing menor o igual a 50%
+  count(var_delete4) # Contamos cuantas variables tienen % missing mayor a 50% 
   
-  conteo_variables2 <- data.frame( total_var = nrow(var2),
-                                   keep_bar = nrow(var_keep2),
-                                   delete_var = nrow(var_delete2))
+  conteo_variables4 <- data.frame( total_var = nrow(var4),
+                                   keep_bar = nrow(var_keep4),
+                                   delete_var = nrow(var_delete4))
   
-  conteo_variables2 #Tabla de clasificación de variables
+  conteo_variables4 #Tabla de clasificación de variables
   
-  vector_var2 <- as.vector(var_keep2[1]) #Llevamos las variables que trabajaremos a un vector
+  vector_var4 <- as.vector(var_keep4[1]) #Llevamos las variables que trabajaremos a un vector
   
-  test_h <- test_h %>% select(all_of(vector_var2$Var_name))
+  test_h <- test_h %>% select(all_of(vector_var4$Var_name))
   
   sapply(test_h, function(x) sum(is.na(x))) %>% as.data.frame() #no se excluyen variables
   
@@ -148,8 +148,7 @@ print(xtable(metricas), include.rownames = FALSE)
   
   #Factores de Hogares
   
-  test_h <- test_h %>% mutate(Pobre=factor(Pobre,levels=c(0,1),labels=c("No_Pobre","Pobre")),
-                                Clase=factor(Clase,levels=c(0,1),labels=c("Urbano","Rural")),
+  test_h <- test_h %>% mutate(Clase=factor(Clase,levels=c(0,1),labels=c("Urbano","Rural")),
                                 Vivienda=factor(P5090,levels=c(1,2,3,4,5,6),labels=c("Propia_paga","Propia_No_Paga", "Arriendo","Usufructo", "Ocupante_No_Dueño", "Otra")),
                                 sexo_jefe_hogar=factor(sexo_jefe_hogar,levels=c(0,1),labels=c("Hombre","Mujer")),
                                 nivel_edu_jefe_hogar=factor(nivel_edu_jefe_hogar,levels=c(1,2,3,4,5,6,9),labels=c("Ninguno", "Preescolar", "Basica_primaria", "Basica_secundaria", "Media", "Superior", "No_Saber")),
@@ -159,26 +158,98 @@ print(xtable(metricas), include.rownames = FALSE)
                                 Hacinamiento = factor(Hacinamiento, levels = c(0,1), labels = c("No","Si")))
   
   test_h <- test_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
+
+  glimpse(test_h)
+  
+  #Copia de la BD ajustada - Train Hogares
+  backup <- test_h
+  backup -> test_h
+  
+  #Generamos dummys en Train_Personas
+  
+  test_p <- dummy_cols(test_p, 
+                        select_columns = c("Clase", "Pet", "Genero", "Desempleado", "Inactivo", "Ocupado", "Parentesco_con_jefe", "nivel_edu", "no_ingresos"), 
+                        remove_selected_columns = TRUE)
+  
+  glimpse(test_p)
+  
+  #Generamos dummys en Train_Hogares
+  
+  test_h <- dummy_cols(test_h, 
+                        select_columns = c("Clase", "Vivienda", "sexo_jefe_hogar", "nivel_edu_jefe_hogar", "jefe_hogar_des", "jefe_hogar_oc", "jefe_hogar_ina", "Hacinamiento"), 
+                        remove_selected_columns = TRUE)
   
   glimpse(test_h)
-  colnames(test_h)
-  
-  db <- dummyVars(~.,test_h) #Ver cuáles tienen solo dos factores para no dummyficar
 
-  test_hd <- dummy_cols(test_h, 
-                         select_columns = c("nivel_edu_jefe_hogar", "Vivienda"), 
-                         remove_selected_columns = TRUE)
+#Modelos trabajados
   
-  test_hd <- test_hd %>% select(-id, -Nper, -Lp,-Ingtotugarr, -Ingpcug, -num_oc_hogar, -Vivienda_Propia_paga, -nivel_edu_jefe_hogar_Ninguno)
+  test_h$y_hat_modelo1 <- predict(modelo1, newdata = test_h)
+  test_h$y_hat_modelo11probs <- predict(modelo11, newdata = test_h)
+  test_h$y_hat_modelo12 <- predict(modelo12, newdata = test_h)
+  test_h$y_hat_modelo13 <- predict(modelo13, newdata = test_h)
+  test_h$y_hat_modelo2 <- predict(modelo2, newdata = test_h)
+  test_h$y_hat_modelo21probs <- predict(modelo21, newdata = test_h)
+  test_h$y_hat_modelo22 <- predict(modelo22, newdata = test_h)
+  test_h$y_hat_modelo23 <- predict(modelo23, newdata = test_h)
+  test_h$y_hat_modelo3 <- predict(modelo3, newdata = test_h)
+  test_h$y_hat_modelo31probs <- predict(modelo31, newdata = test_h)
+  test_h$y_hat_modelo32 <- predict(modelo32, newdata = test_h)
+  test_h$y_hat_modelo33 <- predict(modelo33, newdata = test_h)
+  test_h$y_hat_modelo41probs <- predict(modelo41, newdata = test_h)
+  test_h$y_hat_modelo42 <- predict(modelo42, newdata = test_h)
+  #4.3 Logit - EN - ROSE
+  test_h$y_hat_modelo5 <- predict(modelo5, newdata = test_h)
+  test_h$y_hat_modelo51probs <- predict(modelo51, newdata = test_h)
+  test_h$y_hat_modelo52 <- predict(modelo52, newdata = test_h)
+  test_h$y_hat_modelo53 <- predict(modelo53, newdata = test_h)
   
-  glimpse(test_hd)
-  test_h <- test_hd
-
+  #-----------------------------------------------------------------------------
+  
+  test_h$y_hat_modelo1 <- ifelse(test_h$y_hat_modelo1 == "Pobre", 1, 0)
+  test_h$y_hat_modelo11probs <- ifelse(test_h$y_hat_modelo11probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo12 <- ifelse(test_h$y_hat_modelo12 == "Pobre", 1, 0)
+  test_h$y_hat_modelo13 <- ifelse(test_h$y_hat_modelo13 == "Pobre", 1, 0)
+  test_h$y_hat_modelo2 <- ifelse(test_h$y_hat_modelo2 == "Pobre", 1, 0)
+  test_h$y_hat_modelo21probs <- ifelse(test_h$y_hat_modelo21probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo22 <- ifelse(test_h$y_hat_modelo22 == "Pobre", 1, 0)
+  test_h$y_hat_modelo23 <- ifelse(test_h$y_hat_modelo23 == "Pobre", 1, 0)
+  test_h$y_hat_modelo3 <- ifelse(test_h$y_hat_modelo3 == "Pobre", 1, 0)
+  test_h$y_hat_modelo31probs <- ifelse(test_h$y_hat_modelo31probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo32 <- ifelse(test_h$y_hat_modelo32 == "Pobre", 1, 0)
+  test_h$y_hat_modelo33 <- ifelse(test_h$y_hat_modelo33 == "Pobre", 1, 0)
+  test_h$y_hat_modelo41probs <- ifelse(test_h$y_hat_modelo41probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo42 <- ifelse(test_h$y_hat_modelo42 == "Pobre", 1, 0)
+  #4.3 Logit - EN - ROSE
+  test_h$y_hat_modelo5 <- ifelse(test_h$y_hat_modelo5 == "Pobre", 1, 0)
+  test_h$y_hat_modelo51probs <- ifelse(test_h$y_hat_modelo51probs == "Pobre", 1, 0)
+  test_h$y_hat_modelo52 <- ifelse(test_h$y_hat_modelo52 == "Pobre", 1, 0)
+  test_h$y_hat_modelo53 <- ifelse(test_h$y_hat_modelo53 == "Pobre", 1, 0)
+  
+  #-----------------------------------------------------------------------------  
+  
+  glimpse(test_h)
+  summary(test_h)
+  
+  prop.table(table(test_h$y_hat_modelo1))
+  prop.table(table(test_h$y_hat_modelo12))
+  prop.table(table(test_h$y_hat_modelo13))
+  prop.table(table(test_h$y_hat_modelo21probs))
+  prop.table(table(test_h$y_hat_modelo33))
+  prop.table(table(test_h$y_hat_modelo41probs))
+  prop.table(table(test_h$y_hat_modelo5))
+  prop.table(table(test_h$y_hat_modelo52))
+  prop.table(table(test_h$y_hat_modelo53))
+  
+  glimpse(sample)
+  
+  
+  exportar <- test_h %>% select(id, y_hat_modelo53) %>% rename("pobre" = y_hat_modelo53)
+  write.csv(exportar, "modelo53.csv")
+   
+  
 #Calculamos con modelo seleccionado de todo el proceso 
   
-  best_model <- 
-  
-  y_hat_test <- predict(best_model, newdata = test_h)
+
     
   
   
