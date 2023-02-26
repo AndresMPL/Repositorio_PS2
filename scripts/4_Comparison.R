@@ -160,7 +160,7 @@
                                 Hacinamiento = factor(Hacinamiento, levels = c(0,1), labels = c("No","Si")))
   
   test_h <- test_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
-
+  test_h$N_personas_hog <- test_h$Npersug
   glimpse(test_h)
   
   #Copia de la BD ajustada - Train Hogares
@@ -183,6 +183,23 @@
   
   glimpse(test_h)
 
+  
+  #Estandarizacion 
+  
+  test_h2  <- test_h
+  
+  variables_numericas <- c("num_cuartos", "num_cuartos_dormir", "Npersug",
+                           "edad_jefe_hogar", "num_Menores_edad", "num_adulto_mayor", 
+                           "Numper_por_dor", "Ocupados_por_perhog")
+  
+  
+  
+  escalador_test <- preProcess(test_h2[, variables_numericas],
+                          method = c("center", "scale"))
+  
+  test_h2[, variables_numericas] <- predict(escalador_test, test_h2[, variables_numericas])
+  
+  
 #Predicción sobre el modelo seleccionado
   
   final <- modelo11
@@ -254,15 +271,50 @@
   
   #modeloeas de regresion Lineal 
   
-  train_hhs2$modelo_11 <- predict(modelo_11, newdata = train_hhs2)
-  train_hhs2$y_hat_11 <- exp(train_hhs2$modelo_11)/train_hhs2$N_personas_hog
-  train_hhs2$Pobre_11 <- if_else(train_hhs2$y_hat_11<=train_hhs2$Lp, 1, 0)
+  test_h2$modelo_1 <- predict(modelo_1, newdata = test_h2)
+  test_h2$y_hat_1 <- exp(test_h2$modelo_1)/test_h2$N_personas_hog
+  test_h2$Pobre_1 <- if_else(test_h2$y_hat_1<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_2 <- predict(modelo_2, newdata = test_h2)
+  test_h2$y_hat_2 <- exp(test_h2$modelo_2)/test_h2$N_personas_hog
+  test_h2$Pobre_2 <- if_else(test_h2$y_hat_2<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_3 <- predict(modelo_3, newdata = test_h2)
+  test_h2$y_hat_3 <- exp(test_h2$modelo_3)/test_h2$N_personas_hog
+  test_h2$Pobre_3 <- if_else(test_h2$y_hat_3<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_4 <- predict(modelo_4, newdata = test_h2)
+  test_h2$y_hat_4 <- exp(test_h2$modelo_4)/test_h2$N_personas_hog
+  test_h2$Pobre_4 <- if_else(test_h2$y_hat_4<=test_h2$Lp, 1, 0)    
+  
+  test_h2$modelo_5 <- predict(modelo_5, newdata = test_h2)
+  test_h2$y_hat_5 <- exp(test_h2$modelo_5)/test_h2$N_personas_hog
+  test_h2$Pobre_5 <- if_else(test_h2$y_hat_5<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_6 <- predict(modelo_6, newdata = test_h2)
+  test_h2$y_hat_6 <- exp(test_h2$modelo_6)/test_h2$N_personas_hog
+  test_h2$Pobre_6 <- if_else(test_h2$y_hat_6<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_7 <- predict(modelo_7, newdata = test_h2)
+  test_h2$y_hat_7 <- exp(test_h2$modelo_7)/test_h2$N_personas_hog
+  test_h2$Pobre_7 <- if_else(test_h2$y_hat_7<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_8 <- predict(modelo_8, newdata = test_h2)
+  test_h2$y_hat_8 <- exp(test_h2$modelo_8)/test_h2$N_personas_hog
+  test_h2$Pobre_8 <- if_else(test_h2$y_hat_8<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_9 <- predict(modelo_9, newdata = test_h2)
+  test_h2$y_hat_9 <- exp(test_h2$modelo_9)/test_h2$N_personas_hog
+  test_h2$Pobre_9 <- if_else(test_h2$y_hat_9<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_11 <- predict(modelo_11, newdata = test_h2)
+  test_h2$y_hat_11 <- exp(test_h2$modelo_10)/test_h2$N_personas_hog
+  test_h2$Pobre_10 <- if_else(test_h2$y_hat_10<=test_h2$Lp, 1, 0)
+  
+  test_h2$modelo_11 <- predict(modelo_11, newdata = test_h2)
+  test_h2$y_hat_11 <- exp(test_h2$modelo_11)/test_h2$N_personas_hog
+  test_h2$Pobre_11 <- if_else(test_h2$y_hat_11<=test_h2$Lp, 1, 0)
   
   
-  
-
-  
-    
-  
-  
+  Exportar_modelo
   
