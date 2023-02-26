@@ -244,10 +244,7 @@ print(xtable(metricas), include.rownames = FALSE)
   
   exportar <- test_h %>% select(id, y_hat_modelo53) %>% rename("pobre" = y_hat_modelo53)
   write.csv(exportar, "modelo53.csv", row.names = FALSE)
-   
-  
-#Calculamos con modelo seleccionado de todo el proceso 
-  
+
 
     
   
