@@ -148,11 +148,12 @@ set.seed(10110)
 modelo_2 <-   train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe_hogar + edad_2 + 
                       num_Menores_edad + num_adulto_mayor + Numper_por_dor + Ocupados_por_perhog +
                       Clase_Rural + Vivienda_Propia_No_Paga + Vivienda_Arriendo + Vivienda_Usufructo +
-                      Vivienda_Ocupante_No_Dueño + Vivienda_Otra + sexo_jefe_hogar_Mujer +
+                      Vivienda_Ocupante_No_Dueño + Vivienda_Otra + sexo_jefe_hogar_Mujer + 
                       nivel_edu_jefe_hogar_Basica_primaria + nivel_edu_jefe_hogar_Basica_secundaria + nivel_edu_jefe_hogar_Media+
-                      nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si + Hacinamiento_Si*Npersug + sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Media + 
-                      sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Superior + Clase_Rural*sexo_jefe_hogar_Mujer+ Clase_Rural*nivel_edu_jefe_hogar_Basica_primaria + 
-                      Clase_Rural*nivel_edu_jefe_hogar_Basica_secundaria +Clase_Rural*nivel_edu_jefe_hogar_Superior + edad_2*sexo_jefe_hogar_Mujer + Hacinamiento_Si*Vivienda_Arriendo,
+                      nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si + Npersug*Hacinamiento_Si + 
+                      sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Media + sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Superior + Clase_Rural*sexo_jefe_hogar_Mujer + 
+                      Clase_Rural*nivel_edu_jefe_hogar_Basica_primaria + Clase_Rural*nivel_edu_jefe_hogar_Basica_secundaria + Clase_Rural*nivel_edu_jefe_hogar_Superior + 
+                      edad_2*sexo_jefe_hogar_Mujer + Vivienda_Arriendo*Hacinamiento_Si,
                     data = train_hhs2,
                     method = "lm",
                     metric = "RMSE",
@@ -298,7 +299,10 @@ modelo_4<-train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe
                   Clase_Rural + Vivienda_Propia_No_Paga + Vivienda_Arriendo + Vivienda_Usufructo +
                   Vivienda_Ocupante_No_Dueño + Vivienda_Otra + sexo_jefe_hogar_Mujer + 
                   nivel_edu_jefe_hogar_Basica_primaria + nivel_edu_jefe_hogar_Basica_secundaria + nivel_edu_jefe_hogar_Media+
-                  nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si,
+                  nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si + Npersug*Hacinamiento_Si + 
+                  sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Media + sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Superior + Clase_Rural*sexo_jefe_hogar_Mujer + 
+                  Clase_Rural*nivel_edu_jefe_hogar_Basica_primaria + Clase_Rural*nivel_edu_jefe_hogar_Basica_secundaria + Clase_Rural*nivel_edu_jefe_hogar_Superior + 
+                  edad_2*sexo_jefe_hogar_Mujer + Vivienda_Arriendo*Hacinamiento_Si,
                 data=train_hhs2,
                 method = 'glmnet',
                 metric = "RMSE",
@@ -520,7 +524,10 @@ modelo_7<-train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe
                   Clase_Rural + Vivienda_Propia_No_Paga + Vivienda_Arriendo + Vivienda_Usufructo +
                   Vivienda_Ocupante_No_Dueño + Vivienda_Otra + sexo_jefe_hogar_Mujer + 
                   nivel_edu_jefe_hogar_Basica_primaria + nivel_edu_jefe_hogar_Basica_secundaria + nivel_edu_jefe_hogar_Media+
-                  nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si,
+                  nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si + Npersug*Hacinamiento_Si + 
+                  sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Media + sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Superior + Clase_Rural*sexo_jefe_hogar_Mujer + 
+                  Clase_Rural*nivel_edu_jefe_hogar_Basica_primaria + Clase_Rural*nivel_edu_jefe_hogar_Basica_secundaria + Clase_Rural*nivel_edu_jefe_hogar_Superior + 
+                  edad_2*sexo_jefe_hogar_Mujer + Vivienda_Arriendo*Hacinamiento_Si,
                 data=train_hhs2,
                 method = 'glmnet',
                 metric = "RMSE",
@@ -590,7 +597,46 @@ metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5
 metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 
+#Ajuste Datos para ARBOLES----------------------------------------------------------
 
+##factores
+
+train_h3 <- train_h2 %>% mutate(Clase_Rural=factor(Clase_Rural,levels=c(0,1),labels=c("Urbano","Rural")),
+                                Vivienda_Propia_No_Paga=factor(Vivienda_Propia_No_Paga,levels=c(0,1),labels=c("No","Si")),
+                                Vivienda_Arriendo=factor(Vivienda_Arriendo,levels=c(0,1),labels=c("No","Si")),
+                                Vivienda_Usufructo=factor(Vivienda_Usufructo,levels=c(0,1),labels=c("No","Si")),
+                                Vivienda_Ocupante_No_Dueño=factor(Vivienda_Ocupante_No_Dueño,levels=c(0,1),labels=c("No","Si")),
+                                nivel_edu_jefe_hogar_Basica_primaria=factor(nivel_edu_jefe_hogar_Basica_primaria,levels=c(0,1),labels=c("No","Si")),
+                                nivel_edu_jefe_hogar_Basica_secundaria=factor(nivel_edu_jefe_hogar_Basica_secundaria,levels=c(0,1),labels=c("No","Si")),
+                                nivel_edu_jefe_hogar_Media=factor(nivel_edu_jefe_hogar_Media,levels=c(0,1),labels=c("No","Si")),
+                                nivel_edu_jefe_hogar_Superior=factor(nivel_edu_jefe_hogar_Superior,levels=c(0,1),labels=c("No","Si")),
+                                jefe_hogar_des_Si=factor(jefe_hogar_des_Si,levels=c(0,1),labels=c("No","Si")),
+                                jefe_hogar_ina_Si=factor(jefe_hogar_ina_Si,levels=c(0,1),labels=c("No","Si")),
+                                Hacinamiento_Si=factor(Hacinamiento_Si,levels=c(0,1),labels=c("No","Si")))
+
+##Train/test/eval (70/20/10) - BD Hogares -------
+
+set.seed(10110)
+index_5 <- createDataPartition(y = train_h3$Log_ing , p = 0.7)[[1]]
+train_hh3<- train_h3[index_5,]
+other_3 <- train_h3[-index_5,]
+
+
+set.seed(10110)
+index_6<- createDataPartition(y = other_3$Log_ing , p = 1/3)[[1]]
+test_hh3 <- other_3[index_4,]
+eval_hh3 <- other_3[-index_4,]
+
+
+dim(train_h3)   
+dim(train_hh3)
+dim(test_hh3)
+dim(eval_hh3)
+
+dim(train_h3)[1] - dim(train_hh3)[1] - dim(test_hh3)[1] - dim(eval_hh3)[1]
+
+
+#8 - ARBOL de decisión----------------------------------------------------------
 
 
 
