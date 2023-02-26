@@ -188,34 +188,23 @@
   
 #Modelo seleccionado------------------------------------------------------------
   
+  final <- modelo11
+  
   coefs <- coef(final$finalModel) %>% as.data.frame()
   colnames(coefs)<-c("Modelo")
   round(coefs,4)
   coefs
   print(xtable(coefs), include.rownames = FALSE)
 
+  
 #Predicción sobre el modelo seleccionado
   
-  final <- modelo11
-  
-  test_h$y_hat_final   <- predict(final, newdata = test_h)
-  test_h$y_hat_modelo1 <- ifelse(test_h$y_hat_modelo1 == "Pobre", 1, 0)
+  test_h$prediccion   <- predict(final, newdata = test_h)
+  test_h$prediccion <- ifelse(test_h$prediccion == "Pobre", 1, 0)
 
-#Modelos trabajados
-  
-  test_h$y_hat_modelo1 <- predict(modelo1, newdata = test_h)
-
-  test_h$y_hat_modelo1        <- ifelse(test_h$y_hat_modelo1 == "Pobre", 1, 0)
-
-  
 
 #Archivo de Kaggle
   
-  exportar <- test_h %>% select(id, final) %>% rename("pobre" = final)
+  exportar <- test_h %>% select(id, prediccion) %>% rename("pobre" = prediccion)
   write.csv(exportar, "modelo_kaggle.csv", row.names = FALSE)
-
-
-    
-  
-  
   
