@@ -5,15 +5,17 @@
 #
 #------------------------------------------------------------------------------#
 
+#Aquí guardamos las métricas de todos los modelos de Clasificación generados en el Script 2
+
   metricas_total <- metricas
   
-  metricas_eval <- metricas %>% filter(Evaluación == "Eval") %>% as.data.frame()
+  metricas_eval <- metricas %>% filter(Evaluación == "Evaluación") %>% as.data.frame()
   View(metricas_eval)
   print(xtable(metricas_eval), include.rownames = FALSE)
   
   metricas_test <- metricas %>% filter(Evaluación == "Test") %>% as.data.frame()
   View(metricas_test)
-  print(xtable(metricas_test), include.rownames = FALSE)
+  print(xtable(metricas_test, digits = 4), include.rownames = FALSE)
 
 #Lectura de datos Test para el modelo final
 
@@ -183,13 +185,8 @@
   
   glimpse(test_h)
 
-#Predicción sobre el modelo seleccionado
   
-  final <- modelo11
-  test_h$y_hat_final <- predict(final, newdata = test_h)
-  
-#Modelo seleccionado
-  
+#Modelo seleccionado------------------------------------------------------------
   
   coefs <- coef(final$finalModel) %>% as.data.frame()
   colnames(coefs)<-c("Modelo")
@@ -197,51 +194,19 @@
   coefs
   print(xtable(coefs), include.rownames = FALSE)
 
-
+#Predicción sobre el modelo seleccionado
   
+  final <- modelo11
+  
+  test_h$y_hat_final   <- predict(final, newdata = test_h)
+  test_h$y_hat_modelo1 <- ifelse(test_h$y_hat_modelo1 == "Pobre", 1, 0)
+
 #Modelos trabajados
   
   test_h$y_hat_modelo1 <- predict(modelo1, newdata = test_h)
-  test_h$y_hat_modelo11probs <- predict(modelo11, newdata = test_h)
-  test_h$y_hat_modelo12 <- predict(modelo12, newdata = test_h)
-  test_h$y_hat_modelo13 <- predict(modelo13, newdata = test_h)
-  test_h$y_hat_modelo2 <- predict(modelo2, newdata = test_h)
-  test_h$y_hat_modelo21probs <- predict(modelo21, newdata = test_h)
-  test_h$y_hat_modelo22 <- predict(modelo22, newdata = test_h)
-  test_h$y_hat_modelo23 <- predict(modelo23, newdata = test_h)
-  test_h$y_hat_modelo3 <- predict(modelo3, newdata = test_h)
-  test_h$y_hat_modelo31probs <- predict(modelo31, newdata = test_h)
-  test_h$y_hat_modelo32 <- predict(modelo32, newdata = test_h)
-  test_h$y_hat_modelo33 <- predict(modelo33, newdata = test_h)
-  test_h$y_hat_modelo41probs <- predict(modelo41, newdata = test_h)
-  test_h$y_hat_modelo42 <- predict(modelo42, newdata = test_h)
-  #4.3 Logit - EN - ROSE
-  test_h$y_hat_modelo5 <- predict(modelo5, newdata = test_h)
-  test_h$y_hat_modelo51probs <- predict(modelo51, newdata = test_h)
-  test_h$y_hat_modelo52 <- predict(modelo52, newdata = test_h)
-  test_h$y_hat_modelo53 <- predict(modelo53, newdata = test_h)
-  
-  #-----------------------------------------------------------------------------
-  
+
   test_h$y_hat_modelo1        <- ifelse(test_h$y_hat_modelo1 == "Pobre", 1, 0)
-  test_h$y_hat_modelo11probs  <- ifelse(test_h$y_hat_modelo11probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo12       <- ifelse(test_h$y_hat_modelo12 == "Pobre", 1, 0)
-  test_h$y_hat_modelo13       <- ifelse(test_h$y_hat_modelo13 == "Pobre", 1, 0)
-  test_h$y_hat_modelo2        <- ifelse(test_h$y_hat_modelo2 == "Pobre", 1, 0)
-  test_h$y_hat_modelo21probs  <- ifelse(test_h$y_hat_modelo21probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo22       <- ifelse(test_h$y_hat_modelo22 == "Pobre", 1, 0)
-  test_h$y_hat_modelo23       <- ifelse(test_h$y_hat_modelo23 == "Pobre", 1, 0)
-  test_h$y_hat_modelo3        <- ifelse(test_h$y_hat_modelo3 == "Pobre", 1, 0)
-  test_h$y_hat_modelo31probs  <- ifelse(test_h$y_hat_modelo31probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo32       <- ifelse(test_h$y_hat_modelo32 == "Pobre", 1, 0)
-  test_h$y_hat_modelo33       <- ifelse(test_h$y_hat_modelo33 == "Pobre", 1, 0)
-  test_h$y_hat_modelo41probs  <- ifelse(test_h$y_hat_modelo41probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo42       <- ifelse(test_h$y_hat_modelo42 == "Pobre", 1, 0)
-  #4.3 Logit - EN - ROSE
-  test_h$y_hat_modelo5        <- ifelse(test_h$y_hat_modelo5 == "Pobre", 1, 0)
-  test_h$y_hat_modelo51probs  <- ifelse(test_h$y_hat_modelo51probs == "Pobre", 1, 0)
-  test_h$y_hat_modelo52       <- ifelse(test_h$y_hat_modelo52 == "Pobre", 1, 0)
-  test_h$y_hat_modelo53       <- ifelse(test_h$y_hat_modelo53 == "Pobre", 1, 0)
+
   
 
 #Archivo de Kaggle
