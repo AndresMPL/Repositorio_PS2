@@ -53,7 +53,7 @@ glimpse(train_hhs2)
 
 variables_numericas <- c("num_cuartos", "num_cuartos_dormir", "Npersug",
                          "edad_jefe_hogar", "num_Menores_edad", "num_adulto_mayor", 
-                         "Numper_por_dor", "Ocupados_por_perhog")
+                         "Numper_por_dor", "Ocupados_por_perhog", "edad_2")
 
 
 
