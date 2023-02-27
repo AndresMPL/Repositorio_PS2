@@ -939,4 +939,5 @@ metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5
 metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 
-
+metricas_test <- metricas %>% filter(Evaluación == "Test") %>% as.data.frame()
+print(xtable(metricas_test, digits = 4), include.rownames = FALSE)

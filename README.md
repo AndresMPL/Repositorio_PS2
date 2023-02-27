@@ -1,9 +1,9 @@
 
 Este repositorio contiene 4 carpetas:
 
-- document: contiene un archivo llamado "Taller 2- Documento Entrega" en el cual se detallan todos nuestros resultados del análisis planteado en el Problem Set 2.
+- document: contiene un archivo llamado "Taller 2- Documento Entrega" en el cual se detallan todos nuestros resultados del análisis planteado en el Problem Set 2, así como la metodología para la generación de los modelos de clasificación de la pobreza y modelos de regresión para predicción de ingresos de los hogares.
 
-- problem set2: documento PDF que contiene el el ejercicio requerido para el segundo taller.
+- problem set2: contiene el documento PDF que describe el el ejercicio requerido para el segundo taller.
 
 - scripts: esta carpeta contiene 4 scripts utilizados para el desarrollo del Problem Set 2, así:
 
@@ -19,7 +19,7 @@ Este repositorio contiene 4 carpetas:
 					 
 	Es importante tener en cuenta que por la capacidad de almacenamiento de GitHub los archivos con los cuales se desarrolla el Problem Set 2 fueron descargados 
 	de la página https://www.kaggle.com/competitions/uniandes-bdml-20231-ps2 y trabajados localmente, por lo que para ejecutar el script "1_Cleaning" debe
-	descagar estos archivos y fijar el directorio correctamente donde haya generado la descarga. A continuación se detallan los archivos que deben ser
+	descagar estos archivos y fijar el directorio correctamente donde haya hecho la descarga. A continuación se detallan los archivos que deben ser
 	descargados, conservando el mismo nombre::
 					  - test_hogares.csv
 					  - test_personas.csv
