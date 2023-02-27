@@ -5,15 +5,11 @@
 #
 #------------------------------------------------------------------------------#
 
-  metricas_total <- metricas
-  
-  metricas_eval <- metricas %>% filter(Evaluación == "Eval") %>% as.data.frame()
-  View(metricas_eval)
-  print(xtable(metricas_eval), include.rownames = FALSE)
+  metricas_total <- metricas #Guardamos una copia de las métricas ejecutadas
   
   metricas_test <- metricas %>% filter(Evaluación == "Test") %>% as.data.frame()
   View(metricas_test)
-  print(xtable(metricas_test), include.rownames = FALSE)
+  print(xtable(metricas_test, digits = 4), include.rownames = FALSE)
 
 #Lectura de datos Test para el modelo final
 
@@ -208,16 +204,19 @@
   
 #Modelo seleccionado
   
+  #En el ejercicio de análisis se exportaron y cargaron en Kaggle los modelos:
   
-  final <- modelo11
+  modelo1   # Logit
+  modelo33  # Logit - Ridge - Oversamplig (ROSE)
+  modelo41  # Logit - EN - Upsampling
+  modelo5   # LDA
+  modelo52  # LDA - Downsampling
+  modelo53  # LDA - Oversamplig (ROSE)
   
-  coefs <- coef(final$finalModel) %>% as.data.frame()
-  colnames(coefs)<-c("Modelo")
-  round(coefs,4)
-  coefs
-  print(xtable(coefs), include.rownames = FALSE)
+  final <- modelo11 #El vector final debe corresponder al modelo elegido para generar el archivo de Kaggle
+  test_h$prediccion <- predict(final, newdata = test_h)
+  
 
-  
 #Archivo de Kaggle
   
   exportar <- test_h %>% select(id, prediccion) %>% rename("pobre" = prediccion)
