@@ -204,6 +204,16 @@
   
 #Modelo seleccionado
   
+  #En el ejercicio de análisis se exportaron y cargaron en Kaggle los modelos:
+  
+  
+  modelo1   # Logit
+  modelo33  # Logit - Ridge - Oversamplig (ROSE)
+  modelo41  # Logit - EN - Upsampling
+  modelo5   # LDA
+  modelo52  # LDA - Downsampling
+  modelo53  # LDA - Oversamplig (ROSE)
+  
   final <- modelo11 #El vector final debe corresponder al modelo elegido para generar el archivo de Kaggle
   test_h$prediccion <- predict(final, newdata = test_h)
   
