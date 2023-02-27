@@ -206,7 +206,6 @@
   
   #En el ejercicio de análisis se exportaron y cargaron en Kaggle los modelos:
   
-  
   modelo1   # Logit
   modelo33  # Logit - Ridge - Oversamplig (ROSE)
   modelo41  # Logit - EN - Upsampling
