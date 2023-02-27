@@ -769,9 +769,16 @@ metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
 
 #10 - Segunda grilla para tunear --------
 
-modelo_10 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + Ocupados_por_perhog +
-                     Clase_Rural + sexo_jefe_hogar_Mujer + nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si,
-                  data = train_hh2, 
+modelo_10 <- train(Log_ing ~ num_cuartos + num_cuartos_dormir + Npersug + edad_jefe_hogar + edad_2 + 
+                     num_Menores_edad + num_adulto_mayor + Numper_por_dor + Ocupados_por_perhog +
+                     Clase_Rural + Vivienda_Propia_No_Paga + Vivienda_Arriendo + Vivienda_Usufructo +
+                     Vivienda_Ocupante_No_Dueño + Vivienda_Otra + sexo_jefe_hogar_Mujer + 
+                     nivel_edu_jefe_hogar_Basica_primaria + nivel_edu_jefe_hogar_Basica_secundaria + nivel_edu_jefe_hogar_Media+
+                     nivel_edu_jefe_hogar_Superior + jefe_hogar_des_Si + jefe_hogar_ina_Si + Hacinamiento_Si + Npersug*Hacinamiento_Si + 
+                     sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Media + sexo_jefe_hogar_Mujer*nivel_edu_jefe_hogar_Superior + Clase_Rural*sexo_jefe_hogar_Mujer + 
+                     Clase_Rural*nivel_edu_jefe_hogar_Basica_primaria + Clase_Rural*nivel_edu_jefe_hogar_Basica_secundaria + Clase_Rural*nivel_edu_jefe_hogar_Superior + 
+                     edad_2*sexo_jefe_hogar_Mujer + Vivienda_Arriendo*Hacinamiento_Si,
+                   data = train_hh2, 
                   method = "ranger", 
                   trControl = control2,
                   metric = 'RMSE', 
@@ -928,6 +935,8 @@ metricas_eval_11 <- data.frame(Modelo = "BOOSTING",
                               "F1" = f1_eval_11)
 
 metricas_11 <- bind_rows(metricas_train_11, metricas_test_11, metricas_eval_11)
-metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5, metricas_6, metricas_7, metricas_8, metricas_10, metricas_11)
+metricas <- bind_rows(metricas_1, metricas_2, metricas_3, metricas_4, metricas_5, metricas_6, metricas_7, metricas_8, metricas_9, metricas_10, metricas_11)
 metricas %>% kbl(digits = 4) %>% kable_styling(full_width = T)
+
+
 
