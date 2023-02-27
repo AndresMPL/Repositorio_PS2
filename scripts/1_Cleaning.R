@@ -24,7 +24,7 @@
   
 #Leer los datos - 
   
-  setwd("C:/Users/Isabella/Desktop/Big data/TALLER 2") #Por tamaño de los archivos, seleecionar el directorio local
+  setwd("/Users/manuelaojeda/Desktop/Universidad /MAESTRIA") #Por tamaño de los archivos, seleecionar el directorio local
 
   test_hogares      <- read.csv("test_hogares.csv")
   test_personas     <- read.csv("test_personas.csv")
@@ -189,6 +189,11 @@
                                     jefe_hogar_ina=factor(jefe_hogar_ina,levels=c(0,1),labels=c("No","Si")),
                                     jefe_hogar_oc=factor(jefe_hogar_oc,levels=c(0,1),labels=c("No","Si")),
                                     Hacinamiento = factor(Hacinamiento, levels = c(0,1), labels = c("No","Si")))
+  ##Estadisticas descriptivas con variables originales 
+      
+      trainh_ed <- train_h %>% select(Nper, Ingpcug, num_oc_hogar, sexo_jefe_hogar)
+      p_load(GGally)
+      ggpairs(trainh_ed, columns = 1:3, ggplot2::aes(colour = sexo_jefe_hogar)) + theme_bw()
       
       train_h <- train_h %>% select(-P5090) # se creo una nueva variable con factores y se elimino la anterior
       
@@ -228,21 +233,23 @@
       
       stargazer(train_h2, title="Estadísticas descriptivas", type='latex')
       
-      dist_edad <- ggplot(data = train_h,
-                          mapping = aes(x = edad_jefe_hogar))  + 
+      dist_ingreso <- ggplot(data = train_h,
+                          mapping = aes(x = Ingpcug))  + 
                           geom_histogram(aes(y =after_stat(density)),
                           bins = 9,
                           position = 'identity',
                           color="#424242", fill="#E3E3E3") +
-                          stat_function(fun = dnorm, xlim = c(min(train_h$edad_jefe_hogar),max(train_h$edad_jefe_hogar)), colour="#1C86EE", linewidth=1,
-                          args = list(mean = mean(train_h$edad_jefe_hogar), 
-                          sd = sd(train_h$edad_jefe_hogar))) + 
-                          labs(title = 'Figura 1: Distribución de edad',
-                          x = 'Edad jefe hogar',
+                          stat_function(fun = dnorm, xlim = c(min(train_h$Ingpcug),max(train_h$Ingpcug)), colour="#1C86EE", linewidth=1,
+                          args = list(mean = mean(train_h$Ingpcug), 
+                          sd = sd(train_h$Ingpcug))) + 
+                          labs(title = 'Figura 4: Distribución de ingreso',
+                          x = 'Ingreso',
                           y = 'Frecuencia') + 
                           theme_bw()
       
-      dist_edad
+      dist_ingreso
+      
+      
       
       imagen_1 <- ggplot(train_h, aes(x = Pobre_Pobre)) +
                   geom_bar(fill = "#B3B3B3") +
@@ -253,5 +260,7 @@
                        x = "Clasificación")
       
       imagen_1
-      
+      install.packages("lessR")
+      p_load(lessR)
+      PieChart(Pobre_Pobre, hole=0, values="%", data=train_h, fill=1:2, weights=train_hogares$fex_c, radius=1, main="")
       
